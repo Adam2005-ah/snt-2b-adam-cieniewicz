@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Recettes simples </title>
+<meta charset="UTF-8">
+</head>
+
+
+<body>
+<h1> recette de crêpes </h1>
+<p> il vous faudra : 
+
+	300 g de farine 
+	3 oeufs entiers 
+	3 cuillères à soupe de sucre 
+	2 cuillères à soupe d'huile 
+	50 g de beurre fondu 60 cl de lait 
+    5 cl de rhum</p>
+<h2> préparation: </h2>
+<p> Mettre la farine dans une terrine et former un puits.
+Y déposer les oeufs entiers, le sucre, l'huile et le beurre.
+Mélanger délicatement avec un fouet en ajoutant au fur et à mesure le lait. La pâte ainsi obtenue doit avoir une consistance d'un liquide légèrement épais.
+Parfumer de rhum.
+Faites chauffer une poêle antiadhésive et la huiler très légèrement. Vous y verserez une louche de pâte, la répartir dans la poêle puis attendre qu'elle soit cuite d'un côté avant de la retourner. Cuire ainsi toutes les crêpes à feu doux. 
+
+Voilà le résultat : </p>
+
+</body> 
+</html>
+
+
+<img src="file:///I:/Users/Adam/Videos/Movavi%20Video%20Editor/Projects/recette-crepes-1024x694.jpg.webp" width="50%"/>
+
+<body>
+<h1> nos sources pour cette recette: </h1>
+
+<a href= »http://google.com »> https://www.marmiton.org/recettes/recette_pate-a-crepes_12372.aspx </a>
+
+body {: background-image: url(file:///I:/Users/Adam/Videos/Movavi%20Video%20Editor/Projects/17.png);
+}
