@@ -75,7 +75,8 @@ def load_btc(crypto_cache):
 
 
 def weekly_returns(prices):
-    wk = np.log(prices.resample(WEEK).last())
+    # Une semaine sans valeur (VNI non publiée) : rendement nul, rattrapé la semaine suivante.
+    wk = np.log(prices.resample(WEEK).last()).ffill(limit=4)
     return wk.diff().where(wk.notna() & wk.shift(1).notna())
 
 
@@ -96,7 +97,7 @@ def stats(r, ref, start):
         pair = pd.concat([r, ref[name]], axis=1, keys=["c", "r"]).loc[start:END].dropna()
         worst = pair["r"] <= pair["r"].quantile(TAIL)
         out[f"pires sem. {name}"] = np.expm1(pair.loc[worst, "c"]).mean() if len(pair) >= MIN_WEEKS else np.nan
-    years = len(x) / 52
+    years = (x.index.max() - x.index.min()).days / 365.25 + 1 / 52
     out["début"] = x.index.min().date() if len(x) else None
     out["rendement annuel"] = np.expm1(x.sum() / years) if len(x) else np.nan
     out["volatilité"] = x.std() * np.sqrt(52)
@@ -179,10 +180,29 @@ def main():
     illus = {k: perf(v, rf, target) for k, v in port.items()}
     pd.DataFrame(illus).T.to_csv(f"{args.out}/illustration_portefeuille.csv", float_format="%.3f")
 
+    # Version sans levier : poche QQQ/GLD/BTC à risque égal + poids fixes en capital, rebalancés chaque semaine.
+    sleeve = np.expm1(port["QQQ + GLD + BTC"])
+    cat = "Cat bonds (GAM Star, EUR)"
+    other = np.expm1(rets[[trend, cat, "BIL (T-bills)"]]).reindex(sleeve.index).fillna(0)
+    mixes = {
+        "100 % QQQ/GLD/BTC": sleeve,
+        "85 % + 15 % cash": 0.85 * sleeve + 0.15 * other["BIL (T-bills)"],
+        "85 % + 15 % cat bonds": 0.85 * sleeve + 0.15 * other[cat],
+        "85 % + 15 % trend": 0.85 * sleeve + 0.15 * other[trend],
+        "70 % + 15 % trend + 15 % cat bonds": 0.70 * sleeve + 0.15 * other[trend] + 0.15 * other[cat],
+    }
+    fixed = {}
+    for k, v in mixes.items():
+        r = np.log1p(v)
+        fixed[k] = {"sharpe": perf(r, rf, 1.0)["sharpe"], "volatilité": v.std() * np.sqrt(52),
+                    "rendement annuel": np.expm1(r.mean() * 52), "pire baisse": max_drawdown(r)}
+    pd.DataFrame(fixed).T.to_csv(f"{args.out}/illustration_sans_levier.csv", float_format="%.3f")
+
     pd.set_option("display.width", 250)
     pd.set_option("display.max_columns", 40)
     print(table.round(2).to_string())
     print(pd.DataFrame(illus).T.round(3).to_string())
+    print(pd.DataFrame(fixed).T.round(3).to_string())
 
 
 if __name__ == "__main__":
