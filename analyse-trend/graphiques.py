@@ -60,7 +60,7 @@ def main():
     port = pd.read_csv(f"{RES}/courbes_portefeuille.csv", index_col=0, parse_dates=True)
     start = "2000-01-04"
     curves = {
-        "Ce système (84 marchés)": port["EWMAC quotidien"],
+        "Ce système (84 marchés)": port["EWMAC quotidien, volatilité de SG Trend"],
         "Indice SG Trend (vrais fonds)": port["SG Trend (excès du monétaire)"],
         "60/40 actions/obligations": port["60/40 actions/obligations"],
     }
@@ -68,15 +68,16 @@ def main():
     growth_and_drawdown(
         curves, dict(zip(curves, [BLUE, ORANGE, AQUA])), dict(zip(curves, ["Système", "SG Trend", "60/40"])),
         "Trend following multi-marchés, 2000 → juillet 2026",
-        "Rendement au-dessus du monétaire, coûts inclus. Le système vise 20 % de volatilité ; l'indice SG Trend en a environ 13 %.",
+        "Rendement au-dessus du monétaire, coûts inclus. Système ramené à la volatilité de l'indice SG Trend (13 %), qui est net des frais des fonds.",
         f"{OUT}/portefeuille_2000_2026.png")
 
     crises = pd.read_csv(f"{RES}/portefeuille_crises.csv", index_col=0)
-    crises = crises.drop(index=[c for c in crises.index if "1987" in c])[["Trend (ce système)", "SG Trend", "QQQ", "60/40"]]
+    crises = crises.drop(index=[c for c in crises.index if "1987" in c])[
+        ["Trend (ce système, volatilité de SG Trend)", "SG Trend", "QQQ", "60/40"]]
     fig, ax = plt.subplots(figsize=(10, 6))
     n, height = len(crises.columns), 0.2
     colors = [BLUE, ORANGE, YELLOW, AQUA]
-    labels = ["Ce système", "Indice SG Trend", "QQQ", "60/40"]
+    labels = ["Ce système (même volatilité que SG Trend)", "Indice SG Trend", "QQQ", "60/40"]
     for i, (col, color, label) in enumerate(zip(crises.columns, colors, labels)):
         y = [k + (i - (n - 1) / 2) * (height + 0.02) for k in range(len(crises))]
         vals = crises[col] * 100

@@ -12,6 +12,7 @@ import os
 import numpy as np
 import pandas as pd
 
+import listings
 import trend
 
 # Coût d'une transaction, en fraction du notionnel traité (demi-écart + commission, contrats micro).
@@ -57,7 +58,7 @@ def yearly(daily):
 
 
 def window_return(daily, start, end):
-    d = daily.loc[start:end].dropna()
+    d = daily[(daily.index > start) & (daily.index <= end)].dropna()  # à partir de la clôture du jour de départ
     return (1 + d).prod() - 1 if len(d) else np.nan
 
 
@@ -69,7 +70,9 @@ def main():
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
 
-    rets, groups, names = load_futures(args.data)
+    full_rets, groups, names = load_futures(args.data)
+    # On ne garde chaque série qu'à partir de la vraie cotation du contrat (pas d'historique reconstitué).
+    rets = full_rets.apply(lambda s: s.where(s.index >= pd.Timestamp(listings.LISTING.get(s.name, "1900-01-01"))))
     costs = {c: COSTS[g] for c, g in groups.items()}
     # Pour répartir le risque, taux courts et obligations forment une seule classe « Taux ».
     risk_groups = groups.replace({"Bonds": "Taux", "STIR": "Taux"})
@@ -84,6 +87,8 @@ def main():
     triple = {c: 3 * v for c, v in costs.items()}
     runs["EWMAC quotidien, coûts x3"] = trend.run_portfolio(
         rets, risk_groups, triple, {c: 3 * v for c, v in roll_costs.items()}, freq="D")
+    runs["EWMAC quotidien, historique reconstitué inclus"] = trend.run_portfolio(
+        full_rets, risk_groups, costs, roll_costs, freq="D")
 
     sg = pd.read_csv(f"{args.data}/alternatives/pofo_indices/SG_Trend_Index_daily.csv", parse_dates=["date"])
     sg = sg.set_index("date")["close"].pct_change()
@@ -97,15 +102,21 @@ def main():
         summary[name] = trend.stats(net)
         summary[name]["coûts/an"] = (res["trading_costs"] + res["roll_costs"]).loc[START:].mean() * 252
         summary[name]["levier moyen"] = res["positions"].abs().sum(axis=1).loc[START:].mean()
-    summary["Indice SG Trend (frais déduits, excès du monétaire)"] = trend.stats(
-        (sg - tbill.reindex(sg.index).ffill()).loc["2000-01-04":])
-    for since in ["2000-01-04", "2015-01-01", "2023-01-01"]:
-        summary[f"EWMAC quotidien depuis {since[:4]}"] = trend.stats(runs["EWMAC quotidien"]["net"].loc[since:])
-        sgx = (sg - tbill.reindex(sg.index).ffill()).loc[since:]
-        summary[f"SG Trend depuis {since[:4]}"] = trend.stats(sgx)
+    main_net = runs["EWMAC quotidien"]["net"]
+    end = main_net.index.max()
+    sg_excess = (sg - tbill.reindex(sg.index).ffill()).loc["2000-01-04":end]  # mêmes dates que le système
+    for since in ["2000-01-04", "2010-01-01", "2015-01-01", "2023-01-01"]:
+        summary[f"EWMAC quotidien depuis {since[:4]}"] = trend.stats(main_net.loc[since:])
+        summary[f"SG Trend (frais déduits) depuis {since[:4]}"] = trend.stats(sg_excess.loc[since:])
+    for a, b in [("1990", "1999"), ("2000", "2009"), ("2010", "2019"), ("2020", "2026")]:
+        summary[f"EWMAC quotidien {a}-{b}"] = trend.stats(main_net.loc[a:b])
     pd.DataFrame(summary).T.to_csv(f"{args.out}/portefeuille_resume.csv", float_format="%.4f")
 
-    main_net = runs["EWMAC quotidien"]["net"]
+    # Même volatilité que l'indice SG Trend, pour comparer à risque égal (crises, courbes).
+    common = pd.concat([main_net, sg_excess], axis=1).dropna()
+    scale = common.iloc[:, 1].std() / common.iloc[:, 0].std()
+    matched = main_net * scale
+
     def to_week(daily):
         return daily.dropna().add(1).resample("W-FRI").prod(min_count=1).sub(1)
 
@@ -115,7 +126,7 @@ def main():
                            "60/40 actions/obligations": to_week(sixty40.loc[START:]), "QQQ": to_week(us["QQQ"]),
                            "GLD": to_week(us["GLD"]), "BTC": to_week(btc)})
     corr = {}
-    for since in ["1990", "2000", "2015", "2022"]:
+    for since in ["2000", "2015", "2022"]:
         corr[f"depuis {since}"] = weekly.loc[since:].corr()["Trend (ce système)"]
     pd.DataFrame(corr).to_csv(f"{args.out}/portefeuille_correlations_hebdo.csv", float_format="%.3f")
 
@@ -123,23 +134,28 @@ def main():
                           "60/40": yearly(sixty40.loc[START:]), "QQQ": yearly(us["QQQ"])})
     years.to_csv(f"{args.out}/portefeuille_annees.csv", float_format="%.4f")
 
-    crises = {k: {"Trend (ce système)": window_return(main_net, *v), "SG Trend": window_return(sg, *v),
+    crises = {k: {"Trend (ce système)": window_return(main_net, *v),
+                  "Trend (ce système, volatilité de SG Trend)": window_return(matched, *v),
+                  "SG Trend": window_return(sg, *v),
                   "60/40": window_return(sixty40, *v), "QQQ": window_return(us["QQQ"], *v),
                   "BTC": window_return(btc, *v)} for k, v in CRISES.items()}
     pd.DataFrame(crises).T.to_csv(f"{args.out}/portefeuille_crises.csv", float_format="%.4f")
 
     by_class = {}
+    res = runs["EWMAC quotidien"]
+    held = res["positions"].shift(1).fillna(0)
+    inst_net = (held * rets.fillna(0) - res["positions"].diff().abs().fillna(0) * pd.Series(costs)
+                - held.abs() * pd.Series(roll_costs) / 252)
     for g in groups.unique():
-        cols = groups.index[groups == g]
-        res = runs["EWMAC quotidien"]
-        pnl = (res["positions"][cols].shift(1) * rets[cols].fillna(0)).sum(axis=1).loc[START:]
-        by_class[g] = {"contribution annuelle": pnl.mean() * 252, "sharpe de la poche": pnl.mean() / pnl.std() * 16,
-                       "marchés": len(cols)}
+        pnl = inst_net[groups.index[groups == g]].sum(axis=1).loc[START:]
+        by_class[g] = {"contribution annuelle (après coûts)": pnl.mean() * 252,
+                       "sharpe de la poche (après coûts)": pnl.mean() / pnl.std() * 16,
+                       "marchés": int((groups == g).sum())}
     pd.DataFrame(by_class).T.to_csv(f"{args.out}/portefeuille_par_classe.csv", float_format="%.4f")
 
     curves = pd.DataFrame({k: (1 + v["net"].loc[START:].fillna(0)).cumprod() for k, v in runs.items()})
-    curves["SG Trend (excès du monétaire)"] = (1 + (sg - tbill.reindex(sg.index).ffill()).loc["2000-01-04":]
-                                               .fillna(0)).cumprod()
+    curves["EWMAC quotidien, volatilité de SG Trend"] = (1 + matched.loc[START:].fillna(0)).cumprod()
+    curves["SG Trend (excès du monétaire)"] = (1 + sg_excess.fillna(0)).cumprod()
     curves["60/40 actions/obligations"] = (1 + sixty40.loc[START:].fillna(0)).cumprod()
     curves.to_csv(f"{args.out}/courbes_portefeuille.csv", float_format="%.5f")
 
@@ -159,13 +175,13 @@ def main():
         r = r.dropna()
         cash = cash_daily.reindex(r.index).ffill().fillna(0)
         start = r.index[trend.WARMUP_DAYS + 1]
-        single_rows[(name, "achat-conservation", "")] = trend.stats(r.loc[start:])
+        single_rows[(name, "achat-conservation", "")] = trend.stats(r.loc[start:], cash=cash)
         single_curves[f"{name} achat-conservation"] = (1 + r.loc[start:]).cumprod()
         for mode, mode_label in [("long_cash", "tendance : investi ou monétaire"),
                                  ("long_short", "tendance : achat/vente à découvert")]:
             for freq, flabel in [("D", "quotidien"), ("W", "hebdo"), ("M", "mensuel")]:
                 res = trend.run_single(r, cash, freq=freq, mode=mode)
-                single_rows[(name, mode_label, flabel)] = trend.stats(res["net"].loc[start:])
+                single_rows[(name, mode_label, flabel)] = trend.stats(res["net"].loc[start:], cash=cash)
                 single_rows[(name, mode_label, flabel)]["exposition moyenne"] = res["positions"].loc[start:].mean()
                 if freq == "D":
                     single_curves[f"{name} {mode_label}"] = (1 + res["net"].loc[start:].fillna(0)).cumprod()

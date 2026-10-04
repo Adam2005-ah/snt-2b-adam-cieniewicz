@@ -144,9 +144,13 @@ def run_single(returns, cash, freq="D", mode="long_cash", risk_target=0.20, cost
     return {"net": net.where(live.shift(1, fill_value=False)), "positions": pos, "forecasts": fc}
 
 
-def stats(daily, label=None):
-    """Indicateurs d'une série de rendements quotidiens."""
+def stats(daily, label=None, cash=None):
+    """Indicateurs d'une série de rendements quotidiens.
+
+    cash : rendement monétaire quotidien, à retirer pour un Sharpe d'excès de rendement quand la série
+    l'inclut (ETF, stratégie investie ou monétaire). Les futures sont déjà en excès du monétaire."""
     d = daily.dropna()
+    excess = d - (cash.reindex(d.index).fillna(0) if cash is not None else 0)
     monthly = (1 + d).resample("ME").prod() - 1
     curve = (1 + d).cumprod()
     years = len(d) / 252
@@ -154,7 +158,7 @@ def stats(daily, label=None):
         "début": d.index.min().date(), "fin": d.index.max().date(),
         "rendement annuel": curve.iloc[-1] ** (1 / years) - 1,
         "volatilité": d.std() * 16,
-        "sharpe": d.mean() / d.std() * 16,
+        "sharpe": excess.mean() / excess.std() * 16,
         "pire baisse": (curve / curve.cummax() - 1).min(),
         "skew mensuel": monthly.skew(),
         "% mois positifs": (monthly > 0).mean(),
