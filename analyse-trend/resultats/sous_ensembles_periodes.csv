@@ -1,55 +1,55 @@
 sous-ensemble,période,rendement annuel,volatilité,sharpe,pire baisse
-Tout (7 classes),1990-2026,0.1554,0.1763,0.9209,-0.4254
-Tout (7 classes),2000-2026,0.1058,0.1830,0.6501,-0.4254
-Tout (7 classes),2010-2026,0.0554,0.1640,0.4164,-0.4254
-Tout (7 classes),2015-2026,0.0352,0.1640,0.2964,-0.4254
-Tout (7 classes),2023-2026,-0.0527,0.1326,-0.3478,-0.3198
-Tout (7 classes),1990-1999,0.2978,0.1568,1.7683,-0.1439
-Tout (7 classes),2000-2009,0.1944,0.2106,0.9626,-0.3183
-Tout (7 classes),2010-2019,0.0243,0.1572,0.2338,-0.4187
-Tout (7 classes),2020-2026,0.1050,0.1739,0.6705,-0.4254
-Énergie + agriculture + métaux + actions,1990-2026,0.1405,0.1917,0.7927,-0.4507
-Énergie + agriculture + métaux + actions,2000-2026,0.1102,0.1983,0.6348,-0.4507
-Énergie + agriculture + métaux + actions,2010-2026,0.0558,0.1769,0.4003,-0.4507
-Énergie + agriculture + métaux + actions,2015-2026,0.0543,0.1767,0.3922,-0.4507
-Énergie + agriculture + métaux + actions,2023-2026,0.0306,0.1379,0.2914,-0.2767
-Énergie + agriculture + métaux + actions,1990-1999,0.2249,0.1729,1.2788,-0.1755
-Énergie + agriculture + métaux + actions,2000-2009,0.2063,0.2292,0.9460,-0.3558
-Énergie + agriculture + métaux + actions,2010-2019,-0.0029,0.1699,0.0680,-0.4507
-Énergie + agriculture + métaux + actions,2020-2026,0.1524,0.1871,0.8636,-0.3961
-Idem sans minerai de fer ni éthanol,1990-2026,0.1227,0.1956,0.6994,-0.4942
-Idem sans minerai de fer ni éthanol,2000-2026,0.0865,0.2035,0.5161,-0.4942
-Idem sans minerai de fer ni éthanol,2010-2026,0.0225,0.1852,0.2150,-0.4942
-Idem sans minerai de fer ni éthanol,2015-2026,0.0213,0.1886,0.2080,-0.4942
-Idem sans minerai de fer ni éthanol,2023-2026,0.0498,0.1533,0.3988,-0.2803
-Idem sans minerai de fer ni éthanol,1990-1999,0.2249,0.1729,1.2788,-0.1755
-Idem sans minerai de fer ni éthanol,2000-2009,0.2011,0.2305,0.9233,-0.3539
-Idem sans minerai de fer ni éthanol,2010-2019,-0.0222,0.1755,-0.0414,-0.4942
-Idem sans minerai de fer ni éthanol,2020-2026,0.0949,0.1991,0.5621,-0.4117
-Le reste : obligations + taux courts + devises,1990-2026,0.1451,0.2519,0.6730,-0.6963
-Le reste : obligations + taux courts + devises,2000-2026,0.0664,0.2561,0.3838,-0.6963
-Le reste : obligations + taux courts + devises,2010-2026,0.0296,0.2483,0.2441,-0.6963
-Le reste : obligations + taux courts + devises,2015-2026,-0.0252,0.2590,0.0303,-0.6963
-Le reste : obligations + taux courts + devises,2023-2026,-0.2160,0.2366,-0.9244,-0.5937
-Le reste : obligations + taux courts + devises,1990-1999,0.3829,0.2400,1.4934,-0.3542
-Le reste : obligations + taux courts + devises,2000-2009,0.1302,0.2686,0.5978,-0.4229
-Le reste : obligations + taux courts + devises,2010-2019,0.0594,0.2193,0.3774,-0.5387
-Le reste : obligations + taux courts + devises,2020-2026,-0.0144,0.2871,0.0929,-0.6963
-Matières premières seules (énergie + agriculture + métaux),1990-2026,0.1522,0.2127,0.7833,-0.5110
-Matières premières seules (énergie + agriculture + métaux),2000-2026,0.1308,0.2205,0.6770,-0.5110
-Matières premières seules (énergie + agriculture + métaux),2010-2026,0.0866,0.2002,0.5217,-0.5110
-Matières premières seules (énergie + agriculture + métaux),2015-2026,0.0739,0.2002,0.4622,-0.5110
-Matières premières seules (énergie + agriculture + métaux),2023-2026,0.0293,0.1634,0.2618,-0.2830
-Matières premières seules (énergie + agriculture + métaux),1990-1999,0.2108,0.1906,1.1155,-0.1998
-Matières premières seules (énergie + agriculture + métaux),2000-2009,0.2079,0.2504,0.8919,-0.4016
-Matières premières seules (énergie + agriculture + métaux),2010-2019,0.0171,0.1919,0.1863,-0.5110
-Matières premières seules (énergie + agriculture + métaux),2020-2026,0.2022,0.2121,0.9883,-0.3571
-Actions seules,1990-2026,0.0481,0.2759,0.3120,-0.7975
-Actions seules,2000-2026,0.0066,0.2767,0.1637,-0.7975
-Actions seules,2010-2026,-0.0534,0.2362,-0.1170,-0.7427
-Actions seules,2015-2026,-0.0293,0.2435,-0.0012,-0.6902
-Actions seules,2023-2026,0.0072,0.2114,0.1411,-0.3574
-Actions seules,1990-1999,0.1664,0.2739,0.7092,-0.4025
-Actions seules,2000-2009,0.1143,0.3329,0.4979,-0.4664
-Actions seules,2010-2019,-0.0755,0.2166,-0.2593,-0.6387
-Actions seules,2020-2026,-0.0185,0.2634,0.0610,-0.6233
+Tout (7 classes),1990-2026,0.1613,0.1763,0.9209,-0.4254
+Tout (7 classes),2000-2026,0.1098,0.1830,0.6501,-0.4254
+Tout (7 classes),2010-2026,0.0575,0.1640,0.4164,-0.4254
+Tout (7 classes),2015-2026,0.0365,0.1640,0.2964,-0.4254
+Tout (7 classes),2023-2026,-0.0546,0.1326,-0.3478,-0.3198
+Tout (7 classes),1990-1999,0.3101,0.1568,1.7683,-0.1439
+Tout (7 classes),2000-2009,0.2021,0.2106,0.9626,-0.3183
+Tout (7 classes),2010-2019,0.0251,0.1572,0.2338,-0.4187
+Tout (7 classes),2020-2026,0.1090,0.1739,0.6705,-0.4254
+Énergie + agriculture + métaux + actions,1990-2026,0.1458,0.1917,0.7927,-0.4507
+Énergie + agriculture + métaux + actions,2000-2026,0.1143,0.1983,0.6348,-0.4507
+Énergie + agriculture + métaux + actions,2010-2026,0.0578,0.1769,0.4003,-0.4507
+Énergie + agriculture + métaux + actions,2015-2026,0.0562,0.1767,0.3922,-0.4507
+Énergie + agriculture + métaux + actions,2023-2026,0.0318,0.1379,0.2914,-0.2767
+Énergie + agriculture + métaux + actions,1990-1999,0.2339,0.1729,1.2788,-0.1755
+Énergie + agriculture + métaux + actions,2000-2009,0.2144,0.2292,0.9460,-0.3558
+Énergie + agriculture + métaux + actions,2010-2019,-0.0030,0.1699,0.0680,-0.4507
+Énergie + agriculture + métaux + actions,2020-2026,0.1583,0.1871,0.8636,-0.3961
+Idem sans minerai de fer ni éthanol,1990-2026,0.1274,0.1956,0.6994,-0.4942
+Idem sans minerai de fer ni éthanol,2000-2026,0.0897,0.2035,0.5161,-0.4942
+Idem sans minerai de fer ni éthanol,2010-2026,0.0233,0.1852,0.2150,-0.4942
+Idem sans minerai de fer ni éthanol,2015-2026,0.0221,0.1886,0.2080,-0.4942
+Idem sans minerai de fer ni éthanol,2023-2026,0.0517,0.1533,0.3988,-0.2803
+Idem sans minerai de fer ni éthanol,1990-1999,0.2339,0.1729,1.2788,-0.1755
+Idem sans minerai de fer ni éthanol,2000-2009,0.2090,0.2305,0.9233,-0.3539
+Idem sans minerai de fer ni éthanol,2010-2019,-0.0229,0.1755,-0.0414,-0.4942
+Idem sans minerai de fer ni éthanol,2020-2026,0.0985,0.1991,0.5621,-0.4117
+Le reste : obligations + taux courts + devises,1990-2026,0.1506,0.2519,0.6730,-0.6963
+Le reste : obligations + taux courts + devises,2000-2026,0.0689,0.2561,0.3838,-0.6963
+Le reste : obligations + taux courts + devises,2010-2026,0.0307,0.2483,0.2441,-0.6963
+Le reste : obligations + taux courts + devises,2015-2026,-0.0260,0.2590,0.0303,-0.6963
+Le reste : obligations + taux courts + devises,2023-2026,-0.2232,0.2366,-0.9244,-0.5937
+Le reste : obligations + taux courts + devises,1990-1999,0.3992,0.2400,1.4934,-0.3542
+Le reste : obligations + taux courts + devises,2000-2009,0.1352,0.2686,0.5978,-0.4229
+Le reste : obligations + taux courts + devises,2010-2019,0.0616,0.2193,0.3774,-0.5387
+Le reste : obligations + taux courts + devises,2020-2026,-0.0150,0.2871,0.0929,-0.6963
+Matières premières seules (énergie + agriculture + métaux),1990-2026,0.1580,0.2127,0.7833,-0.5110
+Matières premières seules (énergie + agriculture + métaux),2000-2026,0.1358,0.2205,0.6770,-0.5110
+Matières premières seules (énergie + agriculture + métaux),2010-2026,0.0898,0.2002,0.5217,-0.5110
+Matières premières seules (énergie + agriculture + métaux),2015-2026,0.0767,0.2002,0.4622,-0.5110
+Matières premières seules (énergie + agriculture + métaux),2023-2026,0.0304,0.1634,0.2618,-0.2830
+Matières premières seules (énergie + agriculture + métaux),1990-1999,0.2192,0.1906,1.1155,-0.1998
+Matières premières seules (énergie + agriculture + métaux),2000-2009,0.2161,0.2504,0.8919,-0.4016
+Matières premières seules (énergie + agriculture + métaux),2010-2019,0.0177,0.1919,0.1863,-0.5110
+Matières premières seules (énergie + agriculture + métaux),2020-2026,0.2103,0.2121,0.9883,-0.3571
+Actions seules,1990-2026,0.0498,0.2759,0.3120,-0.7975
+Actions seules,2000-2026,0.0069,0.2767,0.1637,-0.7975
+Actions seules,2010-2026,-0.0553,0.2362,-0.1170,-0.7427
+Actions seules,2015-2026,-0.0304,0.2435,-0.0012,-0.6902
+Actions seules,2023-2026,0.0075,0.2114,0.1411,-0.3574
+Actions seules,1990-1999,0.1729,0.2739,0.7092,-0.4025
+Actions seules,2000-2009,0.1186,0.3329,0.4979,-0.4664
+Actions seules,2010-2019,-0.0781,0.2166,-0.2593,-0.6387
+Actions seules,2020-2026,-0.0192,0.2634,0.0610,-0.6233

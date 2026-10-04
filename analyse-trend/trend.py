@@ -105,11 +105,25 @@ def forecast_regime(returns, vol_ann):
     return forecast(returns, vol_ann, regime=True)
 
 
-def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D", forecast_fn=forecast, scale=None):
+def fixed_vol(returns, days=756):
+    """Volatilité figée : écart-type des 3 premières années de chaque marché, puis gelé (sans ajustement
+    ultérieur). Sert à mesurer ce que vaut le dimensionnement selon la volatilité courante."""
+    def one(s):
+        s = s.dropna()
+        expanding = s.expanding(min_periods=VOL_SPAN).std() * 16
+        if len(s) > days:
+            expanding.iloc[days:] = expanding.iloc[days - 1]
+        return expanding
+    return returns.apply(one).reindex(returns.index).ffill().where(returns.notna().cummax())
+
+
+def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D", forecast_fn=forecast, scale=None,
+                  sizing_vol=None):
     """Backtest multi-marchés. returns : rendements quotidiens (excès de rendement des futures).
 
     groups : classe d'actifs de chaque marché ; costs : coût par unité de notionnel traitée ;
     roll_costs : coût annuel de roulement par unité de notionnel détenue.
+    sizing_vol : volatilité utilisée pour la taille des positions, si différente de celle des signaux.
     """
     vol = returns.apply(annual_vol)
     fc = returns.apply(lambda s: forecast_fn(s, vol[s.name]))
@@ -123,7 +137,8 @@ def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D"
     weights = weights.div(n_classes, axis=0)
     idm = live.sum(axis=1).map(idm_for)
 
-    unit = (risk_target * weights.mul(idm, axis=0) / vol).where(live)  # position pour une prévision de 10
+    size_vol = vol if sizing_vol is None else sizing_vol
+    unit = (risk_target * weights.mul(idm, axis=0) / size_vol).where(live)  # position pour une prévision de 10
     if scale is not None:  # multiplicateur de risque du portefeuille entier (ciblage de volatilité)
         unit = unit.mul(scale.reindex(unit.index).fillna(1.0), axis=0)
     target = fc / 10 * unit
@@ -179,7 +194,7 @@ def stats(daily, label=None, cash=None):
     excess = d - (cash.reindex(d.index).fillna(0) if cash is not None else 0)
     monthly = (1 + d).resample("ME").prod() - 1
     curve = (1 + d).cumprod()
-    years = len(d) / 252
+    years = (d.index[-1] - d.index[0]).days / 365.25  # temps calendaire : les futures ont ~261 jours par an
     return pd.Series({
         "début": d.index.min().date(), "fin": d.index.max().date(),
         "rendement annuel": curve.iloc[-1] ** (1 / years) - 1,
