@@ -93,7 +93,7 @@ def main():
     ax.set_xlim(min(-100, crises.min().min() * 100 - 15), crises.max().max() * 100 + 20)
     ax.set_xlabel("Performance sur la période (%)")
     ax.set_title("Pendant les crises")
-    ax.legend(loc="lower right", frameon=False)
+    ax.legend(loc="upper center", bbox_to_anchor=(0.4, -0.1), ncol=2, frameon=False)
     ax.grid(axis="y", visible=False)
     fig.tight_layout()
     fig.savefig(f"{OUT}/crises.png", dpi=150)
