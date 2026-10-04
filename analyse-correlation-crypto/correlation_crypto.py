@@ -55,6 +55,10 @@ JUMP_ABS = 0.25
 PROXY_MIN_CORR = 0.5  # proxy rejeté s'il colle mal aux prix CoinGecko sur la période commune
 WEEK = "W-SAT"
 SATURDAY = pd.offsets.Week(weekday=5)
+# Corrélation roulante : 26 semaines = les « six derniers mois de rendements hebdo » de Carver.
+ROLLING_WINDOWS = [26, 52]
+ROLLING_SNAPSHOTS = ["2021-12-25", "2022-12-31", "2023-12-30", "2024-12-28", "2025-03-29", "2025-06-28",
+                     "2025-09-27", "2025-12-27", "2026-03-28", "2026-06-27", "2026-09-26"]
 
 
 def fetch(url, path):
@@ -206,6 +210,24 @@ def main():
     vs_btc[num] = vs_btc[num].apply(pd.to_numeric)
     vs_btc.index.name = "ticker"
     vs_btc.to_csv(f"{args.out}/correlation_vs_btc.csv", float_format="%.3f")
+
+    # Corrélation roulante hebdo avec le BTC : série complète + photo aux fins de trimestre.
+    snapshots = pd.to_datetime(ROLLING_SNAPSHOTS).append(pd.DatetimeIndex([end]))
+    for window in ROLLING_WINDOWS:
+        roll = wk.drop(columns="BTC").rolling(window, min_periods=window).corr(wk["BTC"])
+        roll = roll.dropna(how="all")
+        roll.round(3).to_csv(f"{args.out}/correlation_roulante_btc_{window}s.csv")
+        table = roll.reindex(snapshots).T
+        table.columns = [d.strftime("%Y-%m-%d") for d in snapshots]
+        table["moyenne"] = roll.mean()
+        table["min"] = roll.min()
+        valid = roll.dropna(axis=1, how="all")  # les cryptos trop récentes n'ont aucune fenêtre complète
+        table["date_min"] = valid.idxmin().dt.date
+        table["max"] = roll.max()
+        table["date_max"] = valid.idxmax().dt.date
+        table.insert(0, "rang", [info[t]["rang"] for t in table.index])
+        table.index.name = "ticker"
+        table.to_csv(f"{args.out}/correlation_roulante_btc_tableau_{window}s.csv", float_format="%.3f")
 
     with open(f"{args.out}/resume.txt", "w") as f:
         f.write(f"Classement CoinGecko au {asof} ; données jusqu'au {end.date()}\n")
