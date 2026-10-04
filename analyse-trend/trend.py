@@ -51,14 +51,24 @@ def annual_vol(returns):
     return blended.clip(lower=floor) * 16
 
 
-def forecast(returns, vol_ann):
+def vol_regime_multiplier(vol_ann):
+    """Stratégie treize de Carver (AFTS) : moins de conviction quand la volatilité d'un marché est haute
+    par rapport à son histoire. V = vol / sa moyenne sur 10 ans ; Q = rang de V dans son propre passé
+    (0 = plus calme jamais vu, 1 = plus agité) ; multiplicateur 2 - 1,5 Q, lissé sur 10 jours."""
+    relative = vol_ann / vol_ann.rolling(VOL_LONG_DAYS, min_periods=VOL_SPAN).mean()
+    quantile = relative.expanding().rank(pct=True)
+    return (2 - 1.5 * quantile).fillna(1.0).ewm(span=10).mean()
+
+
+def forecast(returns, vol_ann, regime=False):
     """Prévision combinée de trend, entre -20 et +20 (10 = conviction moyenne)."""
     price = (1 + returns.fillna(0)).cumprod().where(returns.notna().cummax())
     price_vol = price * vol_ann / 16
+    regime_mult = vol_regime_multiplier(vol_ann) if regime else 1.0
     signals = []
     for n in SPEEDS:
         raw = (price.ewm(span=n, min_periods=n).mean() - price.ewm(span=4 * n, min_periods=4 * n).mean()) / price_vol
-        signals.append((raw * SCALARS[n]).clip(-CAP, CAP))
+        signals.append((raw * regime_mult * SCALARS[n]).clip(-CAP, CAP))
     return (sum(signals) / len(signals) * FDM).clip(-CAP, CAP)
 
 
@@ -91,7 +101,11 @@ def momentum_12m(returns, vol_ann):
     return np.sign(price / price.shift(252) - 1) * 10
 
 
-def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D", forecast_fn=forecast):
+def forecast_regime(returns, vol_ann):
+    return forecast(returns, vol_ann, regime=True)
+
+
+def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D", forecast_fn=forecast, scale=None):
     """Backtest multi-marchés. returns : rendements quotidiens (excès de rendement des futures).
 
     groups : classe d'actifs de chaque marché ; costs : coût par unité de notionnel traitée ;
@@ -110,6 +124,8 @@ def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D"
     idm = live.sum(axis=1).map(idm_for)
 
     unit = (risk_target * weights.mul(idm, axis=0) / vol).where(live)  # position pour une prévision de 10
+    if scale is not None:  # multiplicateur de risque du portefeuille entier (ciblage de volatilité)
+        unit = unit.mul(scale.reindex(unit.index).fillna(1.0), axis=0)
     target = fc / 10 * unit
     mask = rebalance_mask(returns.index, freq)
     pos = pd.DataFrame({c: buffered_positions(target[c], unit[c].fillna(0), mask) for c in returns})
@@ -120,6 +136,16 @@ def run_portfolio(returns, groups, costs, roll_costs, risk_target=0.20, freq="D"
     rolling = (held.abs() * pd.Series(roll_costs) / 252).sum(axis=1)
     return {"net": gross - trading - rolling, "gross": gross, "positions": pos, "forecasts": fc,
             "trading_costs": trading, "roll_costs": rolling, "live": live}
+
+
+def run_vol_targeted(returns, groups, costs, roll_costs, risk_target=0.20, freq="D", forecast_fn=forecast,
+                     span=32, bounds=(0.5, 2.0)):
+    """Ciblage de volatilité du portefeuille : on mesure la volatilité récente du système (span 32 jours,
+    connue la veille) et on multiplie toutes les positions par risque cible / volatilité, borné à [0,5 ; 2]."""
+    base = run_portfolio(returns, groups, costs, roll_costs, risk_target, freq, forecast_fn)
+    realised = base["net"].ewm(span=span, min_periods=span).std() * 16
+    scale = (risk_target / realised).clip(*bounds).shift(1)
+    return run_portfolio(returns, groups, costs, roll_costs, risk_target, freq, forecast_fn, scale=scale)
 
 
 def run_single(returns, cash, freq="D", mode="long_cash", risk_target=0.20, cost=0.0005):
