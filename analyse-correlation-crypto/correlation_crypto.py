@@ -141,7 +141,8 @@ def build_returns(universe, tracker_prices, cache):
         else:
             r = tr
         stale = (r == 0).astype(int).rolling(STALE_DAYS).sum().reindex(r.index) >= STALE_DAYS
-        stales[row.ticker] = stale[::-1].astype(int).rolling(STALE_DAYS, min_periods=1).max()[::-1] > 0
+        stale = stale[::-1].astype(int).rolling(STALE_DAYS, min_periods=1).max()[::-1] > 0
+        stales[row.ticker] = stale | (stale.shift(1, fill_value=False) & ~stale)  # + le rattrapage qui suit
         returns[row.ticker] = r.mask(stales[row.ticker])
         info[row.ticker] = {"rang": int(row["rank"]), "nom": row["name"], "source": source}
     daily = pd.DataFrame(returns).sort_index()
@@ -163,7 +164,8 @@ def rolling_7d(daily, stale):
     """Rendements log sur 7 jours glissants, un par jour calendaire."""
     days = pd.date_range(daily.index.min(), daily.index.max())
     d = daily.reindex(days)
-    d = d.fillna(0).where(d.notna().cummax())  # un jour sans cotation : son rendement est dans le suivant
+    live = d.notna().cummax() & d.notna()[::-1].cummax()[::-1]
+    d = d.fillna(0).where(live)  # un jour sans cotation : son rendement est dans le suivant
     r7 = d.rolling(7, min_periods=7).sum()
     bad = stale.reindex(days).fillna(False).astype(int).rolling(7, min_periods=1).max() > 0
     return r7.mask(bad)
@@ -251,7 +253,7 @@ def main():
         days = 7 * window
         roll = r7.drop(columns="BTC").rolling(days, min_periods=days).corr(r7["BTC"])
         roll = roll.dropna(how="all")
-        roll.resample(WEEK).last().round(3).to_csv(f"{args.out}/correlation_roulante_btc_{window}s.csv")
+        roll[roll.index.dayofweek == 5].round(3).to_csv(f"{args.out}/correlation_roulante_btc_{window}s.csv")
         table = roll.reindex(snapshots).T
         table.columns = [d.strftime("%Y-%m-%d") for d in snapshots]
         table["moyenne"] = roll.mean()
