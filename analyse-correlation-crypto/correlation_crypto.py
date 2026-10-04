@@ -52,10 +52,19 @@ CM_END = pd.Timestamp("2026-05-23")      # dernière date avec PriceUSD dans Coi
 LONG_START_MAX = pd.Timestamp("2024-12-14")  # une crypto entre dans P1 si son historique commence avant
 JUMP_IDIO = 0.30   # proxy cap. flottante : |r - r_btc| au-delà = saut d'offre (unlock/burn), pas un prix
 JUMP_ABS = 0.25
+JUMP_STRESS = 0.05  # jour de krach (|r_btc| > 5 %) : un gros écart y est un vrai mouvement de prix
+# Vrais mouvements de prix documentés que le filtre prendrait pour des sauts d'offre.
+JUMP_KEEP = {
+    ("OKB", "2025-08-13"),  # +160 % à l'annonce du burn de 65 M OKB (le burn lui-même = saut du 16/08)
+    ("SHIB", "2021-10-04"), ("SHIB", "2021-10-06"), ("SHIB", "2021-10-27"),  # envolée de SHIB en oct. 2021
+}
+STALE_DAYS = 7  # 7 rendements journaliers nuls d'affilée = données figées, pas un prix
 PROXY_MIN_CORR = 0.5  # proxy rejeté s'il colle mal aux prix CoinGecko sur la période commune
 WEEK = "W-SAT"
 SATURDAY = pd.offsets.Week(weekday=5)
 # Corrélation roulante : 26 semaines = les « six derniers mois de rendements hebdo » de Carver.
+# Rendements sur 7 jours glissants recalculés chaque jour : le résultat ne dépend pas du jour choisi
+# pour clore la semaine (ce choix déplaçait la valeur à 26 semaines de 0.17 en médiane).
 ROLLING_WINDOWS = [26, 52]
 ROLLING_SNAPSHOTS = ["2021-12-25", "2022-12-31", "2023-12-30", "2024-12-28", "2025-03-29", "2025-06-28",
                      "2025-09-27", "2025-12-27", "2026-03-28", "2026-06-27", "2026-09-26"]
@@ -97,7 +106,7 @@ def build_returns(universe, tracker_prices, cache):
     tracker_ret = {cid: log_returns(tracker_prices[cid].dropna()) for cid in universe.index}
     btc_cm, _ = load_cm(cache, "btc")
     btc_ret = log_returns(btc_cm)
-    returns, info, jumps = {}, {}, []
+    returns, stales, info, jumps = {}, {}, {}, []
     for cid, row in universe.iterrows():
         tr = tracker_ret[cid]
         source = "CoinGecko (tracker) uniquement"
@@ -112,28 +121,52 @@ def build_returns(universe, tracker_prices, cache):
                     if len(overlap) > 20 and overlap.corr().iloc[0, 1] < PROXY_MIN_CORR:
                         cm_ret = None
                     else:
-                        idio = cm_ret - btc_ret.reindex(cm_ret.index)
-                        flag = (idio.abs() > JUMP_IDIO) & (cm_ret.abs() > JUMP_ABS)
+                        r_btc = btc_ret.reindex(cm_ret.index)
+                        keep = cm_ret.index.isin([pd.Timestamp(d) for t, d in JUMP_KEEP if t == row.ticker])
+                        flag = (((cm_ret - r_btc).abs() > JUMP_IDIO) & (cm_ret.abs() > JUMP_ABS)
+                                & (r_btc.abs() <= JUMP_STRESS) & ~keep)
                         jumps += [(row.ticker, d.date(), round(v, 2)) for d, v in cm_ret[flag].items()]
                         cm_ret = cm_ret.mask(flag)
                 if cm_ret is not None:
                     source = cm_source + " + CoinGecko après " + str(CM_END.date())
         if cm_ret is not None:
-            r = pd.concat([cm_ret, tr[tr.index > CM_END]])
+            # Le 1er rendement CoinGecko part de la clôture Coin Metrics (00:00 UTC) quand c'est un prix,
+            # pour ne pas compter deux fois les heures entre l'instantané CoinGecko et cette clôture.
+            after = tracker_prices[cid][tracker_prices[cid].index > CM_END].dropna()
+            base = level.get(CM_END) if "proxy" not in cm_source else tracker_prices[cid].get(CM_END)
+            if pd.notna(base):
+                after = pd.concat([pd.Series([base], index=[CM_END]), after])
+            tr_after = log_returns(after)
+            r = pd.concat([cm_ret, tr_after])
         else:
             r = tr
-        returns[row.ticker] = r
+        stale = (r == 0).astype(int).rolling(STALE_DAYS).sum().reindex(r.index) >= STALE_DAYS
+        stales[row.ticker] = stale[::-1].astype(int).rolling(STALE_DAYS, min_periods=1).max()[::-1] > 0
+        returns[row.ticker] = r.mask(stales[row.ticker])
         info[row.ticker] = {"rang": int(row["rank"]), "nom": row["name"], "source": source}
-    return pd.DataFrame(returns).sort_index(), info, jumps
+    daily = pd.DataFrame(returns).sort_index()
+    stale = pd.DataFrame(stales).reindex(daily.index).fillna(False).astype(bool)
+    return daily, stale, info, jumps
 
 
-def weekly(daily):
+def weekly(daily, stale):
     """Somme des rendements log par semaine (samedi), NaN avant le début de la série."""
     started = daily.notna().cummax()
     wk = daily.fillna(0).where(started).resample(WEEK).sum(min_count=1)
+    wk = wk.mask(stale.resample(WEEK).max().reindex(wk.index).fillna(False).astype(bool))
     for col in wk:  # la première semaine est incomplète
         wk.loc[wk.index <= SATURDAY.rollforward(daily[col].first_valid_index()), col] = np.nan
-    return wk
+    return wk[wk.index <= daily.index.max()]  # pas de dernière semaine incomplète
+
+
+def rolling_7d(daily, stale):
+    """Rendements log sur 7 jours glissants, un par jour calendaire."""
+    days = pd.date_range(daily.index.min(), daily.index.max())
+    d = daily.reindex(days)
+    d = d.fillna(0).where(d.notna().cummax())  # un jour sans cotation : son rendement est dans le suivant
+    r7 = d.rolling(7, min_periods=7).sum()
+    bad = stale.reindex(days).fillna(False).astype(int).rolling(7, min_periods=1).max() > 0
+    return r7.mask(bad)
 
 
 def corr_table(wk_all, tickers, start, end):
@@ -154,9 +187,9 @@ def main():
     universe = universe[~universe["id"].isin(EXCLUDED_IDS)].set_index("id")
     universe["ticker"] = [TICKER_OVERRIDE.get(i, s.upper()) for i, s in universe["symbol"].items()]
 
-    daily, info, jumps = build_returns(universe, tracker_prices, args.cache)
+    daily, stale, info, jumps = build_returns(universe, tracker_prices, args.cache)
     end = daily.index.max()
-    wk = weekly(daily)
+    wk = weekly(daily, stale)
 
     # Historique disponible par crypto (premier rendement = 2e jour de prix).
     cover = pd.DataFrame({
@@ -213,10 +246,12 @@ def main():
 
     # Corrélation roulante hebdo avec le BTC : série complète + photo aux fins de trimestre.
     snapshots = pd.to_datetime(ROLLING_SNAPSHOTS).append(pd.DatetimeIndex([end]))
+    r7 = rolling_7d(daily, stale)
     for window in ROLLING_WINDOWS:
-        roll = wk.drop(columns="BTC").rolling(window, min_periods=window).corr(wk["BTC"])
+        days = 7 * window
+        roll = r7.drop(columns="BTC").rolling(days, min_periods=days).corr(r7["BTC"])
         roll = roll.dropna(how="all")
-        roll.round(3).to_csv(f"{args.out}/correlation_roulante_btc_{window}s.csv")
+        roll.resample(WEEK).last().round(3).to_csv(f"{args.out}/correlation_roulante_btc_{window}s.csv")
         table = roll.reindex(snapshots).T
         table.columns = [d.strftime("%Y-%m-%d") for d in snapshots]
         table["moyenne"] = roll.mean()
