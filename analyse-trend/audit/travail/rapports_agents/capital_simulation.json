@@ -1,0 +1,206 @@
+{
+ "summary": "SIMULATION: VARIANT 5 (\"LES DEUX\") TRADED IN WHOLE CONTRACTS, BY CAPITAL\nFolder: /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/\n\nMain file: results.csv, with 152 rows. Each row is one combination of universe × capital × notional mode × rebalancing frequency × period. Nothing under /home/user/snt-2b-adam-cieniewicz was modified.\n\nAll returns are in excess of T-bill unless stated, with capital held fixed and P&L expressed as a % of that capital. CAGR and maxDD compound daily excess returns.\n\nSTEP 1 — NOTIONAL PER CONTRACT THROUGH TIME (what I did)\n\nWhy the back-adjusted prices could not be used:\n- The dataset's \"back-adjusted\" prices are RATIO-adjusted. P_t/P_today is the excess-return index, not the price level.\n- On 2000-01-03 the file shows: NG 924 against an actual price of about 2.3; wheat 9,922 c/bu against 292; corn 2,192 against 232; coffee 2,200 against 121.\n- So notional_today × P_t/P_today, and the return-index rebuild (which is the same thing), are off by factors of 3 to 300 for any commodity with roll yield. I used neither for commodities.\n\nActual price levels, in dataset units:\n- **72 markets:** Carver's pysystemtrade multiple_prices PRICE column (the contract actually held).\n  - Most files are the local copy in verify_trend_C/data.\n  - I fetched GASOIL from raw GitHub, because the existing map pointed QS1 to GASOILINE, which is RBOB. I mapped XB1 to GASOILINE.\n  - Units were converted with a power-of-10 factor.\n- **2024-04 to 2026-07 (where pysystemtrade ends):** P_adj × a factor interpolated linearly from the pysystemtrade/P_adj ratio at its end down to 1 on 2026-07-10. That end ratio ranges from 0.64 (CL) to 1.44 (NG, CT).\n- **Before each pysystemtrade series starts:** I chained on the ratio path, with these exceptions:\n  - Bonds whose series starts late follow TY1's level path.\n  - Coffee before 2007 uses the Yahoo KC=F front month.\n  - MES1 before 2009 uses the geometric mean of the HSCEI and TAIEX paths.\n  - JGS1, HC1 and TWT1 use local price indices.\n  - MWE1 (spring wheat), CA1 (Euronext wheat) and IJ1 (rapeseed) use CBOT wheat or ICE canola paths, converted to EUR where needed.\n  - QC1 Index, XP1, PT1, XM1 and IR4 stay on the ratio path. This is probably 15–50% too low in early years for those equity indices.\n- **FX** comes from the actual prices of the FX futures.\n\nSpot checks against known levels:\n\n| Market | Date | Rebuilt level | Note |\n|---|---|---|---|\n| ES | 2000-01-03 | 1467 | |\n| CL | 2008-07-01 | 142.5 | |\n| Gold | 2000 | 289.6 | |\n| NG | 2000 | 2.33 | |\n| Wheat | 2000 | 292 | |\n| EURUSD | 2000 | 1.03 | |\n| Bund | 2000 | 103 | |\n\nFiles: levels_check.csv, contracts_small.csv, contracts_liquid.csv.\n\nExample notionals:\n\n| Contract | 1999 | Today |\n|---|---|---|\n| Micro crude | $1.4k | $7.1k |\n| 1OZ gold | $288 | $4,114 |\n| MES | $6.2k | $38.1k |\n\n**Two notional modes:**\n- 'hist': actual historical notional, as the task asked.\n- 'today': the 2026-07-10 notional and spread held constant through history. This is the forward-looking case for someone starting now. I quote it below unless I say otherwise.\n\n**Micro contracts are assumed to have existed throughout.** In reality most date from 2019–2024.\n\nENGINE\n\n- My engine.py reproduces trend.run_vol_targeted(..., forecast_regime) exactly: maximum position difference 0.0, Sharpe 1990+ 1.171.\n- For subsets, it recomputes weights, IDM and the vol-target scale.\n- Integer positions use Carver's AFTS strategy 8 buffering:\n  - B = 0.1 × the position at forecast 10, in contracts.\n  - lower = round(target − B), upper = round(target + B).\n  - A trade happens only if the current position is outside [lower, upper].\n  - The position is decided at the close on day t and held from t+1.\n- The simulation starts on 1999-01-04. Evaluation windows are 2000-01 → 2026-07-10 and 2010-01 → 2026-07-10.\n\nCosts:\n- **(i)** The backtest's basis-point model applied to the integer trades, so results stay comparable.\n- **(ii) \"Realistic\" — this is the net used for every Sharpe quoted below.** Per contract side: the fee from the cost audit / pysystemtrade (e.g. MES $0.62, micro FX $0.41, standard contracts about $2–3) plus the half-spread (pysystemtrade spread × multiplier × FX). For 25 micros with no data I assumed a $1.0 fee and 1.5× the standard contract's half-spread in price units.\n- **(iii)** The flat commission you asked for, reported separately: $1.0 per micro side, $2.5 per standard side.\n- Rolls count as 2 sides × |n| × rolls per year (4 for equities, bonds, STIR and FX; 12 energy; 6 metals; 5 agriculture), and one spread order per roll of a non-zero position.\n\nUniverses:\n- **(a) all84:** the smallest contract in every market.\n- **strict66:** the 66 retail-accessible markets from the capital audit, all traded with their liquid contract. Small positions round to 0.\n- **(b) subset ≥1c:** the capital audit's greedy round-robin set, re-run with variant 5. Markets are then dropped one at a time until every market has a median |position| (2023-07 → 2026-07) of at least 1 contract at today's notional. That check removed 1–3 markets per tier; for example, at 100k it dropped PE1, CL1 and ER4, leaving 14 markets.\n- **subset ≥4c:** the same with Carver's 4-contract rule. File: subsets.csv.\n\nREFERENCES (fractional, basis-point costs)\n\n| Portfolio | Sharpe 2000–26 | Sharpe 2010–26 | CAGR excess 2000–26 | CAGR excess 2010–26 | Vol |\n|---|---|---|---|---|---|\n| Ideal 84-market variant 5 | 0.845 | 0.541 | 17.5% | 10.0% | 21.5% |\n| strict66 | 0.714 | 0.391 | 14.3% | 6.5% | |\n\n- Most of the 84-versus-66 gap comes from two thin markets: CUA1 (ethanol) and SCO1 (SGX iron ore).\n- Since 2010 they contributed +1.57% and +1.33% of capital per year (gross).\n- Adding just those two back to strict66 gives Sharpe 0.797 / 0.514.\n- Their contribution is suspicious: ethanol is illiquid and block-traded, and iron ore data only starts in 2016.\n\nRESULTS — today's notional, daily, net of realistic costs\n\nSharpe and CAGR are shown as 2000–26 / 2010–26. maxDD is for 2000–26. Commission is the flat rate, 2010–26.\n\n| Capital | Option | Sharpe | CAGR excess | Vol | maxDD | Flat commission % cap/yr | Orders/yr |\n|---|---|---|---|---|---|---|---|\n| 50k | subset ≥1c (11 mkts) | 0.46 / 0.30 | 8.1% / 4.2% | 21% | −58% | 2.9 | 459 |\n| 50k | strict66 | 0.50 / 0.41 | 4.1% | 8.5% | −21% | 0.9 | |\n| 50k | subset ≥4c (4 mkts) | 0.28 / 0.38 | | | | | |\n| 100k | subset ≥1c (14) | 0.57 / 0.41 | 10.5% / 6.7% | 21% | −52% | 2.7 | 750 |\n| 100k | strict66 | 0.61 / 0.23 | | 11% | | | |\n| 100k | subset ≥4c (6) | 0.25 / 0.29 | | | | | |\n| 250k | subset ≥1c (24) | 0.65 / 0.37 | 12.6% / 5.9% | | −56% | 2.35 | 1,470 |\n| 250k | strict66 | 0.80 / 0.56 | | 15.7% | −31% | | |\n| 250k | subset ≥4c (11) | 0.47 / 0.29 | | | | | |\n| 500k | subset ≥1c (32) | 0.70 / 0.39 | 13.7% / 6.4% | | −49% | 2.1 | 2,124 |\n| 500k | strict66 | 0.72 / 0.43 | | | | | |\n| 1M | subset ≥1c (40) | 0.68 / 0.37 | | | | 1.9 | 2,904 |\n| 1M | strict66 | 0.77 / 0.46 | | | | | |\n| 1M | all84 | 0.84 / 0.53 | | | | | |\n| 2M | subset ≥1c (50) | 0.66 / 0.36 | | | | | |\n| 2M | strict66 | 0.72 / 0.41 | | | | | |\n| 5M | subset ≥1c (63) | 0.72 / 0.39 | | | | 1.24 | 5,819 |\n| 5M | strict66 | 0.71 / 0.39 | | | | | |\n| 20M | strict66 = subset | 0.71 / 0.39 | | | | | |\n\nFee plus half-spread for subset ≥1c, as % of capital per year: 3.3 (50k), 3.3 (100k), 4.7 (250k), 3.8 (500k), 3.3 (1M), 2.8 (2M), 2.5 (5M).\n\nWhat this shows:\n1. **For subsets, rounding is not the problem.** Correlation with their own fractional version is at least 0.993, and tracking error is 0.4–2.2% a year. Their weakness is lost diversification: own fractional Sharpe since 2000 is 0.47 (11 markets), 0.55 (14), 0.67 (24) and about 0.70 (32+), against 0.845 for all 84. Carver's 4-contract rule is worse than the 1-contract rule below 2M.\n2. **Trading the whole accessible universe and letting small positions round to 0 is a valid alternative.**\n   - Realised volatility falls well below target: 8.5% at 50k, 11% at 100k, 16% at 250k, 19% at 500k.\n   - 89% / 81% / 65% / 50% / 33% / 20% / 9% of market-days with a non-zero target end up held at 0 contracts at 50k / 100k / 250k / 500k / 1M / 2M / 5M.\n   - Tracking error against the ideal is 10–16% a year below 500k.\n   - **The Sharpes here are dominated by noise.** Changing the minimum buffer from 0 to 1 contract moves strict66's 2010–26 Sharpe at 100k from 0.23 to 0.58, and at 1M from 0.46 to 0.64 (buffer_sensitivity.csv).\n   - The standard error of the gap against fractional is about 0.2–0.3 Sharpe. Do not read 0.80 at 250k as a real improvement.\n3. **Historical notional gives lower net Sharpe for small accounts.** For example, subset ≥1c at 100k is 0.50 (hist) versus 0.57 (today). In the past contracts were smaller, so more of them were needed and more per-contract fees paid.\n4. **Weekly rebalancing**, subset ≥1c:\n\n| Capital | Daily Sharpe (2000–26 / 2010–26) | Weekly Sharpe | Daily orders/yr | Weekly orders/yr | Daily commission | Weekly commission |\n|---|---|---|---|---|---|---|\n| 100k | 0.57 / 0.41 | 0.50 / 0.335 | 750 | 420 | 2.71% | 2.44% |\n| 250k | 0.65 / 0.37 | 0.60 / 0.32 | 1,470 | 730 | 2.35% | 2.13% |\n\n   - Weekly roughly halves the number of tickets, but barely reduces contracts traded or commission, because rolls are unchanged.\n   - It costs about 0.05–0.07 of Sharpe. The fractional all84 weekly Sharpe is also lower: 0.785 against 0.845.\n5. **Workload (2010–26, daily).**\n   - strict66, orders per year:\n\n| 50k | 100k | 250k | 500k | 1M | 2M | 5M | 20M |\n|---|---|---|---|---|---|---|---|\n| 191 | 409 | 972 | 1,699 | 2,683 | 3,899 | 5,811 | 8,667 |\n\n   - That is about 2–3 a day up to 100k, 4–6 a day at 250k, about 11 at 1M and about 23 at 5M. Beyond about 100–250k you need API automation.\n   - Contract sides per year (trades plus rolls) for subset ≥1c:\n\n| 50k | 100k | 250k | 500k | 1M | 2M | 5M |\n|---|---|---|---|---|---|---|\n| 770 | 1,470 | 3,234 | 5,770 | 10,395 | 16,136 | 33,425 |\n\n6. **all84 with micros and realistic costs** (not fully accessible) gets Sharpe 0.81–0.85 / 0.50–0.53 from 500k up, with tracking error under 5.4% a year from 500k and under 3% from 1M.\n\nBOTTOM LINE FOR EXPECTED RETURN\n\n| | Since 2010 | 2000–2026 |\n|---|---|---|\n| Sharpe | about 0.35–0.45 | about 0.57–0.72 at ≥100k |\n| CAGR excess | about 5–8% | |\n| Vol | about 21% | |\n| maxDD | | −49% to −58% |\n\nThese are retail-accessible results, with realistic contract costs, before tax and before fixed data/software costs. The real-fund evidence (SG Trend, Sharpe 0.33) and the in-sample choice of variant 5 both argue for haircutting even these.\n\nCAVEATS\n- The micro-contract history is hypothetical.\n- About 25 micro fee and spread figures are assumed.\n- Some pysystemtrade spreads look conservative (Euribor at 0.0072 is wider than one tick; iron ore).\n- Early levels for five unmapped markets are approximate.\n- Positions are executed at the close with no extra slippage beyond the half-spread.\n- Capital is held fixed (no compounding of contract counts).\n- Margin and cash yield are not modelled; the excess returns are on top of T-bill.",
+ "key_numbers": [
+  {
+   "name": "Ideal fractional 84-mkt variant 5 Sharpe 2000-2026 / 2010-2026",
+   "value": "0.845 / 0.541",
+   "unit": "Sharpe (excess, bp cost model)",
+   "source": "results.csv ideal84_sharpe"
+  },
+  {
+   "name": "Ideal 84 CAGR excess 2000-2026 / 2010-2026",
+   "value": "17.5% / 10.0%",
+   "unit": "%/yr",
+   "source": "results.csv ideal84_cagr"
+  },
+  {
+   "name": "Strict 66 retail-accessible universe, fractional Sharpe 2000-26 / 2010-26",
+   "value": "0.714 / 0.391",
+   "unit": "Sharpe",
+   "source": "strict_vs_all84_fractional.csv"
+  },
+  {
+   "name": "Strict66 + ethanol + SGX iron ore, fractional Sharpe 2000-26 / 2010-26",
+   "value": "0.797 / 0.514",
+   "unit": "Sharpe",
+   "source": "strict_vs_all84_fractional.csv"
+  },
+  {
+   "name": "Gross contribution of CUA1 / SCO1 since 2010",
+   "value": "+1.57 / +1.33",
+   "unit": "% of capital per year",
+   "source": "excluded_markets_contribution.csv"
+  },
+  {
+   "name": "Subset >=1c, 50k (11 mkts): Sharpe 2000-26 / 2010-26, CAGR excess, maxDD",
+   "value": "0.46 / 0.30; 8.1%; -58%",
+   "unit": "",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Subset >=1c, 100k (14 mkts): Sharpe 2000-26 / 2010-26, CAGR excess 2000-26 / 2010-26",
+   "value": "0.57 / 0.41; 10.5% / 6.7%",
+   "unit": "",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Subset >=1c, 250k (24 mkts): Sharpe 2000-26 / 2010-26",
+   "value": "0.65 / 0.37",
+   "unit": "Sharpe",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Subset >=1c, 1M (40 mkts): Sharpe 2000-26 / 2010-26",
+   "value": "0.68 / 0.37",
+   "unit": "Sharpe",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Strict66 traded with rounding, Sharpe 2000-26 / 2010-26 at 100k, 250k, 1M",
+   "value": "0.61/0.23, 0.80/0.56, 0.77/0.46",
+   "unit": "Sharpe (noise-dominated, TE 6-14%/yr)",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Realised vol of strict66 with rounding at 50k / 100k / 250k / 500k",
+   "value": "8.5% / 11% / 15.7% / 19.3%",
+   "unit": "%/yr",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Rounding tracking error of subsets vs their own fractional version",
+   "value": "0.4-2.2",
+   "unit": "%/yr",
+   "source": "results.csv te_vs_own_fractional"
+  },
+  {
+   "name": "Flat commission (1$ micro / 2.5$ std per side) for subset >=1c, 50k/100k/250k/500k/1M/2M/5M",
+   "value": "2.9 / 2.7 / 2.35 / 2.1 / 1.9 / 1.45 / 1.24",
+   "unit": "% of capital per year (2010-26)",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Fee + half-spread for subset >=1c, 50k/100k/250k/500k/1M/2M/5M",
+   "value": "3.3 / 3.3 / 4.7 / 3.8 / 3.3 / 2.8 / 2.5",
+   "unit": "% of capital per year",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Orders per year (trades + rolls), strict66, 50k/100k/250k/500k/1M/2M/5M/20M",
+   "value": "191 / 409 / 972 / 1699 / 2683 / 3899 / 5811 / 8667",
+   "unit": "orders/yr",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Contract sides per year, subset >=1c, 50k/100k/250k/500k/1M/2M/5M",
+   "value": "770 / 1470 / 3234 / 5770 / 10395 / 16136 / 33425",
+   "unit": "contract sides/yr",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Weekly vs daily, subset >=1c at 100k: Sharpe 2000-26, orders/yr, commission",
+   "value": "0.50 vs 0.57; 420 vs 750; 2.44% vs 2.71%",
+   "unit": "",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Weekly vs daily, subset >=1c at 250k: Sharpe 2000-26, orders/yr, commission",
+   "value": "0.60 vs 0.65; 730 vs 1470; 2.13% vs 2.35%",
+   "unit": "",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Share of market-days with non-zero target held at 0 contracts, strict66, 50k/100k/250k/500k/1M/2M/5M",
+   "value": "89 / 81 / 65 / 50 / 33 / 20 / 9",
+   "unit": "%",
+   "source": "results.csv (2010-26, today notional)"
+  },
+  {
+   "name": "all84 micros, realistic costs, 1M: Sharpe 2000-26 / 2010-26, TE vs ideal",
+   "value": "0.84 / 0.53; 3.0%/yr",
+   "unit": "",
+   "source": "summary_today_notional.csv"
+  },
+  {
+   "name": "Engine replication check vs trend.run_vol_targeted",
+   "value": "max position diff 0.0; Sharpe 1990+ 1.171",
+   "unit": "",
+   "source": "engine.py output"
+  },
+  {
+   "name": "Dataset back-adjusted price vs actual on 2000-01-03 (NG, wheat, coffee)",
+   "value": "924 vs 2.33; 9922 vs 292; 2200 vs 121",
+   "unit": "quote units",
+   "source": "levels_check.csv"
+  }
+ ],
+ "claims": [
+  {
+   "claim": "The dataset's back-adjusted prices are ratio-adjusted (they behave as an excess-return index), so notional_today × P_t/P_today is unusable for commodities with roll yield. Actual levels were rebuilt from pysystemtrade multiple_prices.",
+   "evidence": "On 2000-01-03, P_adj is NG 924, wheat 9,922, corn 2,192 and coffee 2,200. The rebuilt actual levels are 2.33, 292, 232 and 121. Spot checks: ES 1467, CL 142.5 in July 2008, gold 289.6, EURUSD 1.03 (levels_check.csv).",
+   "confidence": "high"
+  },
+  {
+   "claim": "For retail subsets, integer rounding with Carver buffering costs almost nothing. The loss against the backtest comes from lost diversification, not from rounding.",
+   "evidence": "Subsets have correlation of at least 0.993 with their own fractional version and tracking error of 0.4–2.2%/yr. Their own fractional Sharpe since 2000 is 0.47 (11 markets) to about 0.70 (32+ markets), against 0.845 for all 84.",
+   "confidence": "high"
+  },
+  {
+   "claim": "A realistic retail-accessible implementation earned about Sharpe 0.35–0.45 since 2010 (CAGR excess about 5–8% at about 21% vol), and about 0.57–0.72 over 2000–2026 at ≥100k. This is before tax and fixed costs.",
+   "evidence": "summary_today_notional.csv rows for strict66 and subset ≥1c at 100k–20M.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "The gap between the 84-market backtest and the 66 retail-accessible markets comes mostly from ethanol (CUA1) and SGX iron ore (SCO1), two thin or short-history markets.",
+   "evidence": "Fractional Sharpe since 2000 / since 2010: strict66 0.714/0.391; strict66 plus CUA1 and SCO1 0.797/0.514; all84 0.845/0.541. Since 2010, CUA1 contributed +1.57 and SCO1 +1.33 % of capital per year gross.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Below about 500k, trading the full accessible universe with rounding to zero has a much lower realised vol than the 20% target and a large tracking error. Its Sharpe is noise-dominated and highly sensitive to arbitrary buffer settings.",
+   "evidence": "strict66 vol is 8.5/11/15.7% at 50k/100k/250k, with tracking error against the ideal of 10–16%/yr. Raising the minimum buffer from 0 to 1 contract moves the 2010–26 Sharpe at 100k from 0.23 to 0.58 and at 1M from 0.46 to 0.64 (buffer_sensitivity.csv).",
+   "confidence": "high"
+  },
+  {
+   "claim": "Carver's 4-contract rule gives worse results than the 1-contract rule below about 2M, because it leaves too few markets.",
+   "evidence": "Sharpe 2000–26, ≥4c vs ≥1c: 50k 0.28 vs 0.46; 100k 0.25 vs 0.57; 250k 0.47 vs 0.65; 500k 0.56 vs 0.70; 1M 0.64 vs 0.68.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Commissions are a heavy drag for small accounts: about 2.7–2.9% of capital per year at 50–100k for a subset, and 3.3% including half-spreads.",
+   "evidence": "Subset ≥1c at 100k: 838 trade sides plus 632 roll sides per year, flat commission $2,705/yr = 2.7% of capital, fee plus half-spread 3.3% (2010–26, today notional).",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Weekly rebalancing halves the number of orders but barely cuts commissions, and it costs about 0.05–0.07 of Sharpe.",
+   "evidence": "Subset ≥1c at 100k: 420 vs 750 orders/yr, 2.44% vs 2.71% commission, Sharpe 0.50 vs 0.57. At 250k: 730 vs 1,470 orders/yr, 2.13% vs 2.35%, Sharpe 0.60 vs 0.65.",
+   "confidence": "high"
+  },
+  {
+   "claim": "The order workload calls for API automation above about 100–250k.",
+   "evidence": "strict66 orders per year (trades plus rolls): 409 at 100k, 972 at 250k, 2,683 at 1M, 5,811 at 5M — about 1.6, 3.9, 10.6 and 23 per trading day.",
+   "confidence": "high"
+  },
+  {
+   "claim": "The capital audit's greedy subsets did not all pass an empirical check once re-run with adapted weights: 1–3 markets per tier fell below 1 (or 4) median contracts and were dropped.",
+   "evidence": "subsets.csv dropped_after_rerun column. For example, at 100k ≥1c it dropped PE1, CL1 and ER4; at 1M ≥1c it dropped SF1, SM1 Comdty and SI1.",
+   "confidence": "high"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/results.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/summary_today_notional.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/subsets.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/buffer_sensitivity.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/levels_check.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/contracts_small.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/contracts_liquid.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/excluded_markets_contribution.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/strict_vs_all84_fractional.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/levels.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/engine.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/sim.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/run_all.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/buffer_test.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/simulation/mp/mult_GASOIL.csv"
+ ]
+}

@@ -1,0 +1,5 @@
+prior,argmax E[log] vol,argmax median CAGR vol,argmax CE gamma=2 vol,argmax CE gamma=3 vol,argmax CE gamma=5 vol,max median CAGR s.t. P(DD<-30%)<=25% : vol
+SR fixed 0.15,0.15,0.15,0.075,0.05,0.05,0.075
+SR fixed 0.35,0.35,0.35,0.15,0.1,0.05,0.1
+SR mixture 0.15/0.35/0.55 (25/50/25),0.35,0.35,0.15,0.1,0.05,0.1
+"SR ~ N(0.35, 0.20)",0.35,0.35,0.125,0.075,0.05,0.1

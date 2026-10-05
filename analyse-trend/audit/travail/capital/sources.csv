@@ -1,0 +1,38 @@
+fact,url
+Carver pysystemtrade multipliers/currencies (instrumentconfig.csv),https://raw.githubusercontent.com/robcarver17/pysystemtrade/master/data/futures/csvconfig/instrumentconfig.csv
+Carver pysystemtrade spread costs (spreadcosts.csv),https://raw.githubusercontent.com/robcarver17/pysystemtrade/master/data/futures/csvconfig/spreadcosts.csv
+CME Micro Ag futures (MZC/MZW/MZS 500 bu; MZL 6000 lb; MZM 10 t; launched 24 Feb 2025; cash-settled),https://www.cmegroup.com/articles/faqs/faq-micro-agriculture-futures.html
+CME Micro Ag futures announcement,https://www.dtnpf.com/agriculture/web/AG/news/article/2025/02/03/cme-plans-launch-micro-grain-oilseed
+CME Micro Treasury Yield futures ($10 DV01; yield-quoted; cash-settled),https://www.cmegroup.com/articles/2024/micro-treasury-futures-vs-yield-futures.html
+CME Micro Ultra 10Y and Micro Ultra Bond (1/10 size; launched 25 Mar 2024),https://www.cmegroup.com/news/2024/now-live-micro-treasury-futures.html
+Eurex micro futures (Micro-DAX FDXS / Micro-Euro Stoxx 50 FSXE / Micro-SMI; multiplier 1),https://www.eurex.com/ex-en/find/news-center/news/New-micro-futures-from-Eurex-a-cost-efficient-way-to-access-European-markets-2616942
+Euronext Mini CAC 40 (MFC; EUR1 per point),https://live.euronext.com/en/product/index-futures/MFC-DPAR/contract-specification
+ICE Mini FTSE 100 future (GBP1 per point),https://www.ice.com/products/83049148/Mini-FTSE-100-Index-Future
+Nasdaq Mini OMXS30 future (SEK10),https://www.nasdaq.com/docs/2024/12/02/Mini-OMXS30-Futures-Factsheet
+OSE Nikkei 225 Micro (JPY10; launched 29 May 2023),https://www.jpx.co.jp/english/derivatives/products/domestic/225micro-futures/
+JPX publishes PRIIPs KIDs for OSE/TOCOM derivatives,https://www.jpx.co.jp/english/derivatives/eu-priips-regulation/
+Montreal Exchange mini S&P/TSX 60 (SXM; CAD50),https://www.m-x.ca/envoi/produit/sxm_en.html
+HKEX Mini HSI / Mini HSCEI (HKD10),https://www.hkex.com.hk/Products/Listed-Derivatives/Equity-Index/Hang-Seng-Index-(HSI)/Mini-Hang-Seng-Index-Futures?sc_lang=en
+ICE 3M SONIA (GBP2500 x rate index; tick 0.005 = GBP12.50),https://www.ice.com/products/68361266/Three-Month-SONIA-Index-Futures
+CME Micro FX (M6E EUR12.5k; M6B GBP6250; M6A AUD10k; MSF CHF12.5k; MJY JPY1.25M),https://www.cmegroup.com/activetrader/MicroFX
+CME Micro Henry Hub (MNG; 1000 MMBtu),https://www.cmegroup.com/education/courses/understanding-micro-futures-contracts-at-cme-group/micro-crude-futures/micro-henry-hub-natural-gas-futures-product-overview
+ICE Brent 1st Line Mini (100 bbl),https://ice.com/products/27089668/Brent-1st-Line-Mini-Future
+CME 1-Ounce Gold (1OZ; launched 13 Jan 2025),https://www.cmegroup.com/media-room/press-releases/2024/12/05/cme_group_to_launch1-ouncegoldfuturestomeetsurgingretaildemand.html
+CME 100-oz Silver (SIC; launched 9 Feb 2026); Micro Gold 301k ADV and Micro Silver 48k ADV in 2025,https://www.barchart.com/story/news/37018406/cme-group-to-launch-100-ounce-silver-futures-to-meet-record-retail-demand
+Chicago Ethanol (Platts) CU 42000 gal,https://cmegroup.com/trading/energy/ethanol/chicago-ethanol-platts-swap_contractSpecs_futures.html
+GIFT Nifty moved from SGX to NSE IX on 3 July 2023 (FPIs/NRIs via NSE IFSC brokers),https://getbelong.com/blog/gift-nifty-futures/
+MIAX (ex-MGEX) HRS wheat migrated from CME Globex to MIAX Onyx (2025),https://aws.miaxglobal.com/news/miami-international-holdings-announces-timeline-migration-minneapolis-hard
+Euronext mini government bond futures (OAT/Bund/BTP/Bono; EUR25k notional; cash-settled; launched 22 Sep 2025),https://www.euronext.com/en/about/media/euronext-press-releases/euronext-launches-innovative-suite-fixed-income-derivatives
+SGX FTSE China A50 103.2M contracts in 2024; SGX iron ore 5.8bn t in 2024,https://www.itiger.com/news/2502781690
+IBKR blocks PRIIPs without KID for EEA/UK retail,https://ibkb.interactivebrokers.com/node/2993
+IBKR KID language rule (English KID accepted for all EEA retail),https://ibkb.interactivebrokers.com/node/4718
+IBKR Ireland MiFID categorisation / elective professional criteria (2 of 3: 10 trades/qtr of size; portfolio > EUR500k; 1y finance job),https://ibkb.interactivebrokers.com/es/node/3783
+CME PRIIPs futures KIDs page,https://www.cmegroup.com/market-regulation/european-regulation/priips-futures-products.html
+Eurex PRIIPs KIDs,https://www.eurex.com/ex-en/rules-regs/priips-kids
+Euronext KIDs,https://live.euronext.com/en/resources/key-information-document
+ICE Futures US / Europe KIDs,https://www.ice.com/futures-europe/documents/kid
+Price check: WTI closed 71.57 on 2026-07-10 (dataset CL1 71.41),https://www.farms.com/markets/commodity/wti-crude-oil-commodity-update-for-the-week-ending-jul-10-2026
+Price check: LBMA gold PM fix 4099.15 on 2026-07-10 (dataset GC1 4113.7),https://www.bernama.com/en/news.php?id=2604222
+Price check: Nikkei 225 closed 66823.52 on 2026-07-15 after -2.72% (dataset NO1 68810 on 07-10),https://simplefunctions.dev/odds/nikkei
+Price check: 10y JGB yield 2.885% on 2026-07-09 (consistent with JB1 127.3),https://english.adnkronos.com/2026/07/09/10-year-jgb-yield-rises-to-roughly-30-year-high/
+Price check: ULSD ~152.85 USD/bbl on 2026-06-01 (consistent with HO1 355 c/gal),https://www.oilpriceapi.com/blog/diesel-crack-spread-september-2026

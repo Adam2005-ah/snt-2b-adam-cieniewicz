@@ -1,0 +1,258 @@
+{
+ "summary": "ADVERSARIAL CHECK OF THE COSTS AND TAX AUDIT FOR VARIANT 5 (\"Les deux\"). My scripts and outputs are in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_couts/ (cash_shortfall.py, cash_shortfall_corrected.csv, total_drag_corrected.csv, plus fresh copies of the pysystemtrade config files ic.csv and sc.csv). No project file was modified. I used the whole web-search budget (200 calls), so some secondary items stay unverifiable.\n\nMost commission, fee and tax figures check out:\n- IBKR commissions: US $0.85/0.65/0.45/0.25, Eurex €0.90 (€2.00 fixed), FDAX/FDXM/FDXS fees, OSE ¥230, ASX A$3.55.\n- Other IBKR items: the $10 US futures data bundle waived at $30 of commissions, the $500 equity minimum for market data, T-bill commission 0.002% (min $5), and the weekly 2FA re-login.\n- Other providers: Saxo $3/€3, Norgate $270, QuantConnect $84/month, Hetzner €5.49 + €0.50, IB01 TER 0.07%, XEON 0.10%.\n- Rates: Fed range 3.75–4.00 after 16 Sep 2026, ECB deposit rate 2.50% from 16 Sep 2026, T-bill 4.00% (and the 2.73% / 1.49% averages).\n- French tax: PFU 31.4% (12.8 + 18.6, CSG 9.2→10.6%), applying to capital gains from 2025 income and to investment income from 1 Jan 2026; the 17.2% exclusions; CDHR; article 150 ter with 10-year carry-forward against same-nature gains; boxes 3VG/3VH and form 2074-CMV; €1,500 / €10,000 penalty per undeclared account; iMGP DBi TER 0.75%.\n- Data: the pysystemtrade files the previous agent used are identical to today's GitHub versions. The backtest cost of 2.38%/yr (1990–2026) and 2.31%/yr (2023-07→2026-07) reproduces from the cache. The QS1 → GASOILINE mis-mapping in carry_inputs_info is real.\n\nMAIN CORRECTION — cash interest. The previous model pays interest on all cash at IBKR, including the futures margin. IBKR's \"Margin Interest Calculations\" page says no interest is paid on commodity-segment balances, which is where futures margin sits. So the margin earns nothing: about 23% of capital on average for v5, up to 40% at the 95th percentile. This adds about 0.23 × 3.36% ≈ 0.77 point/yr to the shortfall versus the T-bill for accounts of $100k or more.\n\nCorrected USD shortfall, policy of 50% of capital in T-bills:\n\n| Capital | Previous | Corrected |\n|---|---|---|\n| $100k | 0.67 % | 1.44 % |\n| $250k | 0.46 % | 1.24 % |\n| $500k | 0.40 % | 1.17 % |\n| $1M | 0.36 % | 1.14 % |\n| $5M | 0.34 % | 1.11 % |\n\nAll cash at IBKR: 1.42–1.75 % instead of 0.65–0.98 %. With margin at 40% of capital it rises to about 1.7–2.0 %.\n\nCorrected total drag versus the backtest (lean data, 50% T-bills, +0.5% extra variable cost):\n\n| Capital | Previous | Corrected |\n|---|---|---|\n| $25k | 6.4 % | 6.5 % |\n| $50k | 4.0 % | 4.4 % |\n| $100k | 2.2 % | 2.9 % |\n| $250k | 1.4 % | 2.1 % |\n| $500k | 1.1 % | 1.9 % |\n| $1M | 0.96 % | 1.74 % |\n| $2M | 0.90 % | 1.67 % |\n| $5M | 0.86 % | 1.63 % |\n\nFor a EUR investor, the shortfall versus €STR goes from about 0.28% to about 0.72% at $1M or more.\n\nOther corrections:\n1. The \"5% of the balance if €50k or more\" penalty for an undeclared foreign account is wrong. The Conseil constitutionnel struck it down (decision 2016-554 QPC, 22 July 2016). The penalty is €1,500 per account per year, or €10,000 for a non-cooperative state.\n2. The IBKR account is declared on form 3916, which is part of the combined cerfa \"3916-3916-bis\". The 3916-bis part is for crypto (digital-asset) accounts. That part matters for the user's bitcoin if it sits on a foreign exchange.\n3. BNC requalification risk: the legal basis is article 92-2-5° CGI (BOI-BNC-SECT-50). The previous agent left out what it means in practice:\n   - profits taxed at the progressive income-tax scale plus social charges, not the PFU;\n   - losses usable only against same-nature BNC profits, for 6 years, so not against QQQ gains.\n4. The NFA fee is $0.01 per side until 30 June 2027 ($0.02 after), not $0.02 now.\n5. ICE real-time data costs more than stated. AMP's non-professional rates (June 2026) are ICE US $148, ICE Europe commodities $161 and financials $139. ICE's own 2026 PDF lists energy at $144, not $131. The full real-time budget is therefore about $750/yr too low. This is irrelevant for a daily system that uses delayed ICE data.\n6. The Nikkei 225 large contract costs about ¥410 all-in at IBKR (¥280 commission + ¥110 exchange + ¥20 clearing), against ¥330 assumed. Negligible.\n7. Hetzner prices exclude VAT (about €7.19/month with 20% VAT). Negligible.\n8. The after-tax simulation uses the USD T-bill as the cash rate for a EUR investor and keeps the old cash-interest model, so the after-tax CAGRs are somewhat overstated.\n\nStill valid:\n- Variable costs are realistic once the strategy is fully replicated. I verified the inputs; I did not re-run the model.\n- Below about $1–2M the strategy cannot be replicated with real contracts.\n- After-tax return is roughly 0.56–0.69 × pre-tax.\n\nOverall: for an account of $1M or more, the realistic pre-tax drag versus the backtest is about 1.6–1.8%/yr, roughly double the previous 0.9%, before about a third goes to tax.",
+ "checked": [
+  {
+   "claim": "IBKR US futures commission 0.85 USD/contract/side (<=1000/month), tiers 0.65/0.45/0.25",
+   "verdict": "confirmed",
+   "evidence": "IBKR futures pricing f=1590 and IBKR fact sheet via search: <=1,000 $0.85; 1,001-10,000 $0.65; 10,001-20,000 $0.45; >20,000 $0.25. https://interactivebrokers.com/en/index.php?f=1590 ; https://www.benzinga.com/money/interactive-brokers-for-futures-trading"
+  },
+  {
+   "claim": "IBKR micro futures commission 0.25 USD/side",
+   "verdict": "confirmed",
+   "evidence": "IBKR US futures range $0.25-$0.85; E-micro FX $0.15. Consistent with pysystemtrade PerBlock MES 0.62 = 0.25 + 0.35 CME micro fee + NFA. https://www.benzinga.com/money/interactive-brokers-for-futures-trading (medium confidence)"
+  },
+  {
+   "claim": "IBKR European (Eurex) futures commission EUR 0.90 tiered, EUR 2.00 fixed",
+   "verdict": "confirmed",
+   "evidence": "https://www.interactivebrokers.ca/en/pricing/commissions-futures-europe.php (same table on the .com.au, .sg and .hk sites)"
+  },
+  {
+   "claim": "Eurex exchange fees FDAX 1.25 / FDXM 0.24 / FDXS 0.12 EUR",
+   "verdict": "confirmed",
+   "evidence": "https://interactivebrokers.ie/en/accounts/fees/GERMAN.php (search result)"
+  },
+  {
+   "claim": "IBKR OSE JPY 230 / ASX AUD 3.55 per contract",
+   "verdict": "corrected",
+   "correct_value": "Tier-1 rates of ¥230 and A$3.55 are confirmed. For the Nikkei 225 large contract (NO1) the all-in cost is ¥410 (IBKR execution 280 + exchange 110 + clearing 20) + ¥10 if held overnight, against the ¥330 the previous agent assumed. Cost impact negligible.",
+   "evidence": "https://www.interactivebrokers.com/en/pricing/commissions-futures-asia-pacific.php (search result)"
+  },
+  {
+   "claim": "CME E-mini exchange fee about $1.38, CME micro $0.35",
+   "verdict": "unverifiable",
+   "evidence": "Search returned the IBKR CME fee page and CME 2026 fee schedules (https://interactivebrokers.co.uk/en/accounts/fees/CME.php ; https://www.cmegroup.com/company/files/cme-fee-schedule-2026-10-01.pdf) but not the per-contract E-mini trading fee. $0.35 appears for some categories. Plausible, consistent with Carver's PerBlock 2.25."
+  },
+  {
+   "claim": "NFA fee $0.02 per contract (used in ES 0.85+1.38+0.02=2.25)",
+   "verdict": "corrected",
+   "correct_value": "$0.01 per side from 1 Jul 2026; $0.02 per side from 1 Jul 2027",
+   "evidence": "https://www.nfa.futures.org/faqs/members/nfa-assessment-fees.html (search result). Impact $0.01/side, negligible."
+  },
+  {
+   "claim": "Saxo France futures commission about $3 / €3 per contract (E-mini S&P / Euro Stoxx 50) plus exchange fees",
+   "verdict": "confirmed",
+   "evidence": "https://www.home.saxo/products/futures: USD 3 for E-mini S&P 500, EUR 3 for Euro Stoxx 50. The page says the rates are indicative and vary by country of residence."
+  },
+  {
+   "claim": "All-in cost per side ES $8.75 (0.23 bp), GC $12.1, CL $14.4, Corn $11, iron ore about 9.5 bp, from pysystemtrade PerBlock + spreadcosts",
+   "verdict": "confirmed",
+   "evidence": "Fresh download of instrumentconfig.csv and spreadcosts.csv from raw.githubusercontent.com is byte-identical (sorted diff empty) to the previous agent's copies. SP500 PerBlock 2.25, half-spread 0.13 pt × 50 = $6.5 → $8.75 on a $381k notional = 0.23 bp. CORN 2.97 + 0.16 × 50 = $10.97. IRON 3.25 + 0.066 × 100 = $9.85."
+  },
+  {
+   "claim": "Backtest cost model for v5 = 2.38 %/yr (1990-2026), 2.31 % (2023-07..2026-07)",
+   "verdict": "confirmed",
+   "evidence": "From v5_cache.pkl: trading 1.376 + roll 1.004 = 2.38 %/yr; 2023-07 onwards 1.366 + 0.942 = 2.31 %/yr."
+  },
+  {
+   "claim": "carry_inputs_info maps QS1 (ICE gasoil) to GASOILINE (RBOB ×42000); GASOIL (×100 t) is the right code",
+   "verdict": "confirmed",
+   "evidence": "carry_inputs_info.csv row: 'QS1 Comdty,...,GASOILINE'. pysystemtrade GASOIL = ICE-EU Low Sulphur Gasoil, Pointsize 100."
+  },
+  {
+   "claim": "Real variable cost at full replication is +0.3 to +0.7 %/yr above the backtest model",
+   "verdict": "unverifiable",
+   "evidence": "Internal simulation not re-run. Its inputs (fees, spreads, multipliers) are verified above and the arithmetic spot-checks for ES, Corn and iron ore. Plausible."
+  },
+  {
+   "claim": "IBKR US Securities Snapshot & Futures Value Bundle $10/month, waived if ≥$30 commissions",
+   "verdict": "confirmed",
+   "evidence": "https://ibkb.interactivebrokers.com/fr/node/2840 (search result). Snapshot request fees are not waived."
+  },
+  {
+   "claim": "IBKR market-data subscriptions require about $500 of equity",
+   "verdict": "confirmed",
+   "evidence": "https://www.interactivebrokers.com/docs/general/market-data-subscriptions/market-data-subscription-minimum-equity-balance-requirements: USD 500 for individual accounts, plus the cost of the service."
+  },
+  {
+   "claim": "Eurex L1 market data €8/month at IBKR",
+   "verdict": "unverifiable",
+   "evidence": "No IBKR figure found. Deutsche Börse's 'Eurex Retail Europe' L1 non-professional product costs €1/month (https://www.mds.deutsche-boerse.com/mds-en/real-time-data/derivatives-markets/Eurex-Retail-Europe-1339980), so €8 may be overstated."
+  },
+  {
+   "claim": "ICE market data: ICE Futures Europe commodities $131 / financials $123 / both $254; ICE US softs about $132 per month",
+   "verdict": "corrected",
+   "correct_value": "ICE 2026 PDF: Financials $123/ID ✓, but Energy & Utility commodities $144/ID (not $131). AMP non-professional rates effective June 2026: ICE Futures US $148, ICE Europe Commodities $161, ICE Europe Financials $139. The full real-time budget is about $60–75/month (≈$750–900/yr) higher than stated.",
+   "evidence": "https://www.ice.com/publicdocs/data/Market_Data_Subscriber_Fees_2026.pdf ; https://www.ampfutures.com/trading-info/exchange-data-fees (search results)"
+  },
+  {
+   "claim": "FOMC raised the fed funds target to 3.75–4.00 % on 16 Sep 2026; effective rate about 3.86 %",
+   "verdict": "confirmed",
+   "evidence": "https://www.securities.io/fomc-raises-federal-funds-target-range-to-3-3-4-to-4-percent/ (12-0 vote, 16 Sep 2026). The 3.86 % effective rate is an assumption: with IORB at 3.90 and the usual ~7 bp gap it is more likely ~3.83, a negligible 0.03 difference."
+  },
+  {
+   "claim": "ECB deposit rate 2.50 % after the Sep 2026 hike; €STR about 2.42 %",
+   "verdict": "confirmed",
+   "evidence": "Hike to 2.25 on 11 Jun 2026, hold in July, +25 bp to 2.50 effective 16 Sep 2026: https://www.mtsinsights.com/summaries/10870/ ; https://www.bde.es/wbe/en/noticias-eventos/actualidad-bce/decisiones-politica-monetaria/tipos-de-interes--julio-2026.html. The €STR level is an assumption. IBKR's EUR rate was 1.718 % in Aug 2026 at DFR 2.25, so post-hike IBKR EUR is probably ~1.97 %, not 1.92 % (minor)."
+  },
+  {
+   "claim": "US T-bill 3M = 4.00 % (2026-10-01); averages 2.73 % (1990-2026) and 1.49 % (2010-2026)",
+   "verdict": "confirmed",
+   "evidence": "Local DTB3.csv: 2026-10-01 = 4.0; recomputed means 2.73 and 1.49 (2023-07..2026-07: 4.47). These are discount-basis rates; the bond-equivalent yield is ~0.1 higher."
+  },
+  {
+   "claim": "IBKR pays benchmark − 0.5 %, nothing on the first 10k (USD or EUR), rate scaled by NAV/100k below $100k NAV",
+   "verdict": "confirmed",
+   "evidence": "https://brokerlistings.com/reviews/interactive-brokers/does-interactive-brokers-pay-interest-on-cash ; the IBKR Ireland page snippet 'Earn up to 3.13% on cash' matches EFFR ~3.63 − 0.5 before the Sep hike; IBKR IE: EUR 1.718 % Aug 2026, 'not payable on the first EUR 10,000'. https://www.interactivebrokers.ie/en/accounts/fees/pricing-interest-rates.php. The worked examples (1.932 %, 1.454 %) reproduce arithmetically."
+  },
+  {
+   "claim": "Cash-interest shortfall vs T-bill: all cash at IBKR 25k 3.50 / 50k 2.66 / 100k 0.98 / 250k 0.77 / 1M 0.67 / 5M 0.65 %; with 50 % in T-bills 1.93/1.51/0.67/0.46/0.36/0.34 %",
+   "verdict": "corrected",
+   "correct_value": "IBKR pays NO interest on commodity-segment cash, which holds the futures margin (~23 % of capital on average for v5). Corrected, 50 % in T-bills: 25k 2.01, 50k 1.89, 100k 1.44, 250k 1.24, 500k 1.17, 1M 1.14, 2M 1.12, 5M 1.11 %. All cash: 3.69 / 3.04 / 1.75 / 1.55 / 1.48 / 1.45 / 1.43 / 1.42 %. With margin at the p95 level (40 %): about 1.7–2.0 % for ≥$100k. EUR investor vs €STR at ≥$1M: ~0.72 % instead of 0.28 %.",
+   "evidence": "IBKR Margin Interest Calculations page: 'No interest will be paid on excess funds in the commodities segment' and 'interest will be paid to the securities and IBUKL segments on pro-rata basis while no interest will accrue on the commodity balance'. https://www.interactivebrokers.com/en/trading/margin-calculation-details.php ; https://www.interactivebrokers.com.au/en/pricing/pricing-calculations-int.php. Recomputation in verif_couts/cash_shortfall.py → cash_shortfall_corrected.csv."
+  },
+  {
+   "claim": "Futures margin at IBKR must be cash in the commodities segment; T-bills or ETFs cannot be posted as futures collateral",
+   "verdict": "confirmed",
+   "evidence": "IBKR moves cash between the securities and commodities segments as the futures margin requirement changes (SIPC reason): https://interactivebrokers.com/en/index.php?f=46381 and the margin-calculation-details page. I found no source saying securities can be posted to the commodities segment. Medium confidence. Consequence: margin cash earns 0 (see above)."
+  },
+  {
+   "claim": "Total drag vs backtest (lean data, 50 % T-bills, +0.5 % variable): 25k 6.4, 50k 4.0, 100k 2.2, 250k 1.4, 500k 1.1, 1M 0.96, 2M 0.90, 5M 0.86 %/yr",
+   "verdict": "corrected",
+   "correct_value": "6.5 / 4.4 / 2.9 / 2.1 / 1.9 / 1.74 / 1.67 / 1.63 %/yr. Full real-time data with all cash: 33.6 / 18.3 / 9.6 / 5.0 / 3.5 / 2.7 / 2.3 / 2.1 %/yr.",
+   "evidence": "verif_couts/total_drag_corrected.csv: same fixed costs, plus the zero-interest commodity-segment correction and the ICE data correction."
+  },
+  {
+   "claim": "IB01 TER 0.07 %, XEON TER 0.10 % (tracks €STR)",
+   "verdict": "confirmed",
+   "evidence": "XEON 0.10 %, Solactive €STR +8.5 index, synthetic: https://www.trackinsight.com/en/fund/XEON ; IB01 TER 0.07 %: https://www.ishares.com/ch/privatkunden/de/produkte/307243/ishares-treasury-bond-0-1yr-ucits-etf-fund"
+  },
+  {
+   "claim": "IBKR T-bill commission 0.002 % of face, min $5",
+   "verdict": "confirmed",
+   "evidence": "IBKR fact sheet: 0.002 % on the first USD 1M of face value, min USD 5; 0.0001 % above. https://www.interactivebrokers.com/en/general/about/ibkr-fact-sheet.php"
+  },
+  {
+   "claim": "IBKR FX conversion 0.2 bp, min $2",
+   "verdict": "unverifiable",
+   "evidence": "Not re-searched (search budget exhausted). Consistent with my knowledge of IBKR spot FX pricing."
+  },
+  {
+   "claim": "Weekly two-factor re-authentication makes fully unattended running impossible, even with IBC",
+   "verdict": "confirmed",
+   "evidence": "https://www.interactivebrokers.com/docs/tws-api/doc/tws-settings/daily-weekly-reauthentication ; IBC 3.16.0 notes: the RESTART command 'cannot be used to bypass the need to do full second-factor authentication on Sundays' (https://newreleases.io/project/github/IbcAlpha/IBC/release/3.16.0)"
+  },
+  {
+   "claim": "Hetzner CX23 €5.49 + €0.50 IPv4 per month",
+   "verdict": "confirmed",
+   "evidence": "Raised from €3.99 on 15 Jun 2026. Prices exclude VAT: ~€7.19/month with French 20 % VAT; negligible impact. https://findstack.com/resources/hetzner-price-increase-2026"
+  },
+  {
+   "claim": "Norgate futures $270/12 months ($148.50/6 months)",
+   "verdict": "confirmed",
+   "evidence": "https://norgatedata.com/futurespackage.php (search result)"
+  },
+  {
+   "claim": "QuantConnect Researcher $84/month ($888/yr)",
+   "verdict": "confirmed",
+   "evidence": "https://www.quantconnect.com/pricing.md (search result)"
+  },
+  {
+   "claim": "PFU 31.4 % = 12.8 % income tax + 18.6 % social charges (CSG 9.2 → 10.6 %); applies to capital gains from 2025 income and to investment income from 1 Jan 2026; assurance-vie, PEL/CEL, rental income and property gains stay at 17.2 %; 6.8 % CSG deductible under the progressive-scale option",
+   "verdict": "confirmed",
+   "evidence": "https://placement.meilleurtaux.com/placement-financier/actualites/2026-janvier/patrimoine-et-placements-ce-qui-a-change-au-1er-janvier-2026.html ('capital income: retroactive, income earned from 2025'; 'investment products from 1 Jan 2026'; deductible CSG still 6.8 %); https://www.actu-juridique.fr/fiscalite/fiscal-finances/la-csg-en-hausse-sur-les-revenus-du-capital/"
+  },
+  {
+   "claim": "CDHR minimum 20 % rate extended, thresholds €250k single / €500k couple",
+   "verdict": "confirmed",
+   "evidence": "Extended by LF 2026 until the public deficit falls below 3 % of GDP: https://cms.law/en/fra/news-information/fiscalite-des-hauts-revenus-et-patrimoines ; https://www.legifiscal.fr/actualites-fiscales/4287-plf-2026-adoption-seance-pleniere-prorogation-contribution-differentielle-hauts-revenus-2026.html"
+  },
+  {
+   "claim": "Art. 150 ter: occasional futures profits taxed as capital gains (PFU or scale); taxable event at sale or dénouement; losses offset same-nature gains (incl. securities gains such as QQQ) for 10 years; crypto is not same nature",
+   "verdict": "confirmed",
+   "evidence": "BOFiP (https://bofip.impots.gouv.fr/export/pdf/17642 and the BOI-RPPM-PVBMI series): occasional IFT operations taxed as capital gains, losses offset against same-nature gains of the same year or the next ten; taxable event = 'cession ou dénouement'. The crypto exclusion (art. 150 VH bis) was not re-searched. It holds only for directly held crypto; a bitcoin ETP on a securities account would be same nature."
+  },
+  {
+   "claim": "Declare in boxes 3VG (profit) / 3VH (loss) of form 2042; form 2074 not needed if only futures results; 2074-CMV for carried-forward losses",
+   "verdict": "confirmed",
+   "evidence": "https://www.boursobank.com/aide-en-ligne/fiscalite/declaration-d-impot/question/votre-foyer-fiscal-a-t-il-realise-uniquement-des-gains-ou-pertes-sur-instruments-financiers-a-terme-26820 ; https://rotek.fr/?p=42863. Caveat: the 2074 exemption is described for cases where the intermediary supplies the figures (IFU). IBKR Ireland issues no French IFU, so the taxpayer computes the net gain himself and must keep supporting records."
+  },
+  {
+   "claim": "Requalification risk: habitual futures trading falls under BNC via article 92 CGI, controlled-declaration regime",
+   "verdict": "corrected",
+   "correct_value": "The legal basis is art. 92-2-5° CGI (BOI-BNC-SECT-50). 'Habitual' is judged on the number and frequency of operations, their technical nature, the diversity of contracts, portfolio size and profits. Consequences the previous agent left out: progressive income-tax scale (not PFU) plus social charges; losses NOT deductible from global income, only against same-nature (habitual IFT) profits of the same year and the following 6 years (not 10, and not against QQQ capital gains).",
+   "evidence": "https://bofip.impots.gouv.fr/node/13612 ; https://bofip.impots.gouv.fr/export/pdf/13612 (BOI-BNC-SECT-50 search results)"
+  },
+  {
+   "claim": "Foreign interest on IBKR cash: 12.8 % non-final withholding plus social charges, declared and paid by the taxpayer on form 2778-SD by the 15th of the following month",
+   "verdict": "confirmed",
+   "evidence": "Form 2778-SD covers fixed-income products paid by a foreign establishment, subject to the art. 125 D levy and social charges (https://www.impots.gouv.fr/sites/default/files/formulaires/2778-sd/2026/2778-sd_5387.pdf). The 15-day deadline is confirmed by search only for the sister form 2779. Medium confidence. Not checked: possible exemption from the 12.8 % for households with RFR below €25k / €50k."
+  },
+  {
+   "claim": "Form 3916-bis must be filed every year for the IBKR Ireland account",
+   "verdict": "corrected",
+   "correct_value": "The account is declared on form 3916 (financial accounts), which sits inside the combined cerfa '3916-3916-bis'. The 3916-bis part is for digital-asset (crypto) accounts held abroad. That part applies to the user's bitcoin if it is held on a foreign exchange.",
+   "evidence": "https://www.legifiscal.fr/impots-personnels/impot-revenu/declaration-revenus/cryptomonnaies-penser-declarer-comptes-ouverts-etranger.html ; https://www.socic.fr/ressources-comptabilite/articles/impots-2026-cochez-la-rubrique-comptes-a-letranger-crypto-formulaires-3916-3916-bis-pour-eviter-un-controle-fiscal"
+  },
+  {
+   "claim": "Penalty €1,500 per undeclared account per year (€10,000 for a non-cooperative state)",
+   "verdict": "confirmed",
+   "evidence": "https://www.professioncgp.com/article/juridique-et-fiscal/international/declaration-des-comptes-detenus-a-letranger-les-regles-a-connaitre.html ; impots.gouv.fr notice 3916"
+  },
+  {
+   "claim": "If balances total €50k or more, the fine is 5 % of the balance",
+   "verdict": "refuted",
+   "correct_value": "No such fine applies today. The 5 % proportional fine (art. 1736 IV-2, 2nd paragraph) was declared unconstitutional by the Conseil constitutionnel, decision 2016-554 QPC of 22 July 2016. The fine is €1,500 / €10,000 per account.",
+   "evidence": "https://www.etudes-fiscales-internationales.com/apps/print/25290 ; https://bofip.impots.gouv.fr/node/11861 ; Conseil constitutionnel 2016-554 QPC (search results)"
+  },
+  {
+   "claim": "Alternative 80 % surcharge on the tax evaded",
+   "verdict": "unverifiable",
+   "evidence": "Not re-searched (budget exhausted). Consistent with art. 1729-0 A CGI as I know it."
+  },
+  {
+   "claim": "iMGP DBi Managed Futures UCITS ETF, TER 0.75 %, EUR-hedged, listed on Euronext Paris since Sep 2026",
+   "verdict": "confirmed",
+   "evidence": "R EUR HP UCITS ETF LU3359622902: TER 0.75 %, accumulating, Luxembourg-domiciled, share class launched 13 May 2026, listed on Euronext Paris (https://www.finanzfluss.de/informer/etf/lu2951555585/ ; https://extraetf.com/fr/etf-profile/LU3359622902). I could not confirm the exact Sep 2026 Paris listing date. Note: it replicates the SG CTA index with a 'Dynamic Beta Engine'; it is not a pure trend system."
+  },
+  {
+   "claim": "Wrapper comparison at 6 % pre-tax over 20 years: DIY annual PFU 4.12 %, accumulating UCITS on CTO 4.72 %, assurance-vie 4.48 %",
+   "verdict": "confirmed",
+   "evidence": "Arithmetic re-derived: 6 × 0.686 = 4.12; (1.06^20 − 1) × 0.686 + 1 → 4.72; AV with 0.6 % fee at 24.7 % → 4.48. Caveats: the AV case ignores the €4,600/€9,200 annual allowance (which favours AV) and the 12.8 % rate on premiums above €150k."
+  },
+  {
+   "claim": "After-tax/pre-tax CAGR ratio for v5 of 0.69 / 0.68 / 0.64 / 0.56 (starts 1990/2000/2010/2016); about 50 % of wealth in unused losses at the end",
+   "verdict": "unverifiable",
+   "evidence": "tax_sim.py reviewed; its logic (annual realisation, 10-year carry-forward, interest taxed separately) is sound. The identical 50.5 % of unused losses across start dates is explained by the carry state converging after a full-use year, not a bug. However: it uses the USD T-bill as cash for a EUR investor, inherits the over-generous cash-interest model, pays tax at year-end instead of Sep N+1 (slightly pessimistic), and ignores the BNC scenario. The ratios are plausible but the absolute after-tax CAGRs are overstated."
+  },
+  {
+   "claim": "Debit balances in a foreign currency charged at benchmark + 1.5 %",
+   "verdict": "unverifiable",
+   "evidence": "Not re-searched (budget exhausted). Consistent with IBKR Pro tier-1 margin rates as I know them."
+  },
+  {
+   "claim": "Nifty (GIFT Nifty, NSE IX) probably not tradable at IBKR",
+   "verdict": "unverifiable",
+   "evidence": "Search budget exhausted before this check."
+  },
+  {
+   "claim": "Exchange margins as % of notional (ES 7 %, ZN 1.9 %, CL 10.6 %, GC 4 %); v5 margin-to-equity mean 23 % / p95 40 % / max 62 %",
+   "verdict": "unverifiable",
+   "evidence": "Not re-searched. margin.py reviewed and its computation is consistent; the rates are calibration assumptions. This figure now matters more, because it drives the zero-interest commodity-segment loss (≈ margin × 3.4 %/yr)."
+  }
+ ],
+ "problems": [
+  "MAJOR: the cash-interest model (assemble.py ib_interest) pays IBKR interest on all cash, including futures margin. IBKR pays no interest on commodity-segment balances (margin-calculation-details page). The cash shortfall vs the T-bill is understated by about 0.23 × 3.36 ≈ 0.77 point/yr for accounts of $100k or more (more at higher margin). Total drag at $1M is about 1.74 %/yr, not 0.96; at $5M about 1.63, not 0.86 (verif_couts/total_drag_corrected.csv).",
+  "REFUTED: the '5 % of the balance if ≥ €50k' penalty for undeclared foreign accounts was struck down by Conseil constitutionnel decision 2016-554 QPC (22 Jul 2016). Remove it; the penalty is €1,500 (or €10,000) per account per year.",
+  "Form naming: the IBKR account goes on form 3916 (part of the combined cerfa 3916-3916-bis). 3916-bis is the crypto-account part, which is relevant to the user's bitcoin if it is held on a foreign exchange.",
+  "BNC requalification is under-specified. Basis is art. 92-2-5° CGI. Consequences: progressive scale instead of PFU, and losses only against same-nature BNC profits for 6 years (not 10, and not against QQQ gains). This should be stated because thousands of automated trades make it a real scenario.",
+  "ICE real-time data fees understated. Non-professional rates (AMP, June 2026) are ICE US $148, ICE Europe commodities $161 and financials $139; ICE's 2026 PDF lists energy at $144, not $131. The full real-time budget is about $750–900/yr higher. Low impact for a daily system using delayed data.",
+  "NFA fee is $0.01 per side until 30 Jun 2027, not $0.02 (negligible).",
+  "Nikkei 225 large all-in cost at IBKR is about ¥410/side (+¥10 overnight), not ¥330 (negligible).",
+  "Eurex L1 data at €8/month is unsourced. Deutsche Börse's 'Eurex Retail Europe' non-professional L1 product costs €1/month.",
+  "Hetzner prices exclude VAT (20 % in France: ~€7.19/month). Negligible.",
+  "The after-tax simulation uses the USD T-bill as the cash leg for a EUR investor and the uncorrected interest model, so after-tax CAGRs are overstated. Tax is paid at year-end rather than Sep N+1 (slightly pessimistic). No BNC scenario.",
+  "The 2074 exemption (BoursoBank) assumes the broker supplies the figures (IFU). IBKR Ireland issues no French IFU, so the investor must compute the net IFT gain in EUR himself and keep records; the conversion method is still unconfirmed.",
+  "Project data issue (out of scope but real): carry_inputs_info.csv maps QS1 (ICE gasoil) to the pysystemtrade code GASOILINE (RBOB, ×42000) instead of GASOIL (×100). Any project code using that mapping (the carry work) inherits the error.",
+  "Unverifiable because the web-search budget ran out (200/200): CME E-mini fee $1.38, IBKR FX 0.2 bp, the 80 % surcharge, the BM + 1.5 % debit rate, Nifty access at IBKR, the iMGP Paris listing date, exchange-margin rates. All are plausible but unsourced by me."
+ ]
+}

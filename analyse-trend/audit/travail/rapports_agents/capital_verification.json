@@ -1,0 +1,159 @@
+{
+ "summary": "ADVERSARIAL CHECK OF THE CAPITAL AUDIT AND THE WHOLE-CONTRACT SIMULATION (variant 5 \"Les deux\")\nFolder: /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_capital/ (scripts plus indep_notional.csv, er4_spread_sensitivity.csv, compounding_check.csv, compounding_late_starts.txt, corrected_subsets.txt). Nothing under /home/user/snt-2b-adam-cieniewicz was modified.\n\nHow I checked\n- Re-ran variant 5 myself. Sharpe was 1.171 from 1990, 0.845 from 2000, 0.541 from 2010 and −0.417 from 2023-07. Mean gross exposure was 8.78×.\n- My positions matched audit/capital/v5.pkl and simulation/engine.py with a maximum difference of 0.0.\n- The web-search budget was already used up (200/200), and curl to finance sites is blocked.\n- External facts were therefore checked through GitHub-hosted sources:\n  - Carver's pysystemtrade instrumentconfig, spreadcosts and IB config (ib_config_futures.csv);\n  - the QuantConnect Lean symbol-properties database;\n  - Lumibot's IBKR symbol lookup, which lists IBKR conIDs, i.e. contracts that actually exist at IBKR;\n  - a copy of CME rule filing 26-008 quoted in a public GitHub repo.\n\nContract sizes and quote conventions\n- I recomputed 34 contracts independently, covering every asset class: MES, OSE Nikkei micro, FSXE, FDXS, JGB standard and mini, ZT, Bund, Gilt, ASX XT, SR3, ICE Euribor, ICE SONIA, ASX bank bills, MJY, M6B, SEK, MXN, MCL, MNG, 1OZ, MHG, MZC, MZW, KC, CC, LE, SB, canola, MATIF wheat, gasoil and SIC.\n- 31 matched the previous figures to 0.5% or better.\n- The convention behind them is correct. The dataset's daily returns equal the percentage change of the back-adjusted price (correlation 1.000, slope 1.000 for SOFR, Euribor, SONIA, IR4, XM1, JY1, JB1 and others). So notional per contract = price × multiplier × FX is consistent with the backtest, including for STIR quoted as 100 minus the rate and for XM1 quoted as a contract value. Example: SOFR is $239.7k per contract.\n- One factual error: there is a Micro Platinum (PLM) and a Micro Palladium (PAM), both 10 oz. PLM has an IBKR conID; PAM appears in Lean and on CME's metals product list. The capital audit said neither has a micro, so platinum needs about $0.50M for 1 contract (not $2.52M) and palladium about $0.36M (not $3.62M). Their liquidity is unknown and probably thin.\n\nMinimum capital and tier counts\n- All headline figures reproduce exactly from specs.csv: median $0.63M for ≥1 contract, $2.52M for ≥4, 90th percentile $14.0M, maximum $30.9M (coffee). The Carver-formula median is $2.83M (ratio 1.11, range 0.58–2.84). The variant 2 to variant 5 ratio is 1.74, and the sum of the smallest contracts is $5.08M.\n- Every cell of the tier table (all / accessible / strict, 25k to 20M) reproduces exactly.\n- With the platinum and palladium micros the sum of smallest contracts becomes $4.90M, and the 84-market counts change:\n  - ≥1 contract: 33 at 500k, 56 at 1M, 71 at 2M;\n  - ≥4 contracts: 33 at 2M, 58 at 5M.\n  - The strict counts are unchanged if those micros are treated as illiquid.\n- The 3-year window used for median positions is not biased overall. Medians taken over 2000 or 2010 to 2026 give a median of about $0.68M for ≥1 contract and $2.7M for ≥4, and the counts move by 3 markets or fewer. Per market, though, the ratio between the 3-year and long-run median spreads from 0.74 to 1.42 (interquartile range).\n- Minor error: the equity median |position| range starts at 1.27%, not 0.9%.\n\nGreedy retail subsets (capital audit, table F) are wrong\n- Re-run with variant 5, the subsets break their own contract rule.\n  - At 25k, the ≥4-contract set has MJY at 3.55 and 1OZ gold at 2.55 contracts.\n  - At 100k, the ≥4-contract set has NG at 3.98, M6B at 3.66, FSXE at 2.49 and M6A at 2.93 contracts.\n- The simulation agent's drop-and-re-run procedure is coherent. Its corrected counts and Sharpes are below, with my additions at 25k and the since-1990 figures I computed:\n\n| Capital | ≥4 contracts: markets | Sharpe 1990 / 2010 | ≥1 contract: markets | Sharpe 1990 / 2010 |\n|---|---|---|---|---|\n| 25k | 2 (was 3) | 0.45 / 0.23, maxDD −65% | 6 (was 9) | 0.46 / 0.34 |\n| 50k | 4 (was 6) | — | 11 (was 12) | — |\n| 100k | 6 (was 9) | 0.46 / 0.34 (was 0.64) | 14 (was 17) | 0.73 / 0.39 |\n| 250k | 11 (was 14) | 0.66 / 0.28 (was 0.73 / 0.39) | 24 (was 27) | 0.84 / 0.40 |\n| 500k | 16 (was 19) | 0.75 / 0.40 (was 0.81 / 0.47) | 32 (was 33) | 0.96 / 0.40 |\n| 1M | 24 (was 27) | — | 40 (was 43) | — |\n\nSimulation review\n- No look-ahead. Integer positions are decided at the close of day t from the target (the vol scale is shifted one day) and earn from t+1. The notional is taken at t−1, or held at today's value in 'today' mode.\n- It converges at USD 20M:\n  - all 84 markets: bp-model Sharpe 0.847 vs 0.845 for the ideal, tracking error 0.16%/yr, correlation 1.000;\n  - strict 66: 0.713 vs 0.714.\n- I verified every headline number: the Sharpes, CAGRs, orders, contract sides, commissions, buffer sensitivity, the 66-vs-84 gap (0.714/0.391, 0.797/0.514, 0.845/0.541) and the CUA1 / SCO1 contributions (+1.57 / +1.33 %/yr).\n\nProblems found in the simulation\n1. **ER4 spread is overstated (mapping error).** ER4 (ICE Euribor) is mapped to Carver's Eurex EURIBOR code, with a half-spread of 0.0072, instead of EURIBOR-ICE at 0.0025. With the correct spread, the ≥1-contract subset at 250k (2010–26) costs 3.65%/yr instead of 4.73%, and its Sharpe is 0.42 instead of 0.37. The odd 4.7% cost at 250k is mostly this artefact. Sharpe gains are +0.017 at 1M and +0.009 at 5M.\n2. **Capital is held fixed, and the \"CAGR\" compounds fixed-capital returns.**\n   - When contracts are sized on current equity from 2000, CAGR is almost the same (8.2 vs 8.1% at 50k, 10.2 vs 10.5% at 100k, 13.4 vs 13.4% at 1M), because early gains grew the account.\n   - It is path dependent. Starting in 2016, the 50k subset falls to $26.5k (−47%) and compounds at only 1.3%/yr; the 100k subset falls to $59k and compounds at 5.2%/yr. A small account in drawdown drops below its own minimum-capital threshold.\n3. **Some 'hist'-mode bond levels before 2008 are wrong.** Schatz (86.8) and Bobl (91.0) in 2000, and the 2-year note (123) in 1999, are 12–20% off. This affects only the 'hist' rows; the 'today' headline rows are unaffected.\n4. **The ethanol series (CUA1) looks stale.** Its lag-1 autocorrelation is +0.17 and 16% of days have zero return since 2010, against roughly 0 and 5–9% for liquid commodities. Its trend P&L is probably a data artefact, which supports dropping it. It also means the 84-market Sharpe is somewhat inflated.\n\nContracts confirmed to exist at IBKR (via IBKR conIDs or Carver's IB config)\n- MZC, MZW, MZS, MZL, MZM, 1OZ, MHO, MRB, MHG, MNG (listed as MHNG), MTN and MWN (Micro Ultra 10-year and Micro Ultra Bond), MJY, MCD, MSF, M6E, M6B, M6A, MCL, MES, MNQ, M2K, MYM, FDXS (Micro-DAX), the mini JGB (OSE), Mini HSI and Mini HSCEI.\n- The Nikkei 225 Micro (OSE, N225MC) exists. SIC (100-ounce silver) is confirmed: 100 troy oz, cash-settled, first trade 9 Feb 2026.\n\nAlternatives the audit missed (liquidity unverified)\n- Micro USD/CAD and USD/CHF (M6C, M6S, $10k each).\n- CME micro Nikkei (MNK, MNI).\n- CBOT mini grains (YC, YW, YK; 1,000 bu).\n- COMEX TIO iron ore (500 t, about $49k): a CME-listed way to trade iron ore without SGX.\n\nCould not verify (no search budget)\n- EU-retail KIDs for HKFE, SGX, ASX, MX and Nasdaq Nordic, and IBKR's KID rule itself.\n- Euronext mini bond futures; the Mini OMXS30 and Mini FTSE 100; the SGX FTSE Taiwan level (4034, +118% in 12 months).\n- The MiFID elective-professional criteria (2 of 3: 10 significant trades per quarter, portfolio over EUR 500k, one year in a finance job) match the MiFID II Annex II text as I know it.\n\nBottom line\nThe capital audit's arithmetic and conventions hold up. Its conclusions stand: about $5M for the faithful 84-market system and $20M to be comfortable; $1–2M for a usable micro replica. Below $500k, however, the retail portfolios are smaller and weaker than table F says:\n- ≥4 contracts: 2–16 markets, Sharpe 0.45–0.75 since 1990 and 0.23–0.40 since 2010;\n- ≥1 contract: 6–32 markets, Sharpe 0.46–0.96 since 1990 and about 0.34–0.40 since 2010.\n\nThese are in-sample, before tax, and fragile for small accounts after a drawdown.",
+ "checked": [
+  {
+   "claim": "Multiplier/quote convention/USD notional for markets across classes (ES/MES, Nikkei micro, FSXE, FDXS, JGB std+mini, ZT, Bund, Gilt, XM1, SOFR, Euribor, SONIA, IR4, MJY, M6B, SEK, MXN, MCL, MNG, 1OZ, MHG, MZC, MZW, KC, CC, LE, SB, RS, EBM, Gasoil, SIC)",
+   "verdict": "confirmed",
+   "evidence": "indep_notional.csv: 31/34 within 0.5% (IR4 +0.5% using AUD1M x 90/365 /(1+y/4)^2); multipliers cross-checked against Carver instrumentconfig/ib_config_futures.csv (raw.githubusercontent.com/robcarver17/pysystemtrade/...), QuantConnect Lean symbol-properties-database.csv, Lumibot IBKR us_futures_roots.csv. Dataset returns = pct_change of back-adjusted price (corr 1.000, slope 1.000) so notional = P x mult x FX is the right convention incl. STIR (100-rate) and XM1 (contract value)."
+  },
+  {
+   "claim": "Platinum and palladium have no CME micro (PL 1 contract needs ~2.5M, PA ~3.6M)",
+   "verdict": "corrected",
+   "correct_value": "Micro Platinum PLM and Micro Palladium PAM (10 oz) exist: PLM ~$16.3k (≈$0.50M for 1 contract at median), PAM ~$12.8k (≈$0.36M); liquidity unknown/probably thin",
+   "evidence": "Lumibot IBKR lookup row 'PLM,NYMEX,USD,PLMF6,758044977,MICRO PLATINUM'; Lean 'nymex,PAM,Micro Palladium Futures,USD,10'; CME metals product list quoted in github.com/shadowfall09/PolymktSim evidence file ('PLM - Micro Platinum Futures ... PAM - Micro Palladium')"
+  },
+  {
+   "claim": "Sum of one smallest contract in each of 84 markets = $5.08M",
+   "verdict": "corrected",
+   "correct_value": "$5.08M as computed from specs.csv; $4.90M with PLM/PAM micros",
+   "evidence": "recomputed"
+  },
+  {
+   "claim": "Median/75th/90th/max min capital for 1 contract: 0.63M / 1.64M / 3.5M / 7.7M (coffee); median for 4 contracts 2.52M; 90th pct 4c 14.0M; max 4c 30.9M",
+   "verdict": "confirmed",
+   "evidence": "Recomputed from my own v5 positions: 630,595 / 1,640,910 / 3,497,378 / 7,718,356; 4c median 2,522,380, p90 13.99M, max 30.87M. With PLM/PAM micros the median becomes 614k / 2.46M. With 2000-26 or 2010-26 median positions instead of 2023-26: about 0.68M / 2.7M"
+  },
+  {
+   "claim": "Carver AFTS formula median 2.83M, ratio vs empirical 1.1x (0.6-2.8x)",
+   "verdict": "confirmed",
+   "evidence": "median 2,826,875; ratio median 1.110, min 0.584, max 2.844"
+  },
+  {
+   "claim": "Variant 2 needs 1.74x the capital of variant 5",
+   "verdict": "confirmed",
+   "evidence": "median of per-market ratio of median |pos| v5/v2 = 1.739"
+  },
+  {
+   "claim": "Median |position| by class: equities 0.9-5.7%, bonds 2.8-30%, STIR 45-60%, FX 10-20%, energy 2.5-7.9%, metals 3.2-11.6%, ags 0.9-6.6%",
+   "verdict": "corrected",
+   "correct_value": "Equities 1.27-5.7% (median 3.1%); other classes confirmed (FX 9.8-20.5%)",
+   "evidence": "groupby on recomputed medians"
+  },
+  {
+   "claim": "Tier counts (all/accessible/strict, >=1c and >=4c, 25k-20M), e.g. 100k 7/7/5 (>=1c), 1M 20/19/12 (>=4c), 5M 56/50/34, 20M 81/72/61",
+   "verdict": "confirmed",
+   "evidence": "Independent recount identical in every cell. With PLM/PAM micros, all84 >=1c becomes 33 at 500k, 56 at 1M, 71 at 2M; >=4c 33 at 2M, 58 at 5M (strict unchanged if those micros are illiquid). Using longer windows for median positions moves the counts by 3 markets or fewer."
+  },
+  {
+   "claim": "Strict-universe markets added by tier (100k: M6B, MJY, M6A, 1OZ, MZC; 250k adds M6E, MXN, FSXE, Nikkei micro, MNG, MZW, MZS; 500k adds Schatz, SOFR, Euribor, mini CAC, MCL, MHG, CAD; 1M adds ES, RTY, DM, DAX micro, AEX mini, TOPIX mini, TU/FV, SONIA, canola, sugar, cotton, NZD)",
+   "verdict": "confirmed",
+   "evidence": "diff of tiers.csv strict_markets_ge1c lists"
+  },
+  {
+   "claim": "Cheapest 1c/4c: 1OZ 35k/142k, MJY 52k, M6B 57k, M6A 61k, MZC 62k, SGX iron ore 98k, mini OMXS30 100k, MNG 107k, MZW 113k, M6E 121k, Nikkei micro 159k; SOFR/Euribor/SONIA 435k/460k/598k; JGB 6.3M, mini JGB 626k",
+   "verdict": "confirmed",
+   "evidence": "recomputed (e.g. GC 35,401; SFR5 434,928; ER4 460,415; SFI5 598,220; JB1 6,258,500 / 625,850)"
+  },
+  {
+   "claim": "Retail greedy subsets (table F): 25k >=4c 3 mkts Sharpe 0.48; 25k >=1c 9 mkts 0.64; 100k >=4c 9 mkts 0.64/0.31; 250k >=4c 14 mkts 0.73/0.39; 500k >=4c 19 mkts 0.81/0.47",
+   "verdict": "refuted",
+   "correct_value": "After an empirical re-run with variant 5 (drop until every market meets the rule): 25k >=4c 2 mkts (corn, MJY) Sharpe 0.45 (1990) / 0.23 (2010), maxDD -65%; 25k >=1c 6 mkts 0.46/0.34; 50k 4 / 11 mkts; 100k >=4c 6 mkts 0.46/0.34; 100k >=1c 14 mkts 0.73/0.39; 250k >=4c 11 mkts 0.66/0.28; 250k >=1c 24 mkts 0.84/0.40; 500k >=4c 16 mkts 0.75/0.40; 500k >=1c 32 mkts 0.96/0.40; 1M >=4c 24, >=1c 40",
+   "evidence": "check25k.py: the original sets fail their own rule (25k >=4c: MJY 3.55, 1OZ 2.55 contracts; 100k >=4c: NG 3.98, M6B 3.66, FSXE 2.49, M6A 2.93); subs_1990.py and sub25k.py (corrected_subsets.txt); simulation/subsets.csv dropped_after_rerun"
+  },
+  {
+   "claim": "Full-84 rounding: 100k corr 0.86 / TE 12.2% / vol 11.6%; 1M 0.98 / 4.0%; 5M 0.998 / 1.2%; standard contracts 1M 0.91 / 8.7%, 5M 0.993 / 2.5%; 1M 5,863 trade + 4,319 roll sides",
+   "verdict": "confirmed",
+   "evidence": "rounding_tracking.csv (2023-07 to 2026-07). Consistent with the simulation over 2000-26 (100k corr 0.88 / TE 11.6%; 1M 0.99 / 3.0%; 5M 1.000 / 0.6%). Caveat: rounding.py sizes contracts on back-adjusted (ratio) prices, a small error over 3 years"
+  },
+  {
+   "claim": "Estimated initial margin ~21% of capital (median), 34% p95, 47% max; mean gross notional 8.8x",
+   "verdict": "unverifiable",
+   "evidence": "Gross 8.78x confirmed (bonds 33%, STIR 28%, FX 14% of gross). Margin is model-based (k=0.35); a rough sanity check against typical ES, ZN, CL, GC and SR3 margins gives k of about 0.2-0.45, so plausible; no IBKR margin data available"
+  },
+  {
+   "claim": "carry_inputs_info maps QS1 (ICE gasoil) to GASOILINE (RBOB); 'MES1 Index' is ICE MSCI EM",
+   "verdict": "confirmed",
+   "evidence": "carry_inputs_info code QS1 = GASOILINE; instrumentconfig GASOILINE = 'RBOB Gasoline US', GASOIL = 'ICE-EU Low Sulphur Gasoil'; futures84_descriptive MES1 Index = Msci_em; Carver IB config MSCIEM-LIFFE MXEF USD 50. The same file also mis-maps ER4 (ICE Euribor) to EURIBOR (Eurex EU3) instead of EURIBOR-ICE"
+  },
+  {
+   "claim": "Micro contracts named exist and are retail-accessible at IBKR (MZC/MZW/MZS/MZL/MZM, 1OZ, Micro Ultra 10Y/Bond, MNG, MHG, micro HO/RBOB, micro FX, Nikkei micro, FDXS, 100-oz silver)",
+   "verdict": "confirmed",
+   "evidence": "IBKR conIDs in Lumibot's us_futures_roots.csv (MZC 763552571, MZW, MZS, MZL, MZM, 1OZ 753716602, MTN 810619246, MWN 810619248, MHNG/MNG, MHG, MHO, MRB, MJY, MCD, MSF, M6E/M6B/M6A); Carver IB config (FDXS as DAX mult 1, JGB-mini MJ OSE 100,000, MHI, MCH); Lean (1OZ mult 1, MTN/MWN mult 100); OSE N225MC exists (github fishke22/jerry-backtest-lab); SIC per CME rule filing 26-008: 100 troy oz, financial, first trade 9 Feb 2026. EU-retail KID status itself could not be verified"
+  },
+  {
+   "claim": "IBKR blocks EEA retail from futures without a PRIIPs KID; KIDs not confirmed for HKFE/SGX/ASX/MX/Nasdaq Nordic; elective professional = 2 of 3 criteria",
+   "verdict": "unverifiable",
+   "evidence": "Search budget exhausted. The elective-professional criteria match the MiFID II Annex II text as I know it; the IBKR rule is plausible but not re-checked"
+  },
+  {
+   "claim": "Last back-adjusted prices are current front-contract levels",
+   "verdict": "confirmed",
+   "evidence": "Internal consistency: ES P_adj 6465 on 2025-06-30 vs ~6250 actual (equity carry, as expected for a series ratio-adjusted to the last date); FX levels self-consistent; XM1 108,862 is consistent with a ~4.88% yield. TWT1 at 4034 (+118% in 12 months) remains unverified"
+  },
+  {
+   "claim": "Dataset back-adjusted prices are ratio-adjusted (an excess-return index), unusable as historical levels for commodities",
+   "verdict": "confirmed",
+   "evidence": "Returns equal the pct_change of P_adj; on 2000-01-03 P_adj is NG 924, wheat 9,922, corn 2,192, coffee 2,200 vs actual levels of about 2.3, 292, 232, 121"
+  },
+  {
+   "claim": "Simulation engine reproduces trend.run_vol_targeted exactly (max pos diff 0, Sharpe 1990+ 1.171)",
+   "verdict": "confirmed",
+   "evidence": "engine.system(all84) positions vs my independent run: max diff 0.0"
+  },
+  {
+   "claim": "No look-ahead in the integer simulation",
+   "verdict": "confirmed",
+   "evidence": "sim.integer_positions decides at close t from the target (vol scale shifted 1 day in engine.system); P&L = frac.shift(1) x r; notional at t-1 ('hist') or constant ('today'). Selection of markets uses 2023-26 positions and today's contract sizes (universe selection, not return look-ahead)"
+  },
+  {
+   "claim": "Capital held fixed; results stated as CAGR by compounding daily excess returns",
+   "verdict": "corrected",
+   "correct_value": "True, but path dependent. Sizing contracts on current equity from 2000 gives almost the same CAGR (50k 8.2 vs 8.1%, 100k 10.2 vs 10.5%, 250k 12.2 vs 12.6%, 1M 13.4 vs 13.4%) only because early gains grew the account. Starting in 2016, 50k falls to $26.5k (-47%) and compounds at 1.3%/yr; 100k falls to $59k and compounds at 5.2%/yr. For strict66 at 100k, equity sizing gives 12.0% CAGR vs 6.4% fixed",
+   "evidence": "compounding.py / compounding_check.csv / compounding_late_starts.txt (same integer engine, Carver buffer, today notional, realistic fee + half-spread)"
+  },
+  {
+   "claim": "At USD 20M the integer simulation converges to the fractional ideal",
+   "verdict": "confirmed",
+   "evidence": "all84 20M: bp-model Sharpe 0.847/0.541 vs ideal 0.845/0.541, TE 0.16%/yr, corr 1.000; strict66 20M 0.713/0.388 vs fractional 0.714/0.391, TE 0.19%. Realistic-cost Sharpe 0.814 at 20M (cost above the bp model, partly the ER4 spread issue)"
+  },
+  {
+   "claim": "Subset re-run is coherent (1-3 markets dropped per tier)",
+   "verdict": "confirmed",
+   "evidence": "run_all.verified_subset re-runs engine.system on the subset (weights, IDM and vol scale recomputed) and drops the worst market until all meet m contracts; dropped lists in subsets.csv match. 1M >=4c equals 250k >=1c, and 2M >=4c equals 500k >=1c, as expected from the C/m scaling"
+  },
+  {
+   "claim": "Strict66 0.714/0.391; plus CUA1 and SCO1 0.797/0.514; all84 0.845/0.541; CUA1 +1.57 and SCO1 +1.33 %/yr since 2010",
+   "verdict": "confirmed",
+   "evidence": "subsets_check.py using trend.run_vol_targeted directly. Additional: CUA1 daily returns show lag-1 autocorrelation +0.17 and 16% zero-return days (stale series), so its contribution is likely a data artefact"
+  },
+  {
+   "claim": "Fee plus half-spread for subset >=1c: 3.3/3.3/4.7/3.8/3.3/2.8/2.5 % of capital (50k to 5M)",
+   "verdict": "corrected",
+   "correct_value": "With the ICE Euribor half-spread (0.0025 instead of Eurex 0.0072): 250k 3.65% (Sharpe 2010-26 0.42 vs 0.37), 500k 3.19% (0.42 vs 0.39), 1M 2.87% (0.39 vs 0.37), 5M 2.30% (0.39 vs 0.385)",
+   "evidence": "er4_patch.py / er4_spread_sensitivity.csv; Carver spreadcosts EURIBOR 0.0072 vs EURIBOR-ICE 0.0025; ER4 is ICE (Bloomberg ER)"
+  },
+  {
+   "claim": "Simulation headline numbers (subset >=1c 100k 0.57/0.41, CAGR 10.5/6.7%, maxDD -52%; strict66 50k vol 8.5%; orders 191...8667; contract sides 770...33,425; flat commission 2.9...1.24%; weekly 0.50 vs 0.57; buffer sensitivity 0.23 to 0.58 at 100k)",
+   "verdict": "confirmed",
+   "evidence": "results.csv and buffer_sensitivity.csv rows match to rounding"
+  },
+  {
+   "claim": "Historical notional gives lower net Sharpe for small accounts (100k subset 0.50 hist vs 0.57 today)",
+   "verdict": "confirmed",
+   "evidence": "0.497 vs 0.566. The gap exists at all sizes (20M: 0.652 vs 0.713), so it is a per-contract cost effect rather than a small-account rounding effect. 'Hist' levels of Schatz, Bobl and the 2-year note before 2008 are 12-20% off (TY1 path), affecting hist rows only"
+  }
+ ],
+ "problems": [
+  "Capital audit wrongly states that platinum and palladium have no micro: NYMEX Micro Platinum (PLM, 10 oz, IBKR conID 758044977) and Micro Palladium (PAM, 10 oz) exist. One contract needs about $0.50M and $0.36M instead of $2.5M and $3.6M; liquidity unverified.",
+  "Capital audit table F (greedy retail subsets) overstates market counts and Sharpes: re-run with variant 5, the sets break their own >=1 / >=4 contract rule. Corrected: 25k 2 markets (>=4c, Sharpe 0.45/0.23 since 1990/2010, maxDD -65%) or 6 (>=1c, 0.46/0.34); 100k 6 (>=4c, 0.46/0.34) or 14 (>=1c, 0.73/0.39); 250k 11 (0.66/0.28) or 24 (0.84/0.40); 500k 16 (0.75/0.40) or 32 (0.96/0.40). The conclusion 'below 500k: 9-19 markets, Sharpe 0.64-0.81 since 1990' should read '2-16 markets (>=4c), 0.45-0.75 since 1990, 0.23-0.40 since 2010'.",
+  "ER4 (ICE Euribor) is mapped to Carver's Eurex EURIBOR (half-spread 0.0072) instead of EURIBOR-ICE (0.0025), in carry_inputs_info and in the cost table the simulation uses. This inflates realistic costs (subset at 250k: 4.73% to 3.65%/yr; Sharpe 2010-26 0.37 to 0.42). The anomalous 4.7% cost at 250k is mostly this artefact.",
+  "The simulation holds capital fixed and compounds fixed-capital returns into a CAGR. Results are path dependent: with equity-based sizing from 2016, the 50k subset falls to $26.5k (-47%) and compounds at 1.3%/yr; the 100k subset falls to $59k (5.2%/yr). Small accounts in drawdown fall below their own minimum-capital threshold, which the fixed-capital runs do not show.",
+  "'Hist'-mode levels for Schatz, Bobl and the 2-year note before the pysystemtrade start use TY1's level path: Schatz 86.8 and Bobl 91.0 in 2000, TU1 123 in 1999, about 12-20% off. Only the 'hist' rows are affected, not the 'today' headline.",
+  "The CUA1 ethanol series looks stale (lag-1 autocorrelation +0.17, 16% zero-return days since 2010). Its +1.57%/yr trend contribution is likely a data artefact, so the 84-market backtest Sharpe (1.17 / 0.845 / 0.541) is somewhat inflated relative to anything tradable.",
+  "Minor: the equity median |position| range is 1.27-5.7%, not 0.9-5.7%.",
+  "Minor: rounding.py (capital audit) sizes contracts on back-adjusted ratio prices over 2023-26 rather than actual levels, a small error over 3 years.",
+  "The vol-target scale averaged 1.59 in the 2023-07 to 2026-07 window used for median positions (22% of days at the 2.0 cap) vs 1.29 since 1990. Per-market median positions are nevertheless only ~2-3% different from longer windows (median 1c capital 0.63M vs ~0.68M); per-market dispersion is large (IQR 0.74-1.42).",
+  "Missed retail alternatives (liquidity unverified): CME micro USD/CAD and USD/CHF (M6C, M6S, $10k each); CME micro Nikkei (MNK/MNI); CBOT mini grains (YC/YW/YK, 1,000 bu); COMEX TIO iron ore (500 t, ~$49k, CME-listed, so likely covered by a KID), an alternative to SGX iron ore.",
+  "Not verifiable in this session (web search budget 200/200 exhausted; finance sites blocked by the proxy): EU-retail KIDs for HKFE, SGX, ASX, MX and Nasdaq Nordic; IBKR's KID blocking rule; Euronext mini bond futures (22 Sep 2025); Mini OMXS30 and Mini FTSE 100 specs; the SGX FTSE Taiwan price level (4034, +118% in 12 months); ADV and liquidity of the micro contracts."
+ ]
+}

@@ -1,0 +1,75 @@
+file,variant,SR_ann
+ameliorations,Système de base,0.921
+ameliorations,Stratégie 13 (régime de volatilité),1.026
+ameliorations,Ciblage de volatilité du portefeuille,1.127
+ameliorations,Les deux,1.171
+ameliorations,Moitié de la taille après une année perdante,0.945
+ameliorations,Moitié sous la moyenne 200 jours du capital,0.918
+ameliorations,"Inverse : x1,5 après une année perdante",0.876
+taille_vol,BASE,0.9209
+taille_vol,B0a,0.5041
+taille_vol,B0b,0.6059
+taille_vol,B1,1.0264
+taille_vol,B1alt,1.0263
+taille_vol,B2a,1.127
+taille_vol,B2b,0.9228
+taille_vol,B2c,0.9509
+taille_vol,B2d,0.9508
+taille_vol,B3,1.0267
+taille_vol,B3x,1.1708
+taille_vol,B4,1.0265
+taille_perf,BASELINE,0.9209189642025852
+taille_perf,C1_TS12m_low0.5,0.9513190251047396
+taille_perf,C1_TS12m_low0,0.9536117881735932
+taille_perf,C1_TS6m_low0.5,0.8849194009177829
+taille_perf,C1_TS6m_low0,0.8116276400661445
+taille_perf,C1_TS3m_low0.5,0.8443343396446888
+taille_perf,C1_TS3m_low0,0.7186995063643244
+taille_perf,C2_EC200_low0.5,0.92102811017413
+taille_perf,C2_EC200_low0,0.8850149399170395
+taille_perf,C3_contra12m_1.5,0.8615959995263035
+taille_perf,C3_buyDD15_step1.5,0.8463594383960316
+taille_perf,C3_buyDD15_linear,0.8878282849913577
+taille_perf,C4_class_SR3y_floor0.1,0.7656822430673832
+taille_perf,C4_class_SR1y_floor0.1,0.7266831483242318
+taille_perf,C4_class_SR5y_floor0.1,0.8130430259294131
+taille_perf,C4_class_SR3y_floor0.5,0.8427337605568511
+taille_perf,C4_class_Carver_T12B,0.8945630801211333
+taille_perf,C5_speed_SR3y_floor0.1,0.9332490187429002
+taille_perf,C5_speed_SR1y_floor0.1,0.9285943247064832
+taille_perf,C5_speed_SR5y_floor0.1,0.9212473449139637
+taille_perf,C5_speed_SR3y_floor0.5,0.9287689156000836
+taille_perf,C5_speed_Carver_T12B,0.91248922967357
+taille_perf,C6_kelly_bayes_k10_since1990,0.8870724208605156
+taille_perf,C6_kelly_bayes_k5_since1990,0.8975383880515854
+taille_perf,C6_kelly_bayes_k20_since1990,0.8669400386707654
+taille_perf,C6_kelly_bayes_k10_since1960,0.9209189642025852
+taille_perf,C6_kelly_LT_conservative_since1990,0.9025881962396538
+taille_perf,REF_strategy_voltarget,1.1208598521057078
+portefeuille,EWMAC quotidien,0.9209189642025856
+portefeuille,EWMAC hebdomadaire,0.8946390654754837
+portefeuille,EWMAC mensuel,0.8803577795186542
+portefeuille,"Momentum 12 mois, mensuel",0.9956420442165448
+portefeuille,"EWMAC quotidien, coûts x3",0.7640682055166547
+portefeuille,"EWMAC quotidien, historique reconstitué inclus",1.0307404611485185
+sous_ensembles,Tout (7 classes),0.9209189642025856
+sous_ensembles,Énergie + agriculture + métaux + actions,0.7927263131167418
+sous_ensembles,Idem sans minerai de fer ni éthanol,0.6993918283569546
+sous_ensembles,Le reste : obligations + taux courts + devises,0.6729803421222489
+sous_ensembles,Matières premières seules (énergie + agriculture + métaux),0.7833099086547138
+sous_ensembles,Actions seules,0.311953923340755
+carry (Carver data 1990-2024),T,0.7216
+carry (Carver data 1990-2024),C,1.0871
+carry (Carver data 1990-2024),TC,1.002
+carry (Carver data 1990-2024),TC13,1.0804
+carry (Carver data 1990-2024),T13,0.8457
+carry (Carver data 1990-2024),C5,1.0389
+carry (Carver data 1990-2024),C20,1.0708
+carry (Carver data 1990-2024),C60,1.058
+carry (Carver data 1990-2024),C120,1.0463
+carry (Carver data 1990-2024),TC80,0.8569
+carry (Carver data 1990-2024),TC70,0.9292
+carry (Carver data 1990-2024),TC50,1.0667
+carry (Carver data 1990-2024),C_ffinf,1.0916
+carry (Carver data 1990-2024),TC_ffinf,1.0019
+carry (Carver data 1990-2024),SEPP84,0.9881

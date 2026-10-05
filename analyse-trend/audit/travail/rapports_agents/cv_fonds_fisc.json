@@ -1,0 +1,266 @@
+{
+ "key": "fonds_fisc",
+ "summary": "I re-checked the external facts the final report will state, using about 75 fresh WebSearch calls. WebFetch and curl were blocked for nearly every finance and government site, including bofip, IBKR, CME, CFTC, barchart, jpx and hkex, so the evidence comes from search snippets. Each fact below has a verdict and a source URL. Full table (42 rows): cv_fonds_fisc/facts_verified.csv. Sensitivity re-run of the critic's Monte Carlo: cv_fonds_fisc/mc_rate_tax_sensitivity.csv.\n\nCorrections that change what the report says:\n1. **Form 3916 penalty.** The fine of 5 % of the balance when accounts reach €50k or more must not be stated. The Conseil constitutionnel struck it down (QPC 2016-554, 22 Jul 2016) and it was replaced by an 80 % surcharge on tax evaded (art. 1729-0 A). What remains: €1,500 per undeclared account per year (€10,000 for a non-cooperative state) and a 10-year limitation period. Bitcoin held on a foreign exchange goes on form 3916-bis: €750 per account, €1,500 if worth more than €50k.\n2. **ECB rate dispute resolved.** The deposit rate is 2.50 % since 16 Sep 2026: a 25 bp hike decided 10 Sep, after 2.00 → 2.25 % on 11 Jun. The Banco de España \"unchanged in September\" page is about 2025. €STR was 2.19 % on 9 Sep; after the hike it is about 2.43 %, inferred from the spread rather than sourced directly. The next meeting is 29 Oct, with about a 60 % market probability of 2.75 %. The critic's 2.3 % is about 0.13 pt too low. Re-run with its own seed:\n   - DIY v5, 10-year median after-tax CAGR: 1.43 / 2.43 / 3.16 % at USD 100k / 250k / 1M (was 1.33 / 2.33 / 3.04).\n   - iMGP DBi ETF route: 3.47 % (was 3.37).\n   - Probability of a nominal loss over 10 years: 41 / 36 / 32 %.\n3. **BNC scenario now quantified.** Requalification under art. 92-2-5° (criteria from CE Boniface 2001: number and frequency of trades, technicality, diversity of contracts, portfolio size, profit size) means the progressive income-tax scale plus social levies. Losses then offset only same-nature BNC profits, in the same year and the next 6 years (not 10), and never QQQ gains. Median after-tax CAGR falls to:\n   - 0.72 / 1.60 / 2.18 % at a 30 % marginal rate;\n   - 0.23 / 1.03 / 1.56 % at a 41 % marginal rate.\n4. **iMGP DBi share classes were mislabelled earlier.**\n   - R USD = LU2951555585: Euronext Paris DBMF, share class launched 7 Mar 2025, Xetra since 2 Feb 2026, also on the LSE.\n   - LU2951555403 = R EUR unhedged, ticker DBMFE.\n   - R EUR HP = LU3359622902 (MFEH): launched 13 May 2026, Xetra 18 May 2026, Euronext Paris 21 Sep 2026 (confirmed).\n   - All three: TER 0.75 % and accumulating. AUM USD 698M at 18 Sep 2026.\n   - The fund replicates the SG CTA index (all CTA styles), so it is not a pure trend system. \"Europe's only managed-futures UCITS ETF\" is false.\n5. **BNP Paribas Easy Managed Futures UCITS ETF:** LU3307218399, launched 29 May 2026, TER 0.60 %, accumulating. It runs an in-house trend model, euro-hedged, via swaps built with BNP Global Markets. Xetra ticker EEAU since 24 Jun 2026; AUM about €10M. A Paris ticker was not confirmed.\n6. **Other funds:**\n   - Man AHL Trend Alternative retail class DNY (LU0424370004) costs about 2.75 % a year (2 % management plus a performance fee), not 1.72 %.\n   - The Winton I EUR ISIN is IE00BG382R37 (1.05 % ongoing charges).\n   - AQR Managed Futures UCITS: A USD class LU1103257975 charges 0.60 % plus 10 % performance fee; retail RAE class LU1662502183 has a 1.39 % TER. It is not an ETF.\n   - Man Active Trend UCITS ETF was only registered with the Central Bank of Ireland on 2 Jul 2026; no listing yet.\n   - None of these is PEA-eligible.\n   - No insurer could be confirmed offering any of them inside an assurance-vie.\n7. **Missing trend run in the backtest.** It stops on 2026-07-10. The SG CTA index was +8.6 % YTD at that date, +11.1 % by 31 Aug (local data) and +15.9 % YTD around 18 Sep 2026 (best year since 2022).\n8. **KIDs by exchange.** HKEX does publish an EEA futures KID, which contradicts the IBKR/Darwinex claim that it does not. SGX and ASX have no KID, so SGX iron ore, FTSE Taiwan, Nifty and ASX contracts are likely blocked for French retail clients. CME KIDs exist for the micro grains (updated 9 Feb 2026).\n9. **MJY history.** CME delisted the micro yen contract in March 2022 and relaunched it on 26 Feb 2024.\n\nConfirmed as stated:\n- PFU 31.4 % (12.8 % income tax + 18.6 % social levies, LFSS 2026, loi 2025-1403, art. 12). It applies to capital gains from the 2025 income year and to interest and dividends from 1 Jan 2026. Assurance-vie, PEL/CEL, rental income and property gains stay at 17.2 %. The 2027 budget bill (filed 30 Sep 2026) may extend the higher rate to assurance-vie.\n- Art. 150 ter: every sale or settlement is taxable, so each roll realises P&L. Profits go under the PFU. Losses offset same-nature gains, QQQ included, over 10 years.\n- An accumulating UCITS ETF is taxed only when sold.\n- IBKR: blocks futures without a KID for EEA retail clients; pays no interest on commodity-segment cash, so the futures margin earns 0 (excess cash can be swept to the securities segment); pays benchmark − 0.5 %, nothing on the first USD 10k, and a pro-rata rate below USD 100k NAV.\n- Fed funds 3.75–4.00 % after the 16 Sep 2026 hike.\n\nLiquidity of the micro contracts:\n- **Liquid:** 1OZ (record 115k contracts a day in Jan 2026), OSE Nikkei 225 Micro (0.64M a day in FY2025), FDXS (28k a day in 2026), M6E (about 19k a day).\n- **Moderate:** M6A (about 3.9k a day, open interest 4.8k), MNG.\n- **Thin:** FSXE (2.4k a day, about €13M), M6B (about 580 a day, open interest 1.5k).\n- **Unverified, likely thin:** MZC, MZW, MZS and MJY — no 2026 volume or open-interest data found. Micro corn's tick (0.5 ¢ on 500 bu) is twice standard corn's in relative terms.\n\nRemaining gaps:\n- The post-hike €STR level is not directly sourced.\n- The assurance-vie listings and the BNP Paris ticker are unconfirmed.\n- Micro grains and MJY have no 2026 volume or open-interest figures; check them in TWS.\n- The 2778-SD monthly deadline was not re-verified.",
+ "checked": [
+  {
+   "claim": "iMGP DBi EUR-hedged class LU3359622902 (MFEH) listed on Euronext Paris on 21 Sep 2026",
+   "verdict": "confirmed",
+   "evidence": "Share class launched 13 May 2026, Xetra listing 18 May 2026 (product costs 0.75 %, accumulating), Paris MFEH:FP announced 21 Sep 2026.",
+   "correct_value": "Launched 13-May-2026; Xetra 18-May-2026; Euronext Paris 21-Sep-2026; TER 0.75 %"
+  },
+  {
+   "claim": "iMGP DBi R USD UCITS ETF ISIN = LU2951555403 (operations agent)",
+   "verdict": "corrected",
+   "evidence": "finanzfluss and cbonds: LU2951555585 is R USD (DBMF, 07-Mar-2025); LU2951555403 is R EUR unhedged (DBMFE, Mar-2025). Fineco hosts an Italian KID for LU2951555403 dated 12-Feb-2026. Sources: https://www.finanzfluss.de/informer/etf/lu2951555585/ ; https://www.finanzfluss.de/informer/etf/lu2951555403/ ; https://etfexpress.com/2026/02/03/imgp-dbi-now-available-on-deutsche-borse-xetra/",
+   "correct_value": "R USD LU2951555585 (Euronext Paris DBMF, Xetra since 02-Feb-2026, LSE); R EUR LU2951555403 (DBMFE); R EUR HP LU3359622902 (MFEH)"
+  },
+  {
+   "claim": "iMGP DBi UCITS ETF TER 0.75 %",
+   "verdict": "confirmed",
+   "evidence": "Deutsche Boerse notice, finanzfluss and extraETF give 0.75 %; cbonds gives 0.55 % (outlier). https://www.cashmarket.deutsche-boerse.com/cash-en/Stay-Informed/newsroom/press-releases/New-ETF-and-ETP-Listings-on-May-18-2026-on-Deutsche-B-rse-5137378",
+   "correct_value": "0.75 %"
+  },
+  {
+   "claim": "iMGP DBi UCITS fund AUM about USD 698M",
+   "verdict": "confirmed",
+   "evidence": "USD 698M at 18-Sep-2026, DBi strategy USD 6.59bn. https://rankiapro.com/en/news/imgp-dbi-managed-futures-eur-hedged-etf-euronext-paris/",
+   "correct_value": "USD 698M (18-Sep-2026)"
+  },
+  {
+   "claim": "iMGP DBi is Europe's only managed-futures UCITS ETF",
+   "verdict": "refuted",
+   "evidence": "BNP Paribas Easy Managed Futures UCITS ETF launched 29-May-2026. https://www.finanzfluss.de/informer/etf/lu3307218399/",
+   "correct_value": "At least two: iMGP DBi and BNP Paribas Easy Managed Futures"
+  },
+  {
+   "claim": "iMGP DBi is a trend system comparable to variant 5",
+   "verdict": "corrected",
+   "evidence": "Benchmark is SG CTA PR USD; it replicates the pre-fee returns of the 20 largest CTAs (all styles) with the Dynamic Beta Engine (about 10-15 futures). https://www.finanzfluss.de/informer/etf/lu2951555585/",
+   "correct_value": "CTA-index replication, not pure trend"
+  },
+  {
+   "claim": "BNP Paribas Easy Managed Futures UCITS ETF: LU3307218399, TER 0.60 %, launched May 2026",
+   "verdict": "confirmed",
+   "evidence": "Launched 29-May-2026, TER 0.60 %, accumulating, actively managed trend model, euro-hedged, synthetic (swap) exposure built with BNP Global Markets, no benchmark; Xetra listing 24-Jun-2026 (EEAU); AUM about EUR 9.9M. https://stock3.com/news/managed-futures-im-etf-so-setzt-bnp-auf-steigende-und-fallende-maerkte-17263050 ; https://www.cashmarket.deutsche-boerse.com/cash-en/Stay-Informed/newsroom/press-releases/New-ETF-and-ETP-Listings-on-June-24-2026-on-Deutsche-B-rse-5347738",
+   "correct_value": "LU3307218399, 0.60 %, 29-May-2026, Xetra EEAU; Paris ticker unconfirmed"
+  },
+  {
+   "claim": "AQR Managed Futures UCITS: retail class RAE LU1662502183, 0.60 % + 10 % performance fee or 1.00 % flat, minimum 100k",
+   "verdict": "corrected",
+   "evidence": "RAE: management 0.60 %, TER 1.39 %, ongoing incl. transaction costs 2.25 %. A USD LU1103257975: 0.60 % + 10 % performance fee, ongoing about 0.81 %, minimum about USD 80k. RAE minimum not found. https://consentmanager.finanzen.net/fonds/daten-gebuehr/aqr-funds-aqr-managed-futures-fund-rae-lu1662502183 ; https://www.finect.com/fondos-inversion/LU1103257975-Aqr_mgd_futures_ucits_a_usd",
+   "correct_value": "RAE TER 1.39 %; A USD 0.60 % + 10 % performance fee; RAE minimum unverified"
+  },
+  {
+   "claim": "Man AHL Trend Alternative OCF about 1.72 %",
+   "verdict": "corrected",
+   "evidence": "Retail DNY H EUR Acc LU0424370004 (since 21-Jul-2009, EUR 329M): ongoing charges about 2.75 % (TER 2.76 %), 2 % management fee plus performance fee; 1.72 % applies to cheaper classes. https://www.comdirect.de/inf/fonds/LU0424370004",
+   "correct_value": "About 2.75 % for the retail DNY class"
+  },
+  {
+   "claim": "Winton Trend UCITS IE00BG382P13, TER about 1.0 %",
+   "verdict": "corrected",
+   "evidence": "I EUR Acc is IE00BG382R37 with 1.05 % ongoing charges and 0.80 % management fee. https://styles.finanzen.ch/fonds/winton-trend-fund-i-ie00bg382r37",
+   "correct_value": "IE00BG382R37, 1.05 %"
+  },
+  {
+   "claim": "Aspect Diversified Trends IE00B3Q12S92, 1.5 % + 20 %",
+   "verdict": "confirmed",
+   "evidence": "Class C EUR Institutional: 1.5 % management, 20 % performance fee, 1.30 % ongoing charges, up to 5 % subscription fee. https://www.finect.com/fondos-inversion/IE00B3Q12S92-Aspect_diversified_trends_c_eur_instl",
+   "correct_value": "Institutional class; retail L EUR IE00B5BF6770"
+  },
+  {
+   "claim": "Man Active Trend UCITS ETF exists",
+   "verdict": "corrected",
+   "evidence": "Only registered with the Central Bank of Ireland on 2-Jul-2026 (ETF Stream); no listing or ISIN found. https://finantresnoticias.com/etfs/man-group-etf-ucits-activos-trend-infraestructura/",
+   "correct_value": "Not yet buyable"
+  },
+  {
+   "claim": "Managed-futures UCITS are PEA-eligible",
+   "verdict": "refuted",
+   "evidence": "PEA requires at least 75 % EU equities. https://finary.com/investir-en-bourse/etfs/etf-pea",
+   "correct_value": "Not eligible"
+  },
+  {
+   "claim": "These vehicles are available in assurance-vie contracts",
+   "verdict": "unverifiable",
+   "evidence": "No insurer listing found for any of them (Linxea, Lucya, Placement-direct and others searched). https://hellosafe.fr/blog/lucya",
+   "correct_value": "Unknown; check contract by contract"
+  },
+  {
+   "claim": "PFU 31.4 % (12.8 % + 18.6 %) from 2026",
+   "verdict": "confirmed",
+   "evidence": "LFSS 2026 (loi 2025-1403, art. 12): CSG 9.2 → 10.6 %. Applies to capital gains (incl. art. 150 ter) from 2025 income and to interest/dividends from 1-Jan-2026; assurance-vie, PEL/CEL, rental income and property gains stay at 17.2 %. https://www.actu-juridique.fr/fiscalite/fiscal-finances/la-csg-en-hausse-sur-les-revenus-du-capital/ ; https://www.mayerbrown.com/fr/insights/publications/2026/01/budget-social-2026-augmentation-du-taux-de-csg-et-perennisation-du-regime-social-management-package",
+   "correct_value": "31.4 %; the 2027 budget bill may extend 18.6 % to assurance-vie (pending)"
+  },
+  {
+   "claim": "Futures gains taxed under art. 150 ter, PFU, 10-year same-nature loss carry-forward, realised at each roll",
+   "verdict": "confirmed",
+   "evidence": "Taxable event is sale or settlement; PFU 12.8 % covers financial-instrument profits; losses offset same-nature gains (incl. securities) in the same year and the next 10 years. https://advizexperts.fr/code-general-impots/article-150-ter-cgi-fiscalite-instruments-financiers-terme/ ; https://bofip.impots.gouv.fr/node/4883 ; https://www.actu-juridique.fr/fiscalite/fiscal-finances/gains-financiers-quelle-taxation-choisir/",
+   "correct_value": "As stated"
+  },
+  {
+   "claim": "BNC requalification risk (art. 92-2-5°): scale tax, losses 6 years same nature only",
+   "verdict": "confirmed",
+   "evidence": "BOI-BNC-SECT-50; criteria per CE 14-Feb-2001 Boniface: number and frequency, spread over time, technicality, diversity, portfolio size, profit size; deficits only against same-nature BNC profits for 6 years (art. 156-I-2°). https://bofip.impots.gouv.fr/node/13612 ; https://www.lemondedudroit.fr/fiscal/277-fiscalite-des-personnes/34016-operations-sur-des-instruments-financiers-a-terme-obligations-declaratives.html ; https://bofip.impots.gouv.fr/node/14458",
+   "correct_value": "10-year median after-tax CAGR 0.72/1.60/2.18 % (30 % marginal rate) or 0.23/1.03/1.56 % (41 %) at USD 100k/250k/1M, vs 1.43/2.43/3.16 % under PFU"
+  },
+  {
+   "claim": "Form 3916 penalty: €1,500 per account, €10,000 for a non-cooperative state, 5 % of balance if €50k or more",
+   "verdict": "corrected",
+   "evidence": "The 5 % fine (art. 1736 IV-2) was declared unconstitutional in QPC 2016-554 (22-Jul-2016) and replaced by an 80 % surcharge (art. 1729-0 A); 10-year limitation period. https://www.etudes-fiscales-internationales.com/apps/print/25290 ; https://finalib.fr/blog/fiscalite/obligation-declaration-compte-etranger-2026",
+   "correct_value": "€1,500 / €10,000 per account per year + 80 % surcharge on evaded tax; no 5 % fine. 3916-bis (crypto): €750, or €1,500 above €50k"
+  },
+  {
+   "claim": "Accumulating UCITS ETF taxed only at sale vs futures yearly",
+   "verdict": "confirmed",
+   "evidence": "https://www.justetf.com/fr/academy/etf-et-fiscalite.html",
+   "correct_value": "PFU 31.4 % on the gain at sale"
+  },
+  {
+   "claim": "IBKR blocks EEA retail clients from futures without a PRIIPs KID",
+   "verdict": "confirmed",
+   "evidence": "IBKR KB 2993. https://ibkb.interactivebrokers.com/node/2993",
+   "correct_value": "As stated; elective professional status lifts it"
+  },
+  {
+   "claim": "KIDs: CME, Eurex, ICE, Euronext, OSE fine; HKFE/SGX/ASX unverified",
+   "verdict": "corrected",
+   "evidence": "CME (micro ag KIDs updated 9-Feb-2026), ICE, Eurex, Euronext, OSE/TOCOM confirmed. HKEX publishes an EEA futures KID PDF (2025-v2). No KID found for SGX or ASX. https://www.cmegroup.com/market-regulation/european-regulation/priips-futures-products.html ; https://www.jpx.co.jp/english/derivatives/eu-priips-regulation/ ; https://www.hkex.com.hk/-/media/HKEX-Market/Services/Trading/HKEX-Derivatives-Information-for-US-Investors/2025-v2/HKFE_Futures-Contracts_EEA.pdf ; https://www.darwinex.com/eu/ibkr/stocks-futures-etfs",
+   "correct_value": "HKFE OK; SGX and ASX likely blocked"
+  },
+  {
+   "claim": "IBKR pays no interest on commodity-segment cash",
+   "verdict": "confirmed",
+   "evidence": "'No interest will be paid on excess funds in the commodities segment'; excess can be swept to securities, so the margin itself earns 0. https://www.interactivebrokers.ca/en/trading/margin-calculation-details.php",
+   "correct_value": "Margin cash earns 0 %"
+  },
+  {
+   "claim": "IBKR cash interest: benchmark − 0.5 %, first 10k unpaid, pro-rata below 100k NAV",
+   "verdict": "confirmed",
+   "evidence": "USD 3.12 % and EUR 1.700 % quoted as BM − 0.5 % before the hikes; 0 % on the first 10k; lower rate below NAV 100k. https://www.interactivebrokers.com/en/accounts/fees/pricing-interest-rates.php?lp=T",
+   "correct_value": "After the Sep-2026 hikes: about EUR 1.9-2.0 %, USD about 3.4 %"
+  },
+  {
+   "claim": "ECB deposit rate 2.50 % after the Sep-2026 hike (disputed by the rendement verifier)",
+   "verdict": "confirmed",
+   "evidence": "Decided 10-Sep-2026, effective 16-Sep-2026; MRO 2.65 %, MLF 2.90 %; earlier hike 11-Jun 2.00 → 2.25 %. The BdE 'unchanged in September' page refers to 2025. https://www.ilfoglio.it/en/economy/2026/09/10/news/the-ecb-raises-interest-rates-this-is-the-second-rise-of-2026--407136 ; https://admiralmarkets.com/analytics/traders-blog/ecb-meeting-october-2026",
+   "correct_value": "2.50 %; 29-Oct-2026 meeting priced about 60 % for 2.75 %"
+  },
+  {
+   "claim": "€STR 2.3 % (critic Monte Carlo)",
+   "verdict": "corrected",
+   "evidence": "€STR 2.19 % on 9-Sep-2026 at DFR 2.25; after the hike about 2.43 % (inferred, not directly sourced). https://www.global-rates.com/en/interest-rates/ester/historical/2026/",
+   "correct_value": "About 2.43 %"
+  },
+  {
+   "claim": "Micro contracts liquid enough (MZC, MZW, MZS, 1OZ, MNG, M6A, M6B, MJY, M6E, Nikkei micro, FSXE, FDXS)",
+   "verdict": "corrected",
+   "evidence": "1OZ ADV 115k (Jan-2026); Nikkei micro ADV 0.64M (FY2025); FDXS 28.4k; M6E about 19k; M6A about 3.9k (OI 4.8k); FSXE 2.4k; M6B about 580 (OI 1.5k); MZC/MZW/MZS and MJY no data. https://www.cmegroup.com/media-room/press-releases/2026/2/03/cme_group_januaryvolumesetsnewrecordof296millioncontractsup15yea.html ; https://www.eurex.com/ec-en/find/news/A-five-year-success-story-Micro-futures-drive-global-adoption-of-European-benchmarks-5093562 ; https://www.fow.com/insights/nikkei-225-micro-futures-hit-near-record-june-volume-at-jpx ; https://www.tradingview.com/symbols/CME_MINI-M6B1%21",
+   "correct_value": "Thin: FSXE, M6B. Unverified/likely thin: MZC, MZW, MZS, MJY. Liquid: 1OZ, Nikkei micro, FDXS, M6E"
+  },
+  {
+   "claim": "MJY is a continuously listed micro yen contract",
+   "verdict": "corrected",
+   "evidence": "Delisted 15-Mar-2022 (SER 8890), relaunched 26-Feb-2024 (SER 9326). https://www.cmegroup.com/notices/ser/2024/01/SER-9326.pdf",
+   "correct_value": "Relaunched 2024; short history, liquidity unknown"
+  },
+  {
+   "claim": "Trend performance after the backtest end date (2026-07-10)",
+   "verdict": "confirmed",
+   "evidence": "SG CTA +15.91 % YTD around mid-Sep 2026; local data +8.6 % to 10-Jul, +11.1 % to 31-Aug. https://www.france-epargne.fr/news/managed-futures-les-fonds-cta-gagnent-pres-de-16-en-2026-un-etf-couvert-en-euros-arrive-a-paris",
+   "correct_value": "Backtest misses a strong Jul-Sep 2026 trend run"
+  }
+ ],
+ "final_numbers": [
+  {
+   "name": "PFU 2026",
+   "value": "31.4 % (12.8 % income tax + 18.6 % social levies)",
+   "note": "Capital gains from 2025 income; interest/dividends from 1-Jan-2026; assurance-vie stays 17.2 %"
+  },
+  {
+   "name": "ECB deposit facility rate",
+   "value": "2.50 % since 16-Sep-2026",
+   "note": "MRO 2.65 %; next meeting 29-Oct-2026, about 60 % priced for 2.75 %"
+  },
+  {
+   "name": "€STR October 2026",
+   "value": "about 2.43 %",
+   "note": "Inferred from DFR minus about 7 bp; 2.19 % on 9-Sep before the hike"
+  },
+  {
+   "name": "Fed funds / DTB3",
+   "value": "3.75-4.00 % / 4.00 % (1-Oct-2026)"
+  },
+  {
+   "name": "IBKR credit interest",
+   "value": "BM − 0.5 % above USD 10k, pro-rata below USD 100k NAV, 0 % on commodity-segment margin",
+   "note": "Post-hike about EUR 1.9-2.0 %, USD about 3.4 %"
+  },
+  {
+   "name": "Form 3916 penalty",
+   "value": "€1,500 per account per year (€10,000 for a non-cooperative state) + 80 % surcharge on evaded tax",
+   "note": "The 5 %-of-balance fine is invalid (QPC 2016-554)"
+  },
+  {
+   "name": "BNC loss carry-forward",
+   "value": "6 years, same-nature BNC only",
+   "note": "vs 10 years and any securities gains under art. 150 ter"
+  },
+  {
+   "name": "10y median after-tax CAGR DIY v5 (PFU, €STR 2.43 %)",
+   "value": "1.43 / 2.43 / 3.16 % at USD 100k / 250k / 1M",
+   "note": "Critic at €STR 2.3 %: 1.33 / 2.33 / 3.04"
+  },
+  {
+   "name": "Same, BNC at 30 % marginal rate",
+   "value": "0.72 / 1.60 / 2.18 %"
+  },
+  {
+   "name": "Same, BNC at 41 % marginal rate",
+   "value": "0.23 / 1.03 / 1.56 %"
+  },
+  {
+   "name": "P(nominal loss over 10 years), PFU, €STR 2.43 %",
+   "value": "41 / 36 / 32 %"
+  },
+  {
+   "name": "UCITS ETF route (SR 0.25, 12 % vol, PFU at exit)",
+   "value": "3.47 % median after tax (3.67 % if €STR 2.68 %)"
+  },
+  {
+   "name": "iMGP DBi UCITS ETF",
+   "value": "TER 0.75 %; AUM USD 698M (18-Sep-2026); USD class LU2951555585, EUR LU2951555403, EUR-hedged LU3359622902"
+  },
+  {
+   "name": "BNP Paribas Easy Managed Futures",
+   "value": "LU3307218399, TER 0.60 %, launched 29-May-2026, AUM about EUR 10M"
+  },
+  {
+   "name": "Man AHL Trend Alternative DNY ongoing charges",
+   "value": "about 2.75 %"
+  },
+  {
+   "name": "SG CTA 2026 YTD",
+   "value": "+15.9 % (about 18-Sep-2026); +11.1 % to 31-Aug"
+  },
+  {
+   "name": "ADV 1OZ / Nikkei micro / FDXS / FSXE",
+   "value": "115k (Jan-2026) / 0.64M (FY2025) / 28.4k / 2.4k"
+  },
+  {
+   "name": "M6E / M6A / M6B volume per day",
+   "value": "about 19k / 3.9k (OI 4.8k) / 580 (OI 1.5k)",
+   "note": "TradingView snapshots, dates unclear"
+  },
+  {
+   "name": "MZC tick cost",
+   "value": "0.5 ¢/bu = USD 2.50, about 0.12 % of notional, twice ZC's relative tick"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_fonds_fisc/facts_verified.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_fonds_fisc/build_facts.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_fonds_fisc/mc_rate_tax_sensitivity.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_fonds_fisc/mc_rate_tax_sensitivity.csv"
+ ]
+}

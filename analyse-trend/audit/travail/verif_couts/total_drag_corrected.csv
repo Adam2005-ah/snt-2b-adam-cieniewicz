@@ -1,0 +1,9 @@
+capital,prior_total_drag_lean_50tb,corrected_total_drag_lean_50tb,prior_total_drag_full_allcash,corrected_total_drag_full_allcash,prior_eur_shortfall_50xeon,corrected_eur_shortfall_50xeon_approx
+25000.0,6.44,6.53,30.38,33.62,1.2,1.2
+50000.0,4.02,4.4,16.35,18.26,0.96,0.96
+100000.0,2.17,2.94,8.07,9.61,0.48,0.93
+250000.0,1.37,2.14,3.91,4.99,0.35,0.79
+500000.0,1.1,1.87,2.53,3.45,0.3,0.75
+1000000.0,0.96,1.74,1.83,2.69,0.28,0.72
+2000000.0,0.9,1.67,1.49,2.3,0.27,0.71
+5000000.0,0.86,1.63,1.28,2.07,0.26,0.71

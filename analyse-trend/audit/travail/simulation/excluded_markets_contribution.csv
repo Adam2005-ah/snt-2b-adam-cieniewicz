@@ -1,0 +1,19 @@
+,group,access,gross_pnl_pct_cap_per_yr_2000_2026,gross_pnl_pct_cap_per_yr_2010_2026
+QC1 Index,Equities,KID?,0.22,0.02
+XP1 Index,Equities,KID?,-0.02,-0.18
+PT1 Index,Equities,KID?,0.27,0.2
+TWT1 Index,Equities,KID?,0.24,0.27
+HI1 Index,Equities,KID?,0.14,-0.0
+HC1 Index,Equities,KID?,0.1,-0.06
+XU1 Index,Equities,KID?,0.03,0.0
+JGS1 Index,Equities,NO,0.25,0.06
+CN1 Comdty,Bonds,KID?,0.01,0.03
+XM1 Comdty,Bonds,KID?,-0.09,0.11
+IR4 Comdty,STIR,KID?,0.27,0.27
+SE1 Curncy,FX,OK,0.35,0.16
+NO1 Curncy,FX,OK,0.1,-0.33
+CUA1 Comdty,Energy,ILLIQ,1.07,1.57
+SCO1 Comdty,Metals,KID?,0.83,1.33
+MWE1 Comdty,Agriculture,NO?,0.37,0.23
+CA1 Comdty,Agriculture,OK?,0.31,0.45
+IJ1 Comdty,Agriculture,OK?,0.13,0.18

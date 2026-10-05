@@ -1,0 +1,170 @@
+{
+ "key": "donnees",
+ "summary": "I checked the critic's data and backtest claims with my own engine. It reproduces trend.run_vol_targeted(forecast_regime) to 1e-17 and the operations agent's 20-market series to 3e-17. All Sharpe ratios below are on excess returns with √261 annualisation, the critic's convention; the project's ×16 convention gives values 0.9% lower (1.182 becomes 1.171). Overall the critic's direction holds, but four points change.\n\n1. **CUA1 (ethanol) is an artefact; SCO1 (iron ore) mostly is not.**\n   - Both are monthly-average-settled contracts. They are the only two of the 84 series whose daily vol in the last four business days of the month falls to 0.21–0.25x the start-of-month level (median across all series 0.91).\n   - CUA1 looks untradable in this form: 13% of its days have a zero return for no market-wide reason (liquid commodities: 1%), AC1 is 0.17 (t = 11, highest of the 84) and VR20 is 1.52. Its back-adjusted price rose 33x, i.e. +18.7%/yr excess for buy-and-hold with Sharpe 0.96 over 2007–2026, which no liquid commodity comes close to. It earns 11% of v5's gross P&L since 2010 from 2.4% of the risk budget.\n   - CUA1's P&L comes from that persistent drift, not from day-to-day staleness: a one-day delay costs only 0.12%/yr of it, and its P&L actually rises with a 6–11 day delay.\n   - SCO1's data look clean: AC1 0.058, 2.8% zero days, negative lag cost. Its 11.9x back-adjusted rise against 2.36x for World Bank spot implies +16%/yr of roll yield, concentrated in 2018–2021 when the iron-ore curve was steeply backwardated, so it looks like real carry.\n   - SCO1 is still a big outlier: the largest single contributor (removing it lowers v5's Sharpe by 0.069 since 2010 and 0.098 since 2015), data only from 2016, its daily-vol sizing understates its real risk by about 12%, and the capital audit did not count it as accessible to a retail investor. Exclude it from the retail universe for those reasons, not as a data error.\n   - The critic's figures reproduce exactly: without CUA1, Sharpe 1.146 / 0.805 / 0.478 / 0.361 (from 1990 / 2000 / 2010 / 2015); without both, 1.115 / 0.762 / 0.411 / 0.266.\n\n2. **Other suspect markets have structural autocorrelation but are not proven artefacts.** LH1, FC1, CT1, RS1, SFI5, IK1 and MWE1 show AC1 of 0.06–0.10 from price limits, cash settlement on smoothed indices, or thin early trading. Their P&L fades faster with delay than other markets'. Removing them lowers Sharpe since 2010 by a further 0.07, so I treat that as the pessimistic case only.\n   - Other data quirks: CL1 had recurring 7–9 day flat runs each month in 1989–93. STIR contracts have 14–18% zero days because rates sat at the floor (genuine). Equity index futures have significantly negative AC1.\n\n3. **Execution lag: one full extra day costs about 0.07 Sharpe, not 0.06.**\n   - Re-running properly, with vol targeting measured on the lagged P&L, gives −0.067 / −0.070 / −0.073 / −0.071 (from 1990 / 2000 / 2010 / 2015). The critic's shortcut gives about −0.064.\n   - The cost is 1.1–1.4%/yr and statistically real (t = 2.9 since 1990). It comes mostly from agriculture and metals, not from the high-autocorrelation markets.\n   - Realistically, signals come after each settlement and orders fill in the next session: CME Globex reopens about an hour after settlement, Eurex trades until 22:00 CET, and the Osaka night session runs to 06:00 JST. That is equivalent to 0.25–0.5 of a day's lag, costing 0.015–0.035 Sharpe (central about 0.03) on the 84 markets. On the 14/24/40-market retail subsets a half-day lag costs only 0.007–0.016.\n\n4. **Composition luck is confirmed, but only the 100k subset actually did better recently.**\n   - The class breakdown since 2023-07 reproduces exactly (gross %/yr): agriculture +6.2, bonds −4.9, energy −6.5, equities +1.6, FX −4.1, metals +2.6, STIR −1.2.\n   - Only the $100k subset gained since 2023-07 (Sharpe +0.39). The $250k subset lost (−0.34) and so did the $1M one (−0.13).\n   - The 100k gain is almost entirely gold: its metals pocket is gold alone and returned +13.4%/yr. Among random portfolios with the same class mix, it ranks at the 86th percentile (median −0.24). Random portfolios that pick gold as their metal have a median of +0.42; those picking copper, platinum or palladium sit between −0.40 and −0.48.\n   - The subset-selection rule had mild hindsight. Re-selecting with only pre-2023-07 information changes the 2023-26 Sharpe by −0.06, +0.17 and −0.06 for the three tiers.\n\n5. **The operations agent's 20-market set was picked by hand.**\n   - It is a hard-coded list in workload.py with no rule. Most members are standard liquid contracts, which is defensible ex ante.\n   - Recomputed Sharpe: 0.914 / 0.690 / 0.446 / 0.397 from 1990 / 2000 / 2010 / 2015, and 0.150 / 0.207 from 2023-01 / 2023-07. Max drawdown is −43.1% (February 2016 to August 2017).\n   - Its recent positive result depends on two picks. Replacing live cattle with wheat, sugar or soymeal moves the since-2023 Sharpe to between −0.09 and −0.16; replacing gold with silver gives −0.14.\n   - A volume-ranked 20-market set (my approximate ranking) does as well over the long run (0.57 since 2010) but about 0 since 2023. It ranks at the 80th–93rd percentile of random portfolios with the same class mix.\n\n6. **Restated headline for the tradable universe.** Central retail case: without CUA1 and SCO1, half-day execution lag. Sharpe 1.085 / 0.731 / 0.379 (from 1990 / 2000 / 2010). Compound annual growth 23.7% / 14.6% / 6.1% in excess of cash, and 27.1% / 16.8% / 7.6% including T-bill income. Max drawdown −55%.\n   - Upper bound (without CUA1 only, half-day lag): 1.116 / 0.773 / 0.447.\n   - Pessimistic (also without the seven suspect markets, full-day lag): 0.962 / 0.608 / 0.282.\n   - Since 2023-07, every variant is between −0.28 and −0.45.",
+ "checked": [
+  {
+   "claim": "Ethanol CUA1 is a suspicious data contributor",
+   "verdict": "confirmed",
+   "evidence": "stale_scan_full.csv / cua1_sco1_vs_liquid.csv: zero-return share since 2010 16.2% (13.1% excluding days when >=50% of markets are flat) vs 1.0% median of 12 liquid commodities; AC1 0.169 (t=11.1, highest of 84; positive in 17 of 20 years); VR5 1.24, VR20 1.52; flat runs up to 10 days (2009). intramonth_vol_ratio.csv: std of the last 4 business days / first 5 = 0.25 (monthly-average contract; CME CU floating price = average of Platts Chicago ethanol, https://cmegroup.com/trading/energy/ethanol/chicago-ethanol-platts-swap_contractSpecs_futures.html). Back-adjusted price x33 over 2007-2026: buy-and-hold log-excess +18.7%/yr, Sharpe 0.96 (CL1 -2.4%/yr, C 1 -3.2%/yr). Gross v5 P&L 1.63%/yr since 2010 = 11.2% of total from about 2.4% of risk budget (median liquid commodity 0.11%/yr). Leave-one-out dSharpe since 2010 -0.069 (LOO std 0.016). Its P&L does NOT decay with delay (lag-2 cost 0.12%/yr; 131% of P&L kept at an 11-day delay), so the profit is a persistent drift in an illiquid averaging contract rather than lag-1 staleness."
+  },
+  {
+   "claim": "SGX iron ore SCO1 is a suspicious data contributor",
+   "verdict": "corrected",
+   "correct_value": "Not a data artefact; a genuine but outlier, concentration-risk and non-retail-accessible market",
+   "evidence": "AC1 0.058 (t=3.0), zero share 2.8%, longest flat run 3 days, lag-1 cost negative (-0.08%/yr), P&L unchanged with 6-11 day delay. Back-adjusted x11.9 vs World Bank iron ore spot x2.36 (2016-01 to 2026-02) implies a +16%/yr roll yield, concentrated in 2018-2021 when the curve was in steep backwardation. That is real carry (SGX contract settles on the monthly average of Platts 62% Fe: https://www.phillipnova.com.sg/announcement/sgx-iron-ore-index-futures-price-adjustments/). Caveats: averaging contract (intramonth vol ratio 0.21), VR20 1.25 (risk under-sized about 12%), data start 2016-01 (listings.py says 2013-04), largest single contributor (LOO -0.069 since 2010, -0.098 since 2015; 9.4% of gross P&L), not in the strict retail-accessible list."
+  },
+  {
+   "claim": "v5 Sharpe without CUA1 and SCO1: 1.115/0.762/0.411/0.266 (1990/2000/2010/2015) vs 1.182/0.853/0.546/0.390",
+   "verdict": "confirmed",
+   "evidence": "sharpe_by_universe_and_lag.csv reproduces exactly (sqrt(261)). Without CUA1 only: 1.146/0.805/0.478/0.361, -0.382 since 2023-07. Without both: -0.280 since 2023-07 (vs -0.421 for all 84)."
+  },
+  {
+   "claim": "LH1, SFI5, CT1, IK1, FC1, RS1 (and others) look like data artefacts",
+   "verdict": "corrected",
+   "correct_value": "Structural positive autocorrelation, tradable but probably backtest-flattered; exclusion is a pessimistic sensitivity, not a correction",
+   "evidence": "AC1 since 2010: LH1 0.104 (VR20 1.79; cash-settled on the 2-day CME Lean Hog Index, daily limits, https://en.wikipedia.org/wiki/Lean_Hog), SFI5 0.097 (11% zero days, thin before 2021), CT1 0.080, IK1 0.075 (2010-12 and 2020), FC1 0.073, RS1 0.070, MWE1 0.059. Their combined lag-1 cost is only about 0.13%/yr, but their P&L decays faster with delay (68% kept at an 11-day delay vs >=139% for other markets since 2010; pnl_decay_by_group.csv). Removing all 7 plus CUA1 gives 1.055/0.712/0.407. Other issues: CL1 1989-93 recurring 7-9 day flat runs each month (21-31% zero days per year); STIR zero days come from rates pinned at the floor (genuine); isolated long flat runs (XM1 and KC1 1988, JB1 1999, IR4 Dec 2020-Jan 2021); equity indices have significantly negative AC1 (-0.07 to -0.09)."
+  },
+  {
+   "claim": "One extra day of execution lag costs about 0.06 Sharpe",
+   "verdict": "corrected",
+   "correct_value": "-0.067/-0.070/-0.073/-0.071 (1990/2000/2010/2015) with a proper re-run; about -0.064 with the critic's shortcut",
+   "evidence": "sharpe_by_universe_and_lag.csv: the critic's shortcut (pos.shift(2), same costs, scale not re-estimated) reproduces 1.121/0.789/0.482/0.326. A full re-run with vol targeting on the lagged P&L gives 1.115/0.783/0.473/0.319. lag_by_class.csv: cost 1.12%/yr (t=2.9) since 1990, 1.37%/yr (t=2.1) since 2010. Since 2010 by class: Agriculture 0.52, Metals 0.43 (PA1/SI1/PL1/HG1), Energy 0.18, Bonds 0.18, STIR 0.10, FX 0.01, Equities -0.04 %/yr. Cross-market correlation of AC1 with lag cost is only 0.27. Without CUA1: -0.063/-0.065/-0.064."
+  },
+  {
+   "claim": "Realistic execution lag (signal after close t, execution during session t+1)",
+   "verdict": "corrected",
+   "correct_value": "Equivalent to 0.25-0.5 of a day: -0.015 to -0.035 Sharpe (central -0.03) for the 84-market system; -0.007 to -0.016 for the 14/24/40-market subsets",
+   "evidence": "P&L is linear in the execution fraction f (lag 1+f). CME Globex reopens about 1 h after the daily break, and TAS (trading at settlement) exists for CME Treasuries, grains, livestock, energy and metals (https://cmegroup.com/trading/trading-at-settlement.html). Eurex FGBL trades 01:10-22:00 CET (https://eurexrepo.com/resource/blob/1493194/bee8965900f0124d7ff7c7993d5f969b/data/2019_02_25_cs_4_history.pdf). The OSE Nikkei night session runs to 06:00 JST (https://www.jpx.co.jp/english/derivatives/rules/outline/dreu250000001ove-att/dreu250000001oyj.pdf). So automated per-region execution corresponds to f about 0.25 and a manual once-a-day routine to f about 0.5. subsets_lag.csv: half-day lag costs 100k -0.007, 250k -0.016, 1M -0.012 since 2010. A gold-futures trend study also reports a moderate, non-catastrophic Sharpe decay with execution delay (https://arxiv.org/pdf/2511.08571)."
+  },
+  {
+   "claim": "Since 2023-07 v5 losses come from bonds/energy/FX (Bonds -4.9, Energy -6.5, FX -4.1, STIR -1.2, Ags +6.2, Metals +2.6, Equities +1.6 %/yr gross)",
+   "verdict": "confirmed",
+   "evidence": "pnl_by_class_subsets.csv reproduces these to 0.01; total gross -6.39, costs -2.39, net -8.79 %/yr. Since 2010: Ags 3.38, Bonds 4.01, Energy 2.49 (of which CUA1 1.63), Equities 0.71, FX -0.17, Metals 2.72 (of which SCO1 1.37), STIR 1.40; gross 14.54, net 11.86. Within the post-2023-07 figure, CUA1 -1.43 and SCO1 -1.92 %/yr are among the 84-market system's worst markets."
+  },
+  {
+   "claim": "Small-capital subsets (ags/metals/micro FX) gained since 2023-07 (Sharpe about +0.39) by composition luck",
+   "verdict": "corrected",
+   "correct_value": "Only the <=100k subsets gained (100k: +0.39); the 250k subset was -0.34 and the 1M subset -0.13. The 100k gain is luck from gold being its only metal.",
+   "evidence": "pnl_by_class_subsets.csv: the 100k subset's metals pocket (gold only) +13.39%/yr; its agriculture only +0.81. composition_luck.csv: random portfolios with the same class counts (strict pool, 400 draws) have median -0.24 and 5-95% range -0.82 to +0.65; the actual subset ranks at the 86th percentile. Draws with gold as the metal: median +0.42; with copper/platinum/palladium: -0.40 to -0.48. subset_selection_exante.csv: re-selecting with the 2020-07 to 2023-07 window changes 2023-26 Sharpe by -0.06/+0.17/-0.06 (100k/250k/1M), so the look-ahead is mild. The selection score correlates 0.56 with 2023-26 per-market Sharpe."
+  },
+  {
+   "claim": "Operations 20-market liquid subset: Sharpe 0.905 (1990-), 0.683 (2000-), 0.442 (2010-), +0.149 (2023-)",
+   "verdict": "confirmed",
+   "evidence": "Reproduced exactly (x16 convention, 2023 = from 2023-01-01; max diff vs v5sub_net.pkl 3e-17). With sqrt(261): 0.914/0.690/0.446/0.397(2015)/0.150(2023-01)/0.207(2023-07). Max drawdown -43.1% excess (2016-02-11 to 2017-08-15), -42.6% including T-bill; drawdown on 2026-07-10 -13.9%. Bp-model costs 2.5-2.8%/yr; at 1.5x costs 0.856/0.630/0.380."
+  },
+  {
+   "claim": "The 20-market subset was chosen on ex-ante liquidity criteria",
+   "verdict": "refuted",
+   "evidence": "operations/workload.py hard-codes SUB with no rule, volume data or documentation. Most members are canonical liquid contracts, but several choices are not volume-ranked (live cattle over wheat/sugar/soymeal, Hang Seng over Nasdaq/DAX, Schatz over the US 5-year, natural gas over Brent). ops20_swaps.csv: live cattle to wheat/sugar/soymeal moves the since-2023-01 Sharpe from +0.15 to -0.09/-0.14/-0.16; gold to silver gives -0.14. A volume-ranked 20-market set with the same class counts gives 0.80/0.65/0.57/0.44 and -0.01 since 2023-01. Percentile vs random same-composition draws: 80th (2010), 93rd (2015), 85th (2023-07). The long-run numbers are defensible; the recent positive result is fragile and partly flattered by the picks."
+  }
+ ],
+ "final_numbers": [
+  {
+   "name": "v5 all 84, backtest (same-close execution) Sharpe 1990/2000/2010/2015/2023-07",
+   "value": "1.182 / 0.853 / 0.546 / 0.390 / -0.421",
+   "note": "sqrt(261); x16 convention: 1.171/0.845/0.541/0.386/-0.417"
+  },
+  {
+   "name": "v5 without CUA1, Sharpe 1990/2000/2010/2015/2023-07",
+   "value": "1.146 / 0.805 / 0.478 / 0.361 / -0.382"
+  },
+  {
+   "name": "v5 without CUA1 and SCO1, Sharpe 1990/2000/2010/2015/2023-07",
+   "value": "1.115 / 0.762 / 0.411 / 0.266 / -0.280"
+  },
+  {
+   "name": "v5 without CUA1, SCO1 and the 7 suspect markets, Sharpe 1990/2000/2010/2015",
+   "value": "1.025 / 0.671 / 0.343 / 0.225"
+  },
+  {
+   "name": "Full extra day of lag, Sharpe change (all 84, proper re-run) 1990/2000/2010/2015",
+   "value": "-0.067 / -0.070 / -0.073 / -0.071",
+   "note": "cost 1.1-1.4%/yr, t=2.9 (1990), 2.1 (2010); critic shortcut about -0.064"
+  },
+  {
+   "name": "Realistic execution lag cost (0.25-0.5 day)",
+   "value": "-0.015 to -0.035 Sharpe (central -0.03); retail subsets -0.007 to -0.016"
+  },
+  {
+   "name": "CENTRAL tradable restatement (without CUA1 and SCO1, half-day lag): Sharpe 1990/2000/2010",
+   "value": "1.085 / 0.731 / 0.379",
+   "note": "2015: 0.235; 2023-07: -0.288; vol 21.8-22.0%; max drawdown -55.4%"
+  },
+  {
+   "name": "CENTRAL: compound growth in excess of cash 1990/2000/2010",
+   "value": "23.7% / 14.6% / 6.1%"
+  },
+  {
+   "name": "CENTRAL: compound growth including T-bill 1990/2000/2010",
+   "value": "27.1% / 16.8% / 7.6%",
+   "note": "DTB3 accrued actual/365; average T-bill 2.73/1.92/1.46 %/yr"
+  },
+  {
+   "name": "Upper bound (without CUA1 only, half-day lag): Sharpe / excess growth / growth incl. T-bill, 1990/2000/2010",
+   "value": "1.116/0.773/0.447 ; 24.5/15.6/7.7% ; 28.0/17.9/9.3%"
+  },
+  {
+   "name": "Pessimistic (without CUA1, SCO1 and the 7 suspect markets, full-day lag): Sharpe / excess growth / growth incl. T-bill",
+   "value": "0.962/0.608/0.282 ; 20.6/11.6/3.9% ; 23.9/13.8/5.4%"
+  },
+  {
+   "name": "Original backtest compound growth, excess / including T-bill, 1990/2000/2010",
+   "value": "26.1/17.5/10.0% ; 29.6/19.8/11.6%"
+  },
+  {
+   "name": "CUA1 share of v5 gross P&L since 2010",
+   "value": "1.63%/yr = 11.2% of 14.54%/yr",
+   "note": "median liquid commodity 0.11%/yr"
+  },
+  {
+   "name": "SCO1 share of v5 gross P&L since 2010",
+   "value": "1.37%/yr = 9.4%",
+   "note": "implied roll yield +16%/yr vs World Bank spot"
+  },
+  {
+   "name": "Retail subsets with half-day lag, Sharpe since 2010 (100k/250k/1M)",
+   "value": "0.383 / 0.386 / 0.371",
+   "note": "same-close: 0.390/0.402/0.383; the subsets contain neither CUA1 nor SCO1"
+  },
+  {
+   "name": "Subsets Sharpe since 2023-07 (100k/250k/1M/ops 20)",
+   "value": "+0.393 / -0.338 / -0.134 / +0.207",
+   "note": "random same-composition medians -0.24 / -0.20 / -0.25 / -0.23"
+  },
+  {
+   "name": "Ops 20-market subset Sharpe 1990/2000/2010/2015/2023-01/2023-07 (sqrt(261))",
+   "value": "0.914 / 0.690 / 0.446 / 0.397 / 0.150 / 0.207",
+   "note": "max drawdown -43.1% excess, -42.6% incl. T-bill; growth excess 19.0/13.4/7.5%, incl. T-bill 22.3/15.6/9.1% (1990/2000/2010)"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/core.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/verify_engine.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/stale.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/stale_scan_full.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/cua1_sco1_vs_liquid.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/intramonth_vol_ratio.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/runs.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/sharpe_by_universe_and_lag.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/leave_one_out.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/lag.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/lag_by_class.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/decay.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/pnl_decay_by_group.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/classes.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/pnl_by_class_subsets.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/randtest.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/composition_luck.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/composition_luck_draws.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/exante.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/subset_selection_exante.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/subsets_lag.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/subsets_lag.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/ops20.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/ops20_perf.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/ops20_swaps.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/restate.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/restatement_grid.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_donnees/dig2.py"
+ ]
+}

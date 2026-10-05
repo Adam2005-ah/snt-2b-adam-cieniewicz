@@ -1,0 +1,228 @@
+{
+ "summary": "AUDIT: CAPITAL AND CONTRACT SIZES FOR VARIANT 5 (\"Les deux\"). All amounts are in USD. EUR = USD / 1.1446 on 2026-07-10.\n\nMETHOD\n- I re-ran variant 5 exactly as specified: trend.run_vol_targeted with forecast_regime, 84 markets, costs and rolls as in run_backtests. The reproduced Sharpe is 1.17. Positions are expressed as a fraction of capital.\n- I took the median and the 90th percentile of |position| over 2023-07-10 → 2026-07-10.\n- The spec table was built by hand:\n  - 71 tickers were mapped to Carver's pysystemtrade instrumentconfig.csv (fetched from raw GitHub) through carry_inputs_info.csv.\n  - Exchange documents found by WebSearch filled the rest.\n  - Multipliers are converted to the dataset's quote units:\n    - HG, HO, RB, grains, soyoil, livestock, sugar, coffee and cotton are in US cents.\n    - FX futures are in US cents, except EC1, which is in USD.\n    - JY1 = USD per JPY × 1e4, which gives USDJPY 160.9.\n    - XM1 is already a contract value in AUD: 108,862 corresponds to about a 4.9% yield on 100k face with a 6% coupon.\n    - STIR are quoted 100 − rate. SOFR 95.88 = 4.12%.\n- FX rates come from the dataset's FX futures on 2026-07-10: EUR 1.1446, GBP 1.3399, CHF 1.2455, CAD 0.7086, JPY 0.006216, AUD 0.69445, NZD 0.57755, SEK 0.1038, NOK 0.1022, MXN 0.0569. HKD uses the peg, 1/7.80. Futures prices include forward points, which cause less than 1% error.\n\nPRICE CHECK (last back-adjusted row, 2026-07-10, against the market)\n- WTI: 71.41 in the data vs a 71.57 close.\n- Gold: 4113.7 vs the LBMA PM fix of 4099.\n- JB1: 127.3 is consistent with the 10y JGB at 2.885% on 9 July.\n- RX1: 125.55 is consistent with Bund yields around 3.0–3.1%.\n- HO: 355 c/gal is consistent with ULSD around $150/bbl in mid-2026. Energy vols are 40–60% and crack spreads very wide.\n- Nikkei: 68,810 is consistent with a search snippet of 66.8k on 15 July after a −2.7% day. The source of that snippet is unclear.\n- Not independently verified: SGX FTSE Taiwan (4034.5) and GIFT Nifty (24,200).\n\nDATA ISSUES FOUND\n- carry_inputs_info maps QS1 (ICE low-sulphur gasoil, 100 t) to Carver's GASOILINE, which is RBOB. That mapping is wrong; the correct code is GASOIL.\n- 'MES1 Index' is the ICE MSCI EM contract ($50 per point), not the CME Micro E-mini S&P.\n- CUA1 is ambiguous: it could be the NYMEX Chicago Ethanol CU (42,000 gal) or the CBOT ethanol contract (29,000 gal).\n- Three ticker stems collide and are distinguished only by suffix: SM1 Index (SMI) vs SM1 Comdty (soymeal); QC1 Index (OMXS30) vs QC1 Comdty (London cocoa); NO1 Index (Nikkei) vs NO1 Curncy (NOK).\n\nA. CONTRACT SIZES\n- Smallest contracts range from $2.2k to $321k:\n  - Micro corn MZC: $2.2k\n  - Micro natural gas MNG: $2.9k\n  - Micro wheat: $3.2k\n  - Mini OMXS30: $3.3k\n  - 1OZ gold: $4.1k\n  - Nikkei 225 Micro: $4.3k\n  - Micro Euro Stoxx 50 (FSXE): $7.2k\n  - Micro WTI (MCL): $7.1k\n  - Micro FX: $6.9k–15.6k\n  - At the top: SOFR $240k, Euribor $278k, SONIA $321k, SGX Taiwan $161k, SPI 200 $152k, MSCI EM $86k.\n- Some standard contracts are huge: JGB $791k, DAX $721k, NQ $601k, GC $411k, ES $381k, SI $301k.\n- Holding one smallest contract in every one of the 84 markets already means $5.08M of notional.\n\nB. POSITIONS ARE TINY PER MARKET\nMedian |position| as a share of capital, 2023-07 → 2026-07:\n\n| Class | Median |position| |\n|---|---|\n| Equities | 0.9–5.7% (median 3.1%) |\n| Bonds | 2.8–30% (median 5.9%) |\n| STIR | 45–60% |\n| FX | 10–20% (median 12.4%) |\n| Energy | 2.5–7.9% |\n| Metals | 3.2–11.6% |\n| Agriculture | 0.9–6.6% (median 2.5%) |\n\n- The 90th percentile is about 2.5× the median.\n- Variant 5 positions are 1.74× those of variant 2, so variant 2 needs 1.74× more capital for the same contract counts.\n\nC. MINIMUM CAPITAL (smallest contract, median position)\nSummary across the 84 markets:\n\n| Rule | Median | 75th pct | 90th pct | Max |\n|---|---|---|---|---|\n| ≥1 contract | $0.63M | $1.64M | $3.5M | $7.7M (coffee) |\n| ≥4 contracts (Carver's rule) | $2.52M | $6.6M | $14.0M | $30.9M |\n| ≥1 contract, standard contracts | $2.08M | | | |\n\n- Carver's AFTS formula (4 × N × σ / (IDM 2.5 × weight × 0.20), σ on 2026-07-10) gives a median of $2.83M. That is about 1.1× the empirical figure, with a range of 0.6–2.8× per market.\n\nCheapest markets, capital for 1 contract / 4 contracts:\n\n| Market | 1 contract | 4 contracts |\n|---|---|---|\n| 1OZ gold | 35k | 142k |\n| MJY | 52k | 208k |\n| M6B | 57k | 226k |\n| M6A | 61k | 243k |\n| MZC (micro corn) | 62k | 247k |\n| SGX iron ore | 98k | 391k |\n| Mini OMXS30 | 100k | 400k |\n| MNG | 107k | 429k |\n| MZW (micro wheat) | 113k | 450k |\n| M6E | 121k | 486k |\n| Nikkei micro | 159k | 637k |\n\n- Micro CAD would be 35k for 1 contract, but MCD is illiquid. With the standard 6C contract it is 346k.\n\nMost expensive markets (capital for 1 contract): coffee 7.7M, cocoa 6.8M, SGX Taiwan 6.5M, London cocoa 4.8M, SPI 200 4.2M, MSCI EM 4.2M, Gilt 4.2M, gasoil 3.6M, palladium 3.6M, feeder cattle 3.3M, Buxl 3.3M, T-bond 3.2M, robusta 3.1M.\n\nD. TIERS — number of markets with at least 1 / at least 4 contracts at the median position\n\n| Capital | All 84 | Accessible (optimistic) | Strict (66-market universe) |\n|---|---|---|---|\n| 25k | 0 / 0 | 0 / 0 | 0 / 0 |\n| 50k | 2 / 0 | 2 / 0 | 1 / 0 |\n| 100k | 7 / 0 | 7 / 0 | 5 / 0 |\n| 250k | 20 / 6 | 19 / 6 | 12 / 5 |\n| 500k | 32 / 12 | 30 / 11 | 19 / 8 |\n| 1M | 54 / 20 | 49 / 19 | 32 / 12 |\n| 2M | 69 / 32 | 61 / 30 | 43 / 19 |\n| 5M | 81 / 56 | 72 / 50 | 61 / 34 |\n| 20M | 84 / 81 | 75 / 72 | 66 / 61 |\n\n- The strict universe excludes:\n  - markets that are not accessible or are illiquid: GIFT Nifty, ethanol, MIAX HRS wheat;\n  - very thin CME SEK and NOK;\n  - Euronext MATIF agriculture, where IBKR coverage is unverified;\n  - HKFE, SGX, ASX, MX and Nasdaq-Nordic markets, whose EU-retail KID status I could not confirm.\n- In the strict universe it also uses the standard contract wherever the micro is essentially untraded (e.g. MSF, MCD, micro HO and RB, Euronext mini bonds).\n\nWhat survives in the strict universe (≥1 contract):\n- **100k:** M6B, MJY, M6A, 1OZ gold, micro corn.\n- **250k:** adds M6E, MXN, FSXE, Nikkei micro, MNG, micro wheat, micro soybeans.\n- **500k:** adds Schatz, SOFR, Euribor, mini CAC, MCL, micro copper, CAD.\n- **1M:** adds micro US equity indices (ES, RTY, DM), DAX micro, AEX mini, mini TOPIX, TU/FV, SONIA, canola, sugar, cotton, NZD.\n- 10-year-and-longer bonds, most softs and livestock, palladium and platinum need more than 2M.\n\nE. INTEGER ROUNDING OF THE FULL 84-MARKET VARIANT 5\nThree-year simulation, smallest contracts, trade only when the ideal position is more than 0.75 contract away. Reference: ideal vol 20.7%.\n\n| Capital | Correlation with ideal | Tracking error /yr | Realised vol | Other |\n|---|---|---|---|---|\n| 25k | 0.64 | | 7.7% | |\n| 100k | 0.86 | 12.2% | 11.6% | 80% of non-zero ideal positions rounded to 0 |\n| 250k | 0.92 | 8.7% | | |\n| 500k | 0.95 | 6.6% | | |\n| 1M | 0.98 | 4.0% | | |\n| 2M | 0.993 | 2.4% | | |\n| 5M | 0.998 | 1.2% | | |\n\n- With standard contracts instead: 1M gives correlation 0.91 and tracking error 8.7%; 5M gives 0.993 and 2.5%.\n- Turnover with smallest contracts:\n  - at 1M: about 5,900 trade sides plus 4,300 roll sides per year (404 open contracts on average);\n  - at 100k: 383 trade sides plus 349 roll sides per year.\n  - These counts are an input for the cost audit.\n\nF. REALISTIC RETAIL PORTFOLIOS\nHow they were chosen:\n- Greedy selection, round-robin across the 6 risk classes.\n- A market is added only if every market already in the set keeps at least m contracts at its median once weights are recomputed (equal per class, equal within class) with Carver's IDM.\n- Strict universe only.\n- Each set was then back-tested unrounded with the variant 5 logic, 1990-01 → 2026-07, using the same cost model.\n\n| Capital | Set | Markets | Sharpe since 1990 | Sharpe since 2010 |\n|---|---|---|---|---|\n| 25k | ≥4 contracts | 3: micro corn, MJY, 1OZ gold | 0.48 | 0.36 |\n| 25k | ≥1 contract | 9 | 0.64 | 0.31 |\n| 50k | ≥4 contracts | 6: adds Nikkei micro, micro wheat, M6B | 0.46 | 0.34 |\n| 50k | ≥1 contract | 12 | 0.72 | |\n| 100k | ≥4 contracts | 9: adds MNG, FSXE, M6A | 0.64 | 0.31 |\n| 100k | ≥1 contract | 17 | 0.75 | |\n| 250k | ≥4 contracts | 14: adds Schatz, SOFR, micro soybeans, mini CAC, M6E | 0.73 | 0.39 |\n| 250k | ≥1 contract | 27 | 0.92 | |\n| 500k | ≥4 contracts | 19: adds MCL, Euribor, canola, MYM, MXN | 0.81 | 0.47 |\n| 500k | ≥1 contract | 33 | 0.97 | |\n| 1M | ≥4 contracts | 27 | 0.92 | |\n| 1M | ≥1 contract | 43 | 0.94 | |\n| 2M | ≥4 contracts | 33 | 0.97 | |\n| 5M | ≥4 contracts | 44 | 0.95 | |\n| 5M | ≥1 contract | 63 | 0.99 | |\n| — | Full 84 markets | 84 | 1.17 | 0.54 (−0.42 since 2023-07) |\n\n- The 3-market set had a −60% maximum drawdown in excess of cash.\n- Rounding these subsets costs very little: correlation is at least 0.996 for the ≥4-contract sets, with tracking error of 0.4–1.9%/yr. The cost of a small account is lost diversification, not rounding.\n- Caveats on these Sharpes:\n  - they are in-sample;\n  - the basis-point cost model is optimistic for micros, whose per-contract fees are a larger share of notional;\n  - markets were chosen by contract size, not by expected return.\n- Carver's dynamic optimisation (AFTS strategy 25) would do better than naive rounding between 100k and 1M. I did not simulate it.\n\nG. MARGIN (rough)\n- Estimated initial margin / equity ≈ 0.35 × Σ|position| × σ. The factor k = 0.35 is loosely calibrated on typical exchange margins; the plausible range is 0.3–0.45.\n- Full variant 5: median about 21% of capital, 95th percentile 34%, maximum 47%. Small subsets: 10–18%.\n- So 65–80% of capital can sit in cash or a money-market fund. Notional exposure averages 8.8× capital, mostly from STIR and short bonds.\n\nH. MARKETS YOU FLAGGED\n- **GIFT Nifty:** drop. It has traded on NSE IX in GIFT City since 3 July 2023 and is not on IBKR as far as I can find.\n- **Ethanol:** drop. It is a thin, mostly block market with an $81k contract.\n- **MIAX HRS wheat:** probably drop. It moved off Globex to MIAX Onyx in 2025, and IBKR routing is uncertain.\n- **SGX iron ore:** $9.9k contract and very liquid. 1 contract needs 98k, 4 contracts 391k. Worth keeping if IBKR has a KID for EU retail (unverified).\n- **SGX A50:** $15k contract, but 716k for 1 contract.\n- **SGX Taiwan:** $161k contract, 6.5M for 1 contract — effectively unholdable.\n- **HSCEI:** the mini is $10.3k, 813k for 1 contract. The HSI mini is $31k, 1.87M for 1 contract.\n- **Euronext milling wheat:** $12.4k contract, 260k for 1 contract.\n- **Euronext rapeseed:** $29.6k contract, 1.75M for 1 contract.\n- **ICE canola:** $11k contract, 518k for 1 contract.\n- **Robusta:** 3.1M for 1 contract.\n- **White sugar:** 1.5M for 1 contract.\n- **London cocoa:** 4.8M for 1 contract.\n- **OAT:** the Eurex contract is $135k, 2.9M for 1 contract. Euronext's mini OAT (EUR 25k notional, launched 22 Sep 2025) is about $34k, 719k for 1 contract, but its liquidity and IBKR availability are unverified.\n- **JGB:** the standard contract is $791k, 6.3M for 1 contract. The mini JGB is $79k (illiquid), 626k for 1 contract.\n- **ASX 90-day bills:** $159k contract, 353k for 1 contract; KID unverified.\n- **SOFR / Euribor / SONIA:** about 435k / 460k / 598k for 1 contract. All are liquid and accessible.\n- **Micro Treasury Yield futures:** a different product — $10 per basis point, quoted in yield, cash-settled. There is no price-based micro 2y/5y/10y note; the only price-based micros are the Micro Ultra 10Y and Micro Ultra Bond (1/10 size, launched March 2024, thin).\n\nI. ACCESS FOR A FRENCH RETAIL CLIENT AT IBKR\n- IBKR blocks EEA retail clients from any future without a PRIIPs KID.\n- CME, ICE, Eurex, Euronext and JPX publish KIDs. For HKFE, SGX, ASX, MX and Nasdaq Nordic I could not confirm.\n- Elective professional status lifts this restriction. It requires 2 of 3 criteria: 10 significant trades per quarter over 4 quarters; a portfolio above EUR 500k; one year in a finance job.\n\nCONCLUSION\n- The faithful 84-market variant 5 is an institutional-size system. It needs about USD 5M (≥4 contracts in about two-thirds of markets, rounding tracking error about 1%), and about USD 20M to be comfortable.\n- USD 1–2M gives a usable replica with micros (correlation 0.98–0.99, tracking error 2.4–4%/yr), at the price of about 10,000 contract-sides a year.\n- Below USD 500k only a reduced portfolio of 9–19 markets is possible: mostly micro FX, micro grains, 1OZ gold, Nikkei micro, Euro Stoxx micro, plus Schatz and SOFR. Its back-tested Sharpe is 0.64–0.81 since 1990 and about 0.3–0.47 since 2010, before the extra per-contract cost of micros.\n- At USD 25–50k there are only 3–6 markets with ≥4 contracts: Sharpe about 0.46–0.48 historically, drawdowns of about −55 to −60% in excess of cash.",
+ "key_numbers": [
+  {
+   "name": "Median min capital, 1 smallest contract at median |pos| (84 mkts)",
+   "value": "630000",
+   "unit": "USD",
+   "source": "specs.csv mincap_1c_small"
+  },
+  {
+   "name": "Median min capital, 4 smallest contracts at median |pos|",
+   "value": "2520000",
+   "unit": "USD",
+   "source": "specs.csv mincap_4c_small"
+  },
+  {
+   "name": "90th pct min capital, 4 contracts",
+   "value": "14000000",
+   "unit": "USD",
+   "source": "specs.csv"
+  },
+  {
+   "name": "Max min capital, 4 contracts (coffee)",
+   "value": "30900000",
+   "unit": "USD",
+   "source": "specs.csv"
+  },
+  {
+   "name": "Carver AFTS formula median min capital (4 contracts, IDM 2.5, tau 0.2)",
+   "value": "2830000",
+   "unit": "USD",
+   "source": "specs.csv carver_mincap_4c_small"
+  },
+  {
+   "name": "Sum of one smallest contract in each of 84 markets",
+   "value": "5080000",
+   "unit": "USD notional",
+   "source": "specs.csv"
+  },
+  {
+   "name": "Variant 2 vs variant 5 capital requirement ratio",
+   "value": "1.74",
+   "unit": "x",
+   "source": "specs.csv v2_med_abs_pos"
+  },
+  {
+   "name": "Markets with >=1 contract at 100k (all/strict)",
+   "value": "7 / 5",
+   "unit": "markets",
+   "source": "tiers.csv"
+  },
+  {
+   "name": "Markets with >=4 contracts at 1M (all/strict)",
+   "value": "20 / 12",
+   "unit": "markets",
+   "source": "tiers.csv"
+  },
+  {
+   "name": "Markets with >=4 contracts at 5M (all/strict)",
+   "value": "56 / 34",
+   "unit": "markets",
+   "source": "tiers.csv"
+  },
+  {
+   "name": "Markets with >=4 contracts at 20M (all/strict)",
+   "value": "81 / 61",
+   "unit": "markets",
+   "source": "tiers.csv"
+  },
+  {
+   "name": "Full-84 rounding at 100k: corr / tracking error / realised vol",
+   "value": "0.86 / 12.2% / 11.6% (target 20.7%)",
+   "unit": "",
+   "source": "rounding_tracking.csv"
+  },
+  {
+   "name": "Full-84 rounding at 1M: corr / tracking error",
+   "value": "0.98 / 4.0%",
+   "unit": "",
+   "source": "rounding_tracking.csv"
+  },
+  {
+   "name": "Full-84 rounding at 5M: corr / tracking error",
+   "value": "0.998 / 1.2%",
+   "unit": "",
+   "source": "rounding_tracking.csv"
+  },
+  {
+   "name": "Contract sides per year at 1M, full 84, smallest contracts (trades + rolls)",
+   "value": "5863 + 4319",
+   "unit": "contract sides/yr",
+   "source": "rounding_tracking.csv"
+  },
+  {
+   "name": "Sharpe 1990-2026 retail subset 100k (9 mkts, >=4c)",
+   "value": "0.64 (since 2010: 0.31)",
+   "unit": "",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Sharpe 1990-2026 retail subset 250k (14 mkts, >=4c)",
+   "value": "0.73 (since 2010: 0.39)",
+   "unit": "",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Sharpe 1990-2026 retail subset 500k (19 mkts, >=4c)",
+   "value": "0.81 (since 2010: 0.47)",
+   "unit": "",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Sharpe 1990-2026 retail subset 25k (3 mkts, >=4c)",
+   "value": "0.48, maxDD excess -60%",
+   "unit": "",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Sharpe full 84 variant 5 (1990 / 2010 / 2023-07)",
+   "value": "1.17 / 0.54 / -0.42",
+   "unit": "",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Estimated initial margin / equity, full v5 (median / p95 / max)",
+   "value": "21% / 34% / 47%",
+   "unit": "% of capital",
+   "source": "rounding.py margin_est, k=0.35 (range 0.3-0.45)"
+  },
+  {
+   "name": "Mean gross notional exposure v5",
+   "value": "8.8",
+   "unit": "x capital",
+   "source": "subset_backtests.csv"
+  },
+  {
+   "name": "Cheapest market 1c/4c: 1OZ gold",
+   "value": "35400 / 141600",
+   "unit": "USD",
+   "source": "specs.csv"
+  },
+  {
+   "name": "SOFR / Euribor / SONIA capital for 1 contract",
+   "value": "435000 / 460000 / 598000",
+   "unit": "USD",
+   "source": "specs.csv"
+  },
+  {
+   "name": "FX used (EURUSD, USDJPY)",
+   "value": "1.1446, 160.9",
+   "unit": "",
+   "source": "dataset EC1/JY1 2026-07-10"
+  }
+ ],
+ "claims": [
+  {
+   "claim": "The faithful 84-market variant 5 is an institutional-size system: ~USD 5M for >=4 contracts in about 2/3 of markets with rounding tracking error ~1%/yr, and ~USD 20M for >=4 contracts in nearly all markets.",
+   "evidence": "tiers.csv (5M: 56/84 >=4c; 20M: 81/84); rounding_tracking.csv (5M corr 0.998, TE 1.2%)",
+   "confidence": "high"
+  },
+  {
+   "claim": "At USD 100k no market reaches 4 contracts at its median position, and only 5-7 reach 1 contract (micro FX GBP/JPY/AUD, 1OZ gold, micro corn); naive rounding of the full system tracks the ideal with corr 0.86 and halves realised vol.",
+   "evidence": "tiers.csv row 100k; rounding_tracking.csv full84_smallest_contract at 100k (corr 0.862, vol 11.6% vs 20.7%, 80% of non-zero positions rounded to 0)",
+   "confidence": "high"
+  },
+  {
+   "claim": "The binding constraint is diversification, not contract size alone: v5 median |position| per market is only ~3% of capital for equities and ~2.5% for agriculture, so even micros (~$4-40k) need $0.2-2M each.",
+   "evidence": "specs.csv v5_med_abs_pos and mincap_1c_small",
+   "confidence": "high"
+  },
+  {
+   "claim": "Retail-feasible reduced portfolios (3-19 markets, strict universe) had historical Sharpe 0.46-0.81 (1990-2026) and ~0.31-0.47 since 2010, vs 1.17/0.54 for the full 84-market system; this is before the higher per-contract cost of micros.",
+   "evidence": "subset_backtests.csv (in-sample re-runs of trend.run_vol_targeted on the subsets, same bp cost model)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Carver's AFTS minimum-capital formula gives similar orders of magnitude (median ratio 1.11x vs the empirical median-position method, range 0.6-2.8x).",
+   "evidence": "specs.csv carver_mincap_4c_small vs mincap_4c_small",
+   "confidence": "high"
+  },
+  {
+   "claim": "Last back-adjusted prices (2026-07-10) are plausible current levels: WTI 71.41 vs 71.57 close, gold 4113.7 vs LBMA 4099, JB1 127.3 consistent with 10y JGB 2.885%.",
+   "evidence": "farms.com WTI week ending 10 Jul 2026; bernama LBMA fix; adnkronos JGB 9 Jul 2026",
+   "confidence": "high"
+  },
+  {
+   "claim": "carry_inputs_info.csv maps QS1 (ICE gasoil) to Carver code GASOILINE, which is RBOB gasoline; 'MES1 Index' is ICE MSCI EM, not CME Micro E-mini S&P.",
+   "evidence": "instrumentconfig.csv: GASOILINE = 'RBOB Gasoline US', GASOIL = 'ICE-EU Low Sulphur Gasoil'; futures84_descriptive.csv names MES1 Index = Msci_em",
+   "confidence": "high"
+  },
+  {
+   "claim": "IBKR blocks EEA retail clients from futures without a PRIIPs KID; CME, ICE, Eurex, Euronext and JPX publish KIDs, but the status for HKFE, SGX, ASX, MX and Nasdaq Nordic was not verified; elective professional status removes the restriction.",
+   "evidence": "ibkb.interactivebrokers.com/node/2993 and node/4718; cmegroup.com PRIIPs futures page; eurex.com priips-kids; jpx.co.jp eu-priips-regulation; IBKR Ireland MiFID categorisation page",
+   "confidence": "medium"
+  },
+  {
+   "claim": "GIFT Nifty (NSE IX), Chicago ethanol and MIAX HRS wheat are effectively not tradable for a French retail IBKR client.",
+   "evidence": "GIFT Nifty moved to NSE IX July 2023 (FPI/NRI brokers); CU is a thin, mostly block market; HRSW migrated to MIAX Onyx 2025 — IBKR support not found",
+   "confidence": "medium"
+  },
+  {
+   "claim": "CME Micro Treasury Yield futures ($10 DV01, yield-quoted, cash-settled) are a different product from price-based T-note futures; the only price-based Treasury micros are Micro Ultra 10Y and Micro Ultra Bond (1/10 size, launched 25 Mar 2024).",
+   "evidence": "cmegroup.com micro-treasury-futures-vs-yield-futures; cmegroup.com now-live-micro-treasury-futures",
+   "confidence": "high"
+  },
+  {
+   "claim": "Estimated initial margin is ~21% of capital (median) for the full system, up to ~47% at peaks, so most capital can stay in cash/money market despite ~8.8x average notional exposure.",
+   "evidence": "margin_est in rounding.py with k=0.35 x sum|pos| x sigma; k loosely calibrated (0.3-0.45), not from actual IBKR margin data",
+   "confidence": "low"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/specs.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/tiers.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/rounding_tracking.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/subset_backtests.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/retail_portfolios.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/sources.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/specs_raw.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/build.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/tiers.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/rounding.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/portfolios.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/run_v5.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/instrumentconfig.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/capital/spreadcosts.csv"
+ ]
+}

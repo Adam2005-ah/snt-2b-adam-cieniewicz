@@ -1,0 +1,19 @@
+     capital  rule   n  sharpe_1990  sharpe_2000  sharpe_2010  maxdd_1990
+0    50000.0  >=1c  11         0.66         0.47         0.28      -0.564
+1   100000.0  >=1c  14         0.73         0.55         0.39      -0.538
+2   250000.0  >=1c  24         0.84         0.66         0.40      -0.544
+3   500000.0  >=1c  32         0.96         0.70         0.40      -0.487
+4  1000000.0  >=1c  40         1.00         0.70         0.38      -0.475
+5    50000.0  >=4c   4         0.51         0.33         0.43      -0.561
+6   100000.0  >=4c   6         0.46         0.30         0.34      -0.541
+7   250000.0  >=4c  11         0.66         0.47         0.28      -0.564
+8   500000.0  >=4c  16         0.75         0.60         0.40      -0.553
+9  1000000.0  >=4c  24         0.84         0.66         0.40      -0.544
+1 6 ['C 1 Comdty', 'JY1 Curncy', 'GC1 Comdty', 'NO1 Index', 'W 1 Comdty', 'BP1 Curncy'] dropped ['VG1 Index', 'AD1 Curncy', 'NG1 Comdty'] contracts {'C 1 Comdty': 2.97, 'JY1 Curncy': 1.71, 'GC1 Comdty': 2.55, 'NO1 Index': 2.3, 'W 1 Comdty': 1.62, 'BP1 Curncy': 1.45} sharpe 1990/2000/2010 0.46 0.3 0.34 maxdd -0.541
+4 2 ['C 1 Comdty', 'JY1 Curncy'] dropped ['GC1 Comdty'] contracts {'C 1 Comdty': 7.38, 'JY1 Curncy': 4.61} sharpe 1990/2000/2010 0.45 0.19 0.23 maxdd -0.649
+25000 1 9 sharpe90 0.64 sharpe10 0.31 FAIL: {'BP1 Curncy': 0.92, 'VG1 Index': 0.62, 'AD1 Curncy': 0.73}
+25000 4 3 sharpe90 0.48 sharpe10 0.36 FAIL: {'JY1 Curncy': 3.55, 'GC1 Comdty': 2.55}
+50000 1 12 sharpe90 0.72 sharpe10 0.41 FAIL: {'DU1 Comdty': 0.75, 'SFR5 Comdty': 0.61}
+50000 4 6 sharpe90 0.46 sharpe10 0.34 FAIL: {'JY1 Curncy': 3.42, 'W 1 Comdty': 3.25, 'BP1 Curncy': 2.89}
+100000 1 17 sharpe90 0.75 sharpe10 0.39 FAIL: {'CL1 Comdty': 0.84, 'SFR5 Comdty': 0.92, 'ER4 Comdty': 0.91, 'PE1 Curncy': 0.69}
+100000 4 9 sharpe90 0.64 sharpe10 0.31 FAIL: {'NG1 Comdty': 3.98, 'BP1 Curncy': 3.66, 'VG1 Index': 2.49, 'AD1 Curncy': 2.93}

@@ -1,0 +1,164 @@
+{
+ "checked": [
+  {
+   "claim": "Backtest reproduced: v5 SR 1.17, vol 21.4%, costs ~2.4%/yr, mean gross exposure 8.8x; v2 SR 0.92, vol 17.6%",
+   "verdict": "confirmed",
+   "evidence": "Independent re-run (verif_rendement/01_rerun.py) is bit-identical to rendement/daily.pkl (max abs diff 0.0). With 252-day annualisation: v5 SR 1.162, vol 21.25%. The data has 261 rows/yr (all weekdays), so the consistent annualisation gives SR 1.182 and vol 21.6%. Costs 2.46%/yr, mean exposure 8.78x, max 28x. The 252-vs-261 inconsistency explains 1.16 vs 1.17 and is immaterial."
+  },
+  {
+   "claim": "Sharpe decay. v5 by decade 2.03 / 1.34 / 0.47 / 0.64; since 2000 0.84, since 2010 0.54, since 2015 0.38, since 2023 -0.46. v2 similar.",
+   "verdict": "confirmed",
+   "evidence": "Recomputed exactly from the same series. Monthly-basis values are slightly lower (since 2000 0.81, since 2010 0.52, since 2015 0.37). Note that the previous monthly windows silently drop July 2026 because the month-end label 2026-07-31 is after END=2026-07-10."
+  },
+  {
+   "claim": "v5 rolling 5y Sharpe: median 1.16 overall, 0.59 since 2015, latest 0.03, lowest since 2019 (-0.01)",
+   "verdict": "corrected",
+   "correct_value": "Median 1.16-1.17, 0.59-0.60 since 2015, latest 0.028 (data end 2026-07-10, not 31/07/2026). It is the lowest since Nov 2019, which was -0.07 (Dec 2019 / Jan 2020 were -0.01).",
+   "evidence": "Own rolling 1260-day computation on mine.pkl"
+  },
+  {
+   "claim": "v5 excess max DD -54% (2022-09-27 -> 2025-05-15); still -43% at 2026-07-10; total max DD -47.6%, current -32%",
+   "verdict": "corrected",
+   "correct_value": "Excess -54.0% / current -43.1% (confirmed). Total incl. T-bill: max DD -47.8% and current -32.5%. The task context's -47.8% is right; -47.6% comes from the discount-yield cash approximation.",
+   "evidence": "Own computation with T-bill converted to bond-equivalent yield. Reality check: SG Trend (net) lost -29.6% in excess terms over the same window, so the drawdown is real, not a backtest artefact. v5 lost about 1.8x as much (beta about 1.5)."
+  },
+  {
+   "claim": "SG Trend net-of-fees, excess of T-bill: SR 0.33 since 2000 (4.2%/yr for 12.6% vol), 0.27 since 2010, 0.21 since 2015, -0.14 since 2023; SG CTA 0.33; BTOP50 0.43 / 0.32 / 0.26; AQR TSMOM 0.98 / 0.67 / 0.40 / 0.24",
+   "verdict": "confirmed",
+   "evidence": "Independent recomputation (02_funds.py): base 1000 on 1999-12-31 restored, cash = DTB3 converted to BEY and compounded per calendar day. SG Trend: daily 0.329 (0.335 with actual 261 rows/yr), monthly 0.328 / 0.272 / 0.205 / -0.153. SG CTA 0.316-0.326. BTOP 0.438 / 0.324 / 0.255. AQR 0.981 / 0.674 / 0.402 / 0.238. Cash subtraction is correct: SG and BTOP are funded total-return indices per provenance; AQR TSMOM is already excess of cash. 4.2%/yr is the ARITHMETIC excess; the geometric excess is 3.5%/yr, which matches the task context's '3.5%/yr'."
+  },
+  {
+   "claim": "SG Trend gross of fees (1-2% + 20%, HWM): SR 0.48-0.55 since 2000, 0.43-0.52 since 2010, 0.37-0.46 since 2015; fee drag 2.4-3.4%/yr",
+   "verdict": "corrected",
+   "correct_value": "With realistic ANNUAL incentive crystallisation, 1/20 to 2/20: 0.46-0.52 since 2000, 0.41-0.49 since 2010, 0.34-0.42 since 2015. With modern institutional 1/15: 0.44 / 0.39 / 0.33. Fee drag 2.0-3.5%/yr.",
+   "evidence": "03_fees.py re-implements the gross-up with an explicit HWM. Monthly crystallisation, as used by the previous agent, charges incentive fees on gains later given back. That overstates fees and inflates gross SR by about 0.03-0.04. The monthly-crystallisation results reproduce the previous numbers (0.49-0.56 / 0.43-0.51 / 0.37-0.45)."
+  },
+  {
+   "claim": "Ratio of fund gross SR to backtest SR: vs v5 0.58-0.67 since 2000 and 0.79-0.95 since 2010; vs v2 about 1.0-1.2 since 2010. The gap is concentrated in 1990-2009.",
+   "verdict": "confirmed",
+   "evidence": "Annual crystallisation, 1/20-2/20: vs v5 0.56-0.64 since 2000, 0.78-0.93 since 2010, 0.92-1.13 since 2015; vs v2 0.99-1.19 since 2010. Weekly regression of v5 on SG Trend: 2000-09 beta 1.10, alpha 22.5%/yr, IR 1.61; since 2010 beta 1.51, IR 0.57; since 2015 IR 0.39; since 2020 IR 0.47."
+  },
+  {
+   "claim": "Correlations: v5/SG Trend weekly 0.80; v5/S&P weekly -0.13, daily -0.07, monthly -0.10; v2/S&P -0.24 to -0.30",
+   "verdict": "confirmed",
+   "evidence": "Weekly 2000-2026: v5/SG 0.799, v5/ES -0.128, v2/ES -0.296. Since 1990: daily v5/ES -0.072, monthly -0.099. Additional: quarterly -0.23, annual -0.15. The negative correlation is stronger at quarterly horizon than the daily -0.08 used in the MC."
+  },
+  {
+   "claim": "74 trials counted, 53 trend-only on the same data, SR std 0.12",
+   "verdict": "confirmed",
+   "evidence": "Recounted from essais_comptes.csv: 53 trend-only, mean 0.915, sd 0.123. Important omission: 'Les deux' (1.171) is the MAXIMUM of all 53 trend-only trials (rank 1), the textbook selection-bias case."
+  },
+  {
+   "claim": "DSR of v5 over 1990-2026 is about 1.00 for N=20/50/74; SR0 0.23-0.30 (0.48-0.61 at sd 0.25); deflated SR 0.56-0.93; 'le Sharpe ne doit rien au hasard des essais'",
+   "verdict": "corrected",
+   "correct_value": "The numbers are right: DSR 1.000 (0.997 with sd 0.25, N=74, autocorrelation-adjusted). The interpretation is overstated. DSR only says the significance of SR>0 survives multiple testing; it does not say the 1.17 level is free of selection bias.",
+   "evidence": "Independent Bailey-Lopez de Prado implementation (04_dsr.py) on daily and monthly data, with and without a variance-ratio SE inflation, reproduces SR0 0.234 / 0.298 / 0.475 / 0.606 and DSR about 1. On level bias: v5 is the top trial; in-project selection alone inflates it by about SR0 (0.23-0.30), and literature-level selection is not counted (choice of trend following, Carver's rule set built on overlapping data). 'SR - SR0' is an ad-hoc heuristic, not a Bailey-LdP output."
+  },
+  {
+   "claim": "DSR since 2010: 0.84-0.89 (sd 0.12) or 0.39-0.60 (sd 0.25); since 2015: 0.22-0.70",
+   "verdict": "confirmed",
+   "evidence": "Own implementation, daily: since 2010 0.84-0.90 (sd 0.12) and 0.41-0.61 (sd 0.25); since 2015 0.23-0.70. Monthly data: 0.36-0.89 and 0.21-0.69. Caveat: trials were selected on the full sample, so applying N to sub-windows is a heuristic."
+  },
+  {
+   "claim": "Harvey-Liu haircuts (Bonferroni/Sidak, monthly t): 7-10% for 1990-2026 (t=6.6), 17-25% since 2000, 64-100% since 2010; HLZ t>3 requires SR 0.74 over 16.5y",
+   "verdict": "confirmed",
+   "evidence": "Recomputed: t 6.52, haircuts 7.1-10.4%; since 2000 t 4.20, 17.6-26.4%; since 2010 t 2.13, 68-100% (64% in previous run without July 2026); HLZ hurdle 0.74 since 2010, 0.58 since 2000, 0.50 full. Caveat: the HL haircut is defined for the sample on which selection occurred. On sub-windows it is a significance check, not a true haircut."
+  },
+  {
+   "claim": "v5 vs v2 improvement (v5 scaled to v2 vol, NW t): 3.3 / 2.1 / 1.2 / 0.7 / -0.2 for 1990 / 2000 / 2010 / 2015 / 2020; passes vs E[max t] = 2.25 at N=47",
+   "verdict": "corrected",
+   "correct_value": "The t-stats are confirmed and robust to the HAC lag: daily NW 10/63/252 gives 3.33 / 3.14 / 3.31 full sample, and monthly gives the same. The threshold is wrong: E[max] is not a significance hurdle. The 95% quantile of the max of 47 independent t's is 3.06. Sidak-adjusted p for t=3.33 is 0.02 (one-sided), 0.04 (two-sided): a narrow pass. Since 2000 (t 2.1) it fails.",
+   "evidence": "04_dsr.py plus HAC lag sensitivity script. The '+0.05 SR for v5 over v2' forward judgement remains reasonable."
+  },
+  {
+   "claim": "Scenario formulas: arithmetic excess = SR x vol (3.2/7.5/11.8%), geometric = SR x vol - vol^2/2 (0.9/5.2/9.5%), total with 3% cash 3.9/8.2/12.5%; v2 geometric 0.2/3.7/7.3%; -0.10 SR = -2.1 pt (v5) / -1.8 pt (v2)",
+   "verdict": "confirmed",
+   "evidence": "Arithmetic checked: 0.35x0.214 = 7.49%, minus 2.29% = 5.20%. The vol drag correctly uses daily variance, which drives the log growth of a daily-rebalanced strategy. Nits: 'total' adds a log rate to cash (8.2% log is about 8.5% CAGR, and the MC median is 8.3-8.8%). The haircut anchors 1.17x0.27 and 1.17/2 start from the DAILY SR. On a monthly basis (1.08) they give 0.29 / 0.54, about 8% lower, comparable to the monthly fund anchors."
+  },
+  {
+   "claim": "Kelly: optimal vol = SR; v5 at SR 0.15/0.35/0.55 = 1.43/0.61/0.39 Kelly; at 0.35 captures 85% of max growth (5.2% vs 6.1%); bootstrap CRRA gamma=2 gives 12.5-15%, gamma=3 gives 7.5-10%, DD constraint gives about 10% vol",
+   "verdict": "confirmed",
+   "evidence": "0.214/0.35 = 0.61; (0.0749-0.0229)/(0.35^2/2) = 0.85. The analytic Gaussian optimum is SR/gamma (17.5% for gamma=2, 11.7% for gamma=3 at SR 0.35). The bootstrap optima are lower because of fat tails and SR uncertainty, which is consistent. The CE formula in 06_kelly.py is correct despite a redundant line."
+  },
+  {
+   "claim": "MC (stationary bootstrap, 60-day blocks), v5 10y central: median CAGR 8.3%, after-tax 5.6%, P(loss) 14%, P(<cash) 25%, median max DD -45%, worst 5% -68%; pessimistic/optimistic 3.8/13.1%. Calibration: -30% bootstrap vs -28% historical median 10y max DD.",
+   "verdict": "confirmed",
+   "evidence": "Own Politis-Romano implementation (05_mc.py, 05b_seed.py) with the same 60-day block: median 8.3-8.8% across seeds (MC noise about ±0.3 pt), P(loss) 14-15%, P(<cash) 25%, median DD -45%, p5 DD -68/-69%, P(DD<-50%) 36-37%. Historical rolling 10y median max DD -27.6%; bootstrap at SR 1.17 gives -30.1%. The tax loop (PFU on annual gains with loss carry-forward) is coded correctly."
+  },
+  {
+   "claim": "Bootstrap risk is understated because of autocorrelation: VR 1.25 at 21-63 days and 1.65 at 252 days; effective monthly/annual vol 23-27%",
+   "verdict": "corrected",
+   "correct_value": "Overlapping VR: 1.18 (21d), 1.25 (63d), 1.51 (252d), 1.89 (504d). Calendar-year sums give (26.6/21.6)^2 = 1.52, so 1.65 overstates. Monthly vol 23.6%, annual about 26%. Quantified impact, central SR 0.35 with 250-day blocks (annual vol 25.3% vs 24.2% at 60-day blocks): P(loss 10y) 17% vs 14%, median max DD -48% vs -45%, worst 5% -75% vs -69%, P(DD<-50%) 45% vs 35%. Pessimistic SR 0.15: median DD -54%, P(DD<-50%) 58%.",
+   "evidence": "verif_rendement/mc_block_sensitivity.csv; lag-1 daily autocorrelation of v5 is 0.085, likely from non-synchronous closes. Missed implication: the full-backtest Sharpe at investor horizons is lower than 1.17: monthly 1.08, calendar-year sums 0.95, VR-implied annual 0.96."
+  },
+  {
+   "claim": "50/50 equity + v5 (central): vol 13%, ex-ante SR about 0.42 > each alone; median 7.8%, P(loss) 2.9%, median DD -24%; 'combining trend with equities dominates either alone'",
+   "verdict": "corrected",
+   "correct_value": "SR 0.42 confirmed: mean 5.5%, vol 12.98% at rho -0.08. The combination dominates on SR, drawdown and P(loss), NOT on median return (7.8% vs 8.3% for v5 alone). The central equity assumption (3.5% arithmetic excess, about 2.1% geometric, 5.4% total median) is about 1.3-1.5 pt below the cited JPM LTCMA 2026 (6.7% compound vs 3.1% cash, about 3.6% geometric excess). That tilts the 'trend alone vs equity alone' comparison toward trend; the mix conclusion gets stronger, not weaker.",
+   "evidence": "Analytic check of mix moments; the MC mix figures are consistent with the analytic log growth (5.5 - 0.85 + 3 = 7.65%)."
+  },
+  {
+   "claim": "Literature: McLean-Pontiff -26% out-of-sample / -58% post-publication",
+   "verdict": "confirmed",
+   "evidence": "Matches the published JF 2016 abstract (from memory; the WebSearch budget for this session was exhausted, 200/200, so no live re-check). https://ivey.uwo.ca/media/3775549/pontiff.pdf"
+  },
+  {
+   "claim": "Literature: Suhonen-Lennkh-Perez 2017, backtest median SR 1.20 -> live 0.31 (-73%)",
+   "verdict": "confirmed",
+   "evidence": "Matches my recollection of the JPM 2017 paper (215 bank alternative-beta indices). Not re-searched (budget exhausted). Caveat: the sample is bank risk-premia indices, not CTAs, so applying 73% to a decades-old published trend rule is a conservative anchor."
+  },
+  {
+   "claim": "Literature: Hurst-Ooi-Pedersen 2017, net-of-2/20 SR about 0.76 since 1880, positive every decade",
+   "verdict": "unverifiable",
+   "evidence": "Consistent with my recollection (net SR about 0.76-0.77, positive in every decade), but no live check was possible. It is itself a simulated backtest with assumed costs, so it supports persistence rather than a forward SR level."
+  },
+  {
+   "claim": "Literature: Babu et al. (AQR 2020), SG Trend SR 0.05 in 2010-18 vs 0.28 since 2000, attributed to weaker trends",
+   "verdict": "corrected",
+   "correct_value": "In our data SG Trend SR is 0.05 for 2009-2018 (0.10 for 2010-2018) and 0.28 for 2000-2018, not 'since 2000'",
+   "evidence": "Own computation on SG_Trend_Index_daily minus T-bill. The attribution (fewer and smaller trends, not lower trend-capture efficacy) matches my recollection of the paper."
+  },
+  {
+   "claim": "Literature: Rej-Seager-Bouchaud (CFM) backtest discount factor about 2 (arXiv 1902.01802); Carver 'SR durably >1 rarely achieved'",
+   "verdict": "unverifiable",
+   "evidence": "arXiv is blocked by the proxy (export.arxiv.org 403) and the WebSearch budget is exhausted. Neither figure was used directly in the scenario numbers."
+  },
+  {
+   "claim": "ECB deposit rate 2.50% since 16/09/2026 (EUR cash 2.5%)",
+   "verdict": "unverifiable",
+   "evidence": "Disputed. The operations agent's file (audit/operations/diy_vs_fund_scenarios.csv) records conflicting search results, '2.25-2.50% in Sept 2026', including a Banco de Espana page titled 'el BCE mantiene sin cambios los tipos de interes en septiembre' (https://www.bde.es/wbe/en/inicio/noticias/el-bce-mantiene-sin-cambios-los-tipos-de-interes-en-septiembre.html). To my knowledge the DFR was 2.00% from June 2025 into 2026. The orchestrator should treat EUR cash as 2.0-2.5% minus the broker haircut."
+  },
+  {
+   "claim": "French PFU 2026 = 31.4% (12.8% IR + 18.6% PS)",
+   "verdict": "confirmed",
+   "evidence": "Corroborated by two independent sources found by agents (https://blog.nalo.fr/flat-tax; a pofo repo file on raw.githubusercontent with PS 18.6% for 2026) and consistent with the LFSS 2026 CSG increase of +1.4 pt on capital income."
+  },
+  {
+   "claim": "JPM 2026 LTCMA: US large cap 6.7%, US cash 3.1%",
+   "verdict": "unverifiable",
+   "evidence": "Plausible from memory, but not re-checked (search budget exhausted). If correct, these are compound returns, which implies about a 5% arithmetic equity excess; see the mix claim."
+  },
+  {
+   "claim": "Central forward SR for v5 of 0.35 before retail frictions (range 0.15-0.55), about 5% geometric excess, about 8% total, about 5.5% after PFU",
+   "verdict": "confirmed",
+   "evidence": "Defensible against the corrected anchors: fund gross-of-fees SR since 2015 is 0.34-0.42, since 2010 0.41-0.49; v5 since 2015 is 0.37-0.38; monthly-basis haircuts give 0.29 / 0.54. Caveats: (a) the only true post-publication window (AFTS published 2023) shows SR -0.46, with SE about 0.53 over 3.5 years, so it is uninformative but points down; (b) a 'trend premium gone' case (SR 0) deserves explicit weight. The MC already contains it: SR 0 gives median 10y CAGR 0.5%, after tax -0.5%, P(loss) 47%, median DD -56%."
+  }
+ ],
+ "problems": [
+  "Fee add-back uses MONTHLY incentive-fee crystallisation, which overstates fees and therefore the gross-of-fee fund SR by about 0.03-0.04. Corrected SG Trend gross SR with annual crystallisation and 1/20-2/20 fees: 0.46-0.52 since 2000, 0.41-0.49 since 2010, 0.34-0.42 since 2015 (0.44 / 0.39 / 0.33 at 1/15).",
+  "DSR interpretation is overstated: 'le Sharpe ne doit rien au hasard des essais'. DSR about 1 only means SR>0 survives the trial count. 'Les deux' is the top of 53 trend-only trials (1.171 vs mean 0.915, sd 0.12), so its LEVEL is inflated by roughly 0.25-0.30 from in-project selection alone. Literature-level selection is not counted.",
+  "The v5 vs v2 improvement test compares t=3.3 with E[max t]=2.25, which is not a significance threshold. The 95% quantile of the max of 47 independent t's is 3.06; Sidak-adjusted p is 0.02-0.04. It is a narrow pass on the full sample only.",
+  "Variance ratio misreported: 1.65 at 252 days should be about 1.51 (overlapping; calendar-year sums give 1.52). Missed implication: the daily SR overstates investor-horizon SR. The full backtest SR is 1.16-1.18 daily, 1.08 monthly and about 0.95 at annual horizon. Haircut anchors built on 1.17 should start from about 1.08 (monthly basis), giving 0.29 / 0.54 instead of 0.32 / 0.59.",
+  "MC tail risk is understated more than stated. With 250-day blocks (closer to the historical annual vol of about 26%), the central v5 10y figures become: P(loss) 17% (vs 14%), median max DD -48% (vs -45%), worst-5% DD -75% (vs -68%), P(DD<-50%) 45% (vs 37%).",
+  "Total-return figures mix a log rate with cash: 'total geo' 8.2% is about 8.5% CAGR. This is small, but keep one convention.",
+  "Mix conclusion wording: the 50/50 mix dominates on SR, drawdown and P(loss), not on median return (7.8% vs 8.3%). The central equity assumption (3.5% arithmetic excess) is about 1.3-1.5 pt below the cited JPM LTCMA (6.7% compound); this flatters trend alone versus equity alone.",
+  "Babu et al. window mislabelled: SR 0.05 corresponds to 2009-2018 and 0.28 to 2000-2018 in our data (2010-2018 gives 0.10).",
+  "ECB 2.50% since 16/09/2026 is disputed: the operations agent found conflicting sources (2.25-2.50%, and a BdE page saying rates were unchanged in September). The EUR cash rate should be given as a range (about 2.0-2.5% before IBKR's benchmark-minus-0.5% haircut and the sub-10k / sub-100k NAV rules).",
+  "Literature figures for Rej-Seager-Bouchaud (factor about 2), Carver, HOP 0.76 and JPM LTCMA could not be re-verified: WebSearch budget exhausted (200/200), arXiv blocked by the proxy. McLean-Pontiff (26%/58%) and Suhonen et al. (73%) match my recollection.",
+  "Rolling-5y nits: 'valeur au 31/07/2026' is the month label for data ending 2026-07-10; the lowest value since 2019 is -0.07 (Nov 2019), not -0.01. Total max DD is -47.8% (not -47.6%), current total DD -32.5%.",
+  "The Harvey-Liu haircuts and DSR on sub-windows (since 2010/2015) reuse the full-sample trial count. They are useful significance checks but not proper haircuts, since selection happened on 1990-2026.",
+  "Scenario range lacks an explicit 'trend premium gone' case. SR 0 is already in monte_carlo.csv: v5 10y median CAGR 0.5%, after tax -0.5%, P(loss) 47%, P(<cash) 62%, median DD -56%. It should be shown, and given weight, next to the 0.15 'pessimistic' case.",
+  "CROSS-AGENT INCONSISTENCY for the orchestrator. audit/operations/diy_vs_fund_scenarios.csv uses DIY v5 'sharpe_net' 0.20 / 0.45 / 0.70 (central 0.45, NET of costs), above rendement's 0.35 BEFORE retail frictions. It also adds ARITHMETIC excess to cash: 9% + 2.5% = 11.5% 'total pre-tax'. At 20% vol the geometric equivalent is about 2 pt lower (about 9.5%). These must be reconciled before writing the user-facing return estimate."
+ ],
+ "summary": "Adversarial check of the 'rendement' audit, using independent re-implementations (scripts and CSVs in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_rendement/: 01_rerun.py, 02_funds.py, 03_fees.py, 04_dsr.py, 05_mc.py, 05b_seed.py, fees_addback_check.csv, dsr_check.csv, mc_block_sensitivity.csv). The core numbers hold up.\n- Backtest: the re-run of v5/v2 is bit-identical; the decade and window Sharpes, drawdowns (-54% excess, -47.8% total, still -43% / -32.5% at 2026-07-10) and correlations are confirmed.\n- Real-fund Sharpes (SG Trend 0.33 / 0.27 / 0.20 / -0.15, BTOP50, AQR TSMOM) are confirmed; the cash subtraction and annualisation are correct. SG Trend's 4.2%/yr excess is arithmetic; geometric is 3.5%.\n- DSR and Harvey-Liu re-implemented independently: same values.\n- Block bootstrap re-implemented: central v5 10y results reproduced (median 8.3-8.8% depending on seed, P(loss) 14%, median max DD -45%).\n- Kelly and scenario arithmetic are correct.\n\nCorrections:\n1. Fee add-back with monthly crystallisation inflates the gross fund SR by about 0.03-0.04. Corrected: 0.46-0.52 since 2000, 0.41-0.49 since 2010, 0.34-0.42 since 2015.\n2. DSR about 1 only proves SR>0. 'Les deux' is the top of 53 trend-only trials (1.171 vs mean 0.915), so its level is inflated by about 0.25-0.30.\n3. The v5 vs v2 test used E[max] as a hurdle. The proper 95% hurdle is about 3.06; t=3.3 passes narrowly on the full sample only.\n4. VR(252) is 1.51, not 1.65. The investor-horizon Sharpe of the backtest is about 1.08 monthly and about 0.95 annual, not 1.17.\n5. With 250-day blocks the risk figures are worse: P(loss 10y) 17%, median DD -48%, P(DD<-50%) 45%.\n6. Babu window labels are off; the 50/50 mix dominates on risk-adjusted terms, not on median return; the central equity assumption is below the cited JPM LTCMA.\n7. ECB 2.50% is disputed by the operations agent's findings.\n\nThe central forward SR of 0.35 before frictions (about 5% geometric excess, about 8% total, about 5.5% after the 31.4% PFU) remains defensible. An SR-0 case should be shown explicitly.\n\nKey cross-agent issue: the operations agent uses a central net SR of 0.45 and arithmetic totals (11.5%) for DIY v5. That conflicts with this audit's 0.35 before frictions and its geometric framing, and must be reconciled. Literature checks are limited: WebSearch budget exhausted and arXiv blocked; McLean-Pontiff and Suhonen match memory, the rest is unverifiable here."
+}

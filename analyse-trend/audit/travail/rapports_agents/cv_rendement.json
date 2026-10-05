@@ -1,0 +1,195 @@
+{
+ "key": "rendement",
+ "summary": "CROSS-CHECK OF THE FORWARD-RETURN MONTE CARLO, AND THE FINAL EXPECTED-RETURN TABLE (French EUR investor, PFU 31.4 %)\nFolder: /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/. No project file was modified.\n\n**Bottom line**\n- The critic's Monte Carlo has no coding errors. My own independent engine, run on the critic's inputs, reproduces its after-tax medians: 1.32 / 2.33 / 3.08 % against 1.33 / 2.33 / 3.04 %. Seed noise on a median is about ±0.12 point.\n- Fixing the assumptions moves DIY variant 5 (10 years, about 21 % vol, central case) to 1.8 / 2.8 / 3.4 % after tax at $100k / $250k / $1M, from the critic's 1.3 / 2.3 / 3.0 %. Drawdowns are smaller (median about −48 % instead of −52 %).\n- The ranking does not change:\n  - The UCITS trend ETF gives 3.5 % after tax with half the drawdown. It beats DIY at $100k and $250k and roughly equals it at $1M.\n  - DIY at $100k is about equal to after-tax cash (1.6 %).\n  - For this investor, trend following earns its place as a diversifier. A 70/30 equity/trend-ETF mix has the same median as 100 % equities (4.5 vs 4.4 % in a CTO). It cuts the chance of a 10-year loss from 16 % to 6 % and the median max drawdown from −40 % to −26 %.\n\n**1. Bugs and questionable assumptions**\n\n*critic/mc_tiers.py (the code is correct; these are assumption problems)*\n- **(a) Wrong shock shape for the subsets.** It uses the full 84-market v5 shocks for 14 / 24 / 40-market subsets.\n  - The full v5 has a variance ratio at 252 days of 1.51 since 1990, not the 1.65 the critic states. It is 1.67 within 2010–26 only, driven by the 2022 boom and 2023–25 bust.\n  - Its effective 10-year vol is 26 % against a 21.4 % input.\n  - The subsets' own series have variance ratios of 0.87 / 1.00 / 1.12 and effective vol of 20–23 %.\n  - The critic's choice inflates the dispersion: the 10th-percentile CAGR is about 2.5 points worse and the median max drawdown about 7 points deeper. The median moves only 0.1–0.3 point.\n- **(b) Cash shortfall modelled as a constant % inside the single tax pool.**\n  - In reality IBKR interest is investment income (RCM): it is taxed every year and cannot be offset against futures losses.\n  - The no-interest-on-the-first-10k and pro-rata-below-100k-NAV rules depend on the account's path.\n  - The subset margin averages about 17 % (20-market subset 17 %, p95 28 %), not 23 %.\n  - My steady-state shortfall against €STR is 0.79 / 0.67 / 0.61 %, against the critic's 0.93 / 0.79 / 0.72 %.\n  - Net effect on the result: about ±0.15 point (the corrections roughly offset).\n- **(c) Fixed costs.** They are treated as a % of current capital and implicitly tax-deductible. Under the PFU they are not deductible. Modelled as fixed dollars they bite harder after a drawdown. Effect: 0.15 point or less.\n- **(d) €STR 2.3 %.**\n  - The ECB raised its deposit rate to 2.50 % from 16 Sep 2026, after a June hike. That settles the audit's dispute: two hikes in 2026.\n  - €STR was 2.19 % on 9 Sep with the deposit rate at 2.25 %, so it is about 2.43 % now.\n  - The 10-year €STR swap was about 2.9 % in June–July 2026.\n  - I use 2.4 % with a ±0.5 band.\n- **(e) Execution-lag haircut.** One extra day of lag costs −0.061 to −0.064 Sharpe for the full 84 markets (confirmed). For the subsets it costs only −0.015 to −0.037 (lag_check.csv). The critic's subset Sharpes are therefore about 0.02–0.03 too conservative.\n- **(f) 12 % vol case.** It used the same Sharpe (no granularity penalty) and the same cash shortfall. Margin halves at 12 % vol, so the shortfall should fall too.\n- **(g) ETF block.** It used v5 shocks; a fund proxy (the DBi replica) is more appropriate.\n- **(h) Unused loss carry-forward.** It is valued at 0 at the horizon. That is conservative: under BOFiP, article 150 ter losses are the same nature as article 150-0 A gains, so they can offset QQQ gains.\n- **(i) Max drawdown** is measured on the pre-tax path. Minor.\n\n*rendement/05_mc.py*\n- Uses USD cash at 3.0 % for an EUR investor.\n- Its Sharpes of 0.15 / 0.35 / 0.55 are before retail frictions. Its 5.6 % after-tax central is therefore not a number an investor can get.\n- Equity gains are taxed every year, as if realised. That is wrong for an accumulating ETF held to sale.\n- The 50/50 mix is rebalanced daily, with no tax on rebalancing.\n- Equities are in USD, with a central of 3.5 % excess return over 3 % USD cash. That sits below the JPMorgan long-term assumptions.\n- The 60-day block length is acceptable for subset-shaped shocks; the block-length sensitivity is ±0.3 point.\n\n**2. Method (my re-implementation)**\n- Bootstrap: circular stationary bootstrap with a mean block of 126 days, 5,000 paths, horizons of 10 and 5 years, common random numbers across scenarios.\n  - DIY: each tier's own fractional-subset series, 1990–2026.\n  - ETF: the iMGP DBi replica, 2000–26.\n  - Equities: S&P in EUR (ES1/EC1) and, as a variant, Nasdaq-type (NQ1/EC1), resampled jointly with the replica so the crisis correlation is kept.\n- Each path is re-centred so that the arithmetic Sharpe equals the scenario Sharpe.\n- DIY account mechanics:\n  - 40 % of NAV kept as cash at IBKR at 21 % vol (25 % at 12 % vol); the margin part earns 0.\n  - The rest earns €STR − 0.5 % above $10k, pro-rata below $100k NAV.\n  - Everything else sits in a XEON-type fund at €STR − 0.12 %.\n  - Fixed costs of $500 / $625 / $1,000 a year, not deductible.\n- DIY tax:\n  - Futures plus money-fund gains are realised and taxed every year, with a 10-year carry-forward.\n  - IBKR interest is taxed every year with no offset.\n- ETFs: tax only at sale. Average-cost basis when the mix is rebalanced.\n- Real returns use 2 % inflation.\n- Forward Sharpes:\n  - I keep the critic's grid (0.00/0.20/0.40, 0.03/0.24/0.43, 0.05/0.27/0.47).\n  - My own anchors give a central about 0.03–0.05 higher (0.25 / 0.28 / 0.31). That gives 10-year after-tax medians of 2.4 / 3.2 / 3.8 % (alt_central_sr.csv).\n- Granularity penalty at 12 % vol (an account behaves like the tier at capital × 12/21.4):\n  - $100k behaves like the $50k tier (11 markets). That tier's Sharpe has historically been 0.07–0.17 below the 14-market one, so I use −0.09 / 0.11 / 0.31.\n  - $250k behaves like the $100k tier: 0.00 / 0.20 / 0.40.\n  - $1M behaves like the $500k tier, whose history is as good as $1M's: 0.05 / 0.27 / 0.47.\n- ETF: Sharpe 0.10 / 0.25 / 0.40 net, 12 % vol. That vol is supported by DBMF's realised 12.3 %.\n- Equities in EUR, unhedged, median pre-tax compound return 3.5 / 6.0 / 8.0 %, effective vol about 16.5 % for the S&P type.\n  - JPMorgan's 2026 long-term assumptions put US large caps at 6.7 % compound in USD with 16.5 % vol.\n  - Vanguard (VCMM, end-2025) gives 3.9–5.9 % for US equities; Research Affiliates is about 3.4 %.\n  - I take off about 0.6 point for currency and 0.1 point for fees.\n\n**3. FINAL table: 10 years, central scenario**\nEach cell gives median after-tax CAGR [10th, 90th percentile]; real median at 2 % inflation; P(nominal loss); P(below after-tax cash); median / worst-decile max drawdown in nominal terms (real-terms drawdowns are about 2–5 points deeper).\n\n| Case | After-tax CAGR [p10, p90] | Real median | P(loss) | P(below cash) | Max drawdown median / worst decile |\n|---|---|---|---|---|---|\n| DIY $100k @21 % | 1.8 % [−5.6, 8.4] | −0.2 % | 37 % | 49 % | −48 / −67 % |\n| DIY $250k @21 % | 2.8 % [−5.0, 9.7] | +0.8 % | 32 % | 43 % | −48 / −67 % |\n| DIY $1M @21 % | 3.4 % [−4.6, 10.8] | +1.4 % | 29 % | 38 % | −48 / −66 % |\n| DIY $100k @12 % | 1.0 % [−3.0, 4.6] | −0.9 % | 36 % | 58 % | −30 / −45 % |\n| DIY $250k @12 % | 2.2 % [−1.7, 5.8] | +0.2 % | 22 % | 41 % | −28 / −41 % |\n| DIY $1M @12 % | 3.0 % [−1.2, 6.9] | +1.0 % | 17 % | 32 % | −28 / −41 % |\n| UCITS ETF (iMGP DBi R EUR HP, LU3359622902, TER 0.75 %) | 3.5 % [0.1, 7.4] | +1.4 % | 9.5 % | 26 % | −25 / −36 % |\n| Cash (money fund at €STR 2.4 %, taxed at sale) | 1.6 % | −0.4 % | — | — | — |\n| 100 % US equities in CTO | 4.4 % [−1.7, 10.2] | +2.4 % | 16 % | 26 % | −40 / −58 % |\n| 100 % US equities in PEA | 5.1 % | | | | |\n| 70/30 equities / trend ETF, CTO, rebalanced yearly | 4.5 % [0.7, 8.3] | +2.4 % | 6.3 % | 16 % | −26 / −38 % |\n| 70/30, equities in PEA + ETF in CTO, no rebalancing | 4.8 % | | 7.3 % | | |\n| 100 % Nasdaq-type (25 % vol) | 4.4 % [−5.1, 12.3] | | 25 % | | median −51 % |\n| 70/30 Nasdaq-type / trend ETF | 4.6 % [−1.0, 9.7] | | 13.5 % | | −34 / −54 % |\n\nPessimistic / optimistic 10-year after-tax medians:\n\n| Case | Pessimistic | Optimistic |\n|---|---|---|\n| DIY $100k @21 % | −1.8 % | 5.2 % |\n| DIY $250k @21 % | −1.0 % | 6.1 % |\n| DIY $1M @21 % | −0.5 % | 6.9 % |\n| UCITS ETF | 2.1 % | 5.0 % |\n| 100 % equities, CTO | 2.5 % | 6.0 % |\n| 70/30 mix | 2.7 % | 6.0 % |\n\n5-year central:\n\n| Case | After-tax median | P(loss) | Median max drawdown |\n|---|---|---|---|\n| DIY $100k / $250k / $1M @21 % | 1.6 / 2.8 / 3.4 % | 41 / 36 / 34 % | about −38 % |\n| UCITS ETF | 3.3 % | 18 % | −20 % |\n| 100 % equities, CTO | 4.6 % | 22.5 % | |\n| 70/30 mix | 4.4 % | 13 % | −21 % |\n| Cash | 1.6 % | | |\n\nAt 21 % vol a DIY account has a 26–30 % chance of falling below 60 % of its starting capital at some point. At $100k that means dropping below what the 14-market subset needs.\n\n**4. What drives the result (10 years, central)**\n- **Forward Sharpe dominates.** ±0.1 Sharpe moves the DIY median by ±1.7 points a year, the ETF by ±1.0 and the 70/30 mix by ±0.3. Another −0.05 of execution lag costs −0.9 point.\n- **€STR ±0.5 %** moves DIY by ±0.3, the ETF by ±0.4, cash by ±0.35 and the mix by ±0.12. It barely changes P(below cash).\n- **Fixed costs and time at $100k.**\n  - Lean data ($1,005 a year) costs −0.5 point; minimal ($144) adds +0.35.\n  - Monetised time (80 h × €25) costs −2.5 points at $100k, −0.9 at $250k and −0.2 at $1M.\n- **Shock choice.** Using the full v5 shocks lowers the median by 0.1–0.2, makes the 10th percentile about 2.5 points worse and the median drawdown about 7 points deeper.\n- **Block length** 63 / 252 days: −0.3 / −0.1 point.\n- **Tax.**\n  - Using the loss carry-forward against QQQ gains adds +0.6 point and cuts P(loss) by 7 points.\n  - ETF tax deferral is worth about 0.3 point a year compared with yearly realisation.\n  - A PEA instead of a CTO for equities adds about +0.7 point.\n- **Mix weights.**\n  - 80/20: median 4.5 %, P(loss) 10 %.\n  - 60/40: 4.4 %, 3.7 %.\n  - 50/50: 4.2 %, 1.8 %, median drawdown −21 %.\n- **Equity vol** (18 vs 21.5 % input) changes the risk figures, not the medians.\n\n**Other checks**\n- Ethanol / iron-ore Sharpes (1.115 / 0.762 / 0.411 / 0.266) reproduced exactly.\n- \"Composition luck\" holds only partly. Since 2023-07 the $50k and $100k subsets show Sharpe +0.41 and +0.37, but the $250k subset shows −0.36 and the $1M subset −0.16 (the full system −0.43).\n\n**Caveats**\n- The forward Sharpes are judgement.\n- The iMGP DBi EUR-hedged class launched on 13 May 2026, so it is tiny and carries closure risk.\n- No requalification as BNC (non-commercial profits) is modelled.\n- EUR/USD on DIY P&L is ignored.\n- The 2 % inflation assumption is below the ECB's 3.0 % projection for 2026.\n\n**Sources**\n- ECB deposit rate 2.50 %: https://cryptobriefing.com/ecb-raises-interest-rates-september-2026/ and https://www.la-francaise.com/en-dk/investor/ecb-another-hike-with-no-commitment-on-what-follows.html\n- €STR 2.19 % on 9 Sep: https://www.global-rates.com/en/interest-rates/ester/historical/2026/\n- 10-year €STR swap: https://www.bluegamma.io/swap-rates/estr-swap-rates/10-year-estr-swap-rate\n- JPMorgan 2026 long-term assumptions, 6.7 %: https://privatebank.jpmorgan.com/nam/en/insights/markets-and-investing/tmt/30-years-of-foresight-the-2026-ltcmas-in-focus and https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/ltcma-2026-us-matrix_usd.pdf\n- Vanguard: https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vemo-return-forecasts.html\n- Research Affiliates (secondary source): https://www.daytrading.com/expected-real-returns\n- BOFiP, same-nature losses: https://bofip.impots.gouv.fr/bofip/2841-PGP.html/identifiant%3DBOI-RPPM-PVBMI-20-10-40-20230619\n- PEA social charges 18.6 %: https://www.auguste-patrimoine.fr/blog/pea-et-hausse-de-la-csg-en-2026-impact-calcul-et-strategies-de-retrait\n- Livret A 1.7 %: https://www.info.gouv.fr/actualite/augmentation-du-taux-du-livret-a-a-compter-du-1er-aout-2026\n- iMGP DBi EUR-hedged class: https://extraetf.com/etf-profile/LU3359622902",
+ "checked": [
+  {
+   "claim": "Critic MC: 10y median after-tax CAGR 1.3/2.3/3.0 % at $100k/250k/1M (21% vol, central SR 0.20/0.24/0.27)",
+   "verdict": "corrected",
+   "evidence": "Code arithmetic reproduced with independent engine (03_replicate_critic.py: 1.32/2.33/3.08; seed s.d. of median 0.12 pt, mc_seed_noise.csv). Correcting assumptions (own-subset shocks, ESTR 2.4%, path-dependent IBKR interest, RCM taxed without offset, non-deductible fixed $, subset margin 17%/40% cash at IBKR) gives 1.8/2.8/3.4 (final_table.csv, reconcile.csv waterfall).",
+   "correct_value": "1.8 / 2.8 / 3.4 % (p10-p90: -5.6..8.4 / -5.0..9.7 / -4.6..10.8)"
+  },
+  {
+   "claim": "Critic: P(nominal loss over 10y) 42/36/32 %, median maxDD about -52 %, worst-decile about -74/-72/-71 %",
+   "verdict": "corrected",
+   "evidence": "Using each tier's own subset return shape instead of full-84 shocks (variance ratio 252d 0.87/1.00/1.12 vs 1.51); final_table.csv",
+   "correct_value": "P(loss) 37/32/29 %; median maxDD -48 %; worst decile -67/-67/-66 %"
+  },
+  {
+   "claim": "Critic: variance ratio of v5 at 252 days is 1.65, so long-horizon risk is understated by 60-day bootstraps",
+   "verdict": "corrected",
+   "evidence": "shock_properties.csv and 02_shapes.py: v5_84 VR252 = 1.51 over 1990-2026 (1.67 only within 2010-26, 0.66 in the 1990s); retail subsets 0.87 (100k), 1.00 (250k), 1.12 (1M); effective 10y vol of bootstrap paths 26% for v5_84 vs 20-23% for subsets (effective_vol.csv)",
+   "correct_value": "1.51 for full v5; not applicable to the retail subsets (<=1.12)"
+  },
+  {
+   "claim": "Critic: one extra day of execution lag costs about 0.06 Sharpe",
+   "verdict": "corrected",
+   "evidence": "06_lag_check.py / lag_check.csv: full 84 markets -0.061/-0.064/-0.064/-0.064 (1990/2000/2010/2015) confirmed; 14-market subset -0.021/-0.020/-0.015/-0.027; 40-market subset -0.030/-0.029/-0.026/-0.037",
+   "correct_value": "-0.06 for full v5, only -0.015 to -0.037 for the retail subsets"
+  },
+  {
+   "claim": "Critic: v5 Sharpe without CUA1 and SCO1 = 1.115/0.762/0.411/0.266 (1990/2000/2010/2015)",
+   "verdict": "confirmed",
+   "evidence": "series_sharpes.csv: v5_82_exCUA_SCO 1.115/0.762/0.411/0.266, rebuilt with simulation/engine.system (bit-identical to operations/v5_net.pkl for the 84-market case)"
+  },
+  {
+   "claim": "Critic: since 2023-07 small subsets gained (Sharpe about +0.39) while the full system lost (composition luck)",
+   "verdict": "corrected",
+   "evidence": "series_sharpes.csv, Sharpe since 2023-07: sub_50k +0.41, sub_100k +0.37, but sub_250k -0.36, sub_500k -0.12, sub_1M -0.16, full v5 -0.43",
+   "correct_value": "true only for the $50k-100k subsets; the $250k and $1M subsets also lost"
+  },
+  {
+   "claim": "EUR cash (ESTR) 2.3 %; ECB 2026 rate decisions disputed in the audit",
+   "verdict": "corrected",
+   "evidence": "ECB raised the deposit rate to 2.50% effective 16 Sep 2026 after a June hike (https://cryptobriefing.com/ecb-raises-interest-rates-september-2026/, https://www.la-francaise.com/en-dk/investor/ecb-another-hike-with-no-commitment-on-what-follows.html); ESTR 2.19% on 9 Sep 2026 with the deposit rate at 2.25% (https://www.global-rates.com/en/interest-rates/ester/historical/2026/); 10y ESTR OIS about 2.9% (https://www.bluegamma.io/swap-rates/estr-swap-rates/10-year-estr-swap-rate)",
+   "correct_value": "ESTR about 2.43% spot; 2.4% used as 10-year average (band 1.9-2.9%)"
+  },
+  {
+   "claim": "Critic: EUR cash shortfall vs ESTR 0.93/0.79/0.72 % at $100k/250k/1M",
+   "verdict": "corrected",
+   "evidence": "Steady-state IBKR rule (benchmark-0.5% above $10k, pro-rata below $100k NAV, 0% on commodity-segment margin) with subset margin 17% (operations margin_84_vs_20.csv) and 40% of NAV at IBKR, rest in a money fund at ESTR-0.12%. The net effect on the result is about ±0.15 pt because the interest is also taxed without offset (reconcile.csv steps 3-4).",
+   "correct_value": "about 0.79 / 0.67 / 0.61 % (path-dependent; higher after drawdowns at $100k)"
+  },
+  {
+   "claim": "Critic: at 12% vol the after-tax medians are 1.5/2.2/2.6 % (no granularity penalty)",
+   "verdict": "corrected",
+   "evidence": "With the granularity penalty (100k uses the 50k-tier SR -0.09/0.11/0.31 and shocks; 250k uses the 100k tier; 1M uses the 500k tier) and the lower margin/cash shortfall: final_table.csv",
+   "correct_value": "1.0 / 2.2 / 3.0 % (P(loss) 36/22/17 %, median maxDD -30/-28/-28 %)"
+  },
+  {
+   "claim": "UCITS trend ETF (iMGP DBi) at Sharpe 0.25, 12% vol: about 3.4 % after tax",
+   "verdict": "confirmed",
+   "evidence": "Re-simulated with DBi-replica shocks (2000-26), ESTR 2.4%, PFU at exit: median 3.5% [0.1, 7.4], P(loss) 9.5%, maxDD median -25%. EUR-hedged accumulating class LU3359622902, TER 0.75%, launched 13 May 2026 (https://extraetf.com/etf-profile/LU3359622902). 12% vol supported by DBMF realised 12.3% (operations/funds_vs_v5_track_records.csv)",
+   "correct_value": "3.5 % (pess/opt 2.1 / 5.0 %)"
+  },
+  {
+   "claim": "Rendement MC: v5 central 10y after-tax median 5.6 % (SR 0.35)",
+   "verdict": "refuted",
+   "evidence": "rendement/05_mc.py uses USD cash 3.0% for an EUR investor and an SR before retail frictions; it ignores the capital tier, cash shortfall, fixed costs and lag, and taxes equity gains yearly. It is not an investor-level number.",
+   "correct_value": "1.8-3.4 % depending on capital (central)"
+  },
+  {
+   "claim": "Futures (art. 150 ter) losses can only be carried forward against same-nature gains (implicitly not against QQQ gains)",
+   "verdict": "corrected",
+   "evidence": "BOFiP BOI-RPPM-PVBMI-20-10-40: art. 150 ter gains and losses are of the same nature as art. 150-0 A securities gains (https://bofip.impots.gouv.fr/bofip/2841-PGP.html/identifiant%3DBOI-RPPM-PVBMI-20-10-40-20230619). Using the carry-forward against QQQ gains adds +0.6 pt to the median and cuts P(loss) by 7 pts (sensitivity.csv).",
+   "correct_value": "offsettable against 150-0 A gains such as an ETF/QQQ sale, for 10 years"
+  },
+  {
+   "claim": "PEA social charges 18.6 % from 2026",
+   "verdict": "confirmed",
+   "evidence": "https://www.auguste-patrimoine.fr/blog/pea-et-hausse-de-la-csg-en-2026-impact-calcul-et-strategies-de-retrait (CSG 9.2 -> 10.6 %, PEA 17.2 -> 18.6 % from 1 Jan 2026)"
+  },
+  {
+   "claim": "Forward US equity assumptions for the 70/30 comparison",
+   "verdict": "confirmed",
+   "evidence": "JPMorgan 2026 LTCMA US large cap 6.7% compound (USD), vol about 16.5% (https://privatebank.jpmorgan.com/nam/en/insights/markets-and-investing/tmt/30-years-of-foresight-the-2026-ltcmas-in-focus); Vanguard VCMM 3.9-5.9% (https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vemo-return-forecasts.html); Research Affiliates about 3.4% (secondary: https://www.daytrading.com/expected-real-returns)",
+   "correct_value": "EUR unhedged median pre-tax 3.5 / 6.0 / 8.0 % (after about 0.6 pt FX and 0.1 pt TER)"
+  },
+  {
+   "claim": "Critic forward Sharpes 0.20/0.24/0.27 (pess 0.00-0.05, opt 0.40-0.47) after costs and lag",
+   "verdict": "confirmed",
+   "evidence": "Kept as the central grid: anchors are subset Sharpes 0.39-0.41 (2010+), 0.29-0.37 (2015+), 0.56-0.71 (2000+), with a selection haircut. My anchors with the smaller subset lag cost give 0.25/0.28/0.31, i.e. 2.4/3.2/3.8 % after tax (alt_central_sr.csv). The difference is inside the ±0.1 band.",
+   "correct_value": "defensible, possibly 0.03-0.05 conservative"
+  },
+  {
+   "claim": "Livret A rate (alternative tax-free cash)",
+   "verdict": "confirmed",
+   "evidence": "1.7 % from 1 Aug 2026 (https://www.info.gouv.fr/actualite/augmentation-du-taux-du-livret-a-a-compter-du-1er-aout-2026)",
+   "correct_value": "1.7 % tax-free (cap EUR 22,950); after-tax money fund 1.6 %"
+  }
+ ],
+ "final_numbers": [
+  {
+   "name": "DIY v5 $100k @21% vol, 10y after-tax median [p10,p90]",
+   "value": "1.8 % [-5.6, 8.4]",
+   "note": "real -0.2 %; P(loss) 37 %; P(<cash) 49 %; maxDD med -48 %, worst decile -67 %; pess/opt -1.8/5.2"
+  },
+  {
+   "name": "DIY v5 $250k @21% vol, 10y after-tax median [p10,p90]",
+   "value": "2.8 % [-5.0, 9.7]",
+   "note": "real +0.8 %; P(loss) 32 %; P(<cash) 43 %; maxDD -48/-67 %; pess/opt -1.0/6.1"
+  },
+  {
+   "name": "DIY v5 $1M @21% vol, 10y after-tax median [p10,p90]",
+   "value": "3.4 % [-4.6, 10.8]",
+   "note": "real +1.4 %; P(loss) 29 %; P(<cash) 38 %; maxDD -48/-66 %; pess/opt -0.5/6.9"
+  },
+  {
+   "name": "DIY v5 @12% vol with granularity penalty, 10y after-tax median $100k/250k/1M",
+   "value": "1.0 / 2.2 / 3.0 %",
+   "note": "P(loss) 36/22/17 %; maxDD median -30/-28/-28 %, worst decile -45/-41/-41 %"
+  },
+  {
+   "name": "UCITS trend ETF iMGP DBi R EUR HP (12% vol, SR 0.25), 10y after-tax median [p10,p90]",
+   "value": "3.5 % [0.1, 7.4]",
+   "note": "real +1.4 %; P(loss) 9.5 %; P(<cash) 26 %; maxDD -25/-36 %; pess/opt 2.1/5.0"
+  },
+  {
+   "name": "After-tax EUR cash (money fund at ESTR 2.4%, PFU at exit), 10y",
+   "value": "1.6 %",
+   "note": "real -0.4 %; range 1.3-2.0 % for ESTR 1.9-2.9 %; Livret A 1.7 % tax-free (capped)"
+  },
+  {
+   "name": "100% US equities CTO (EUR, central 6.0% pre-tax), 10y after-tax median [p10,p90]",
+   "value": "4.4 % [-1.7, 10.2]",
+   "note": "real +2.4 %; P(loss) 16 %; P(<cash) 26 %; maxDD -40/-58.5 %; in a PEA 5.1 %"
+  },
+  {
+   "name": "70/30 equities / trend ETF, CTO rebalanced yearly, 10y after-tax median [p10,p90]",
+   "value": "4.5 % [0.7, 8.3]",
+   "note": "real +2.4 %; P(loss) 6.3 %; P(<cash) 16 %; maxDD -26/-38 %; equities in PEA + ETF in CTO: 4.8 %"
+  },
+  {
+   "name": "5y central after-tax median: DIY 100k/250k/1M @21%, ETF, 100% equities, 70/30, cash",
+   "value": "1.6/2.8/3.4, 3.3, 4.6, 4.4, 1.6 %",
+   "note": "P(loss 5y): 41/36/34, 18, 22.5, 13 %"
+  },
+  {
+   "name": "Sensitivity of 10y after-tax median to forward Sharpe ±0.1",
+   "value": "±1.7 pt (DIY 21%), ±1.0 (ETF), ±0.3 (70/30)",
+   "note": "dominant driver"
+  },
+  {
+   "name": "Sensitivity to ESTR ±0.5 %",
+   "value": "±0.3 pt (DIY), ±0.4 (ETF), ±0.35 (cash), ±0.12 (70/30)",
+   "note": ""
+  },
+  {
+   "name": "Monetised time cost (80 h x EUR 25) on DIY median",
+   "value": "-2.5 / -0.9 / -0.2 pt at $100k / 250k / 1M",
+   "note": "DIY $100k becomes -0.8 % after tax"
+  },
+  {
+   "name": "Execution lag of 1 extra day (Sharpe)",
+   "value": "-0.06 (84 mkts); -0.015 to -0.037 (retail subsets)",
+   "note": "lag_check.csv"
+  },
+  {
+   "name": "MC noise (s.d. of median across seeds, 5,000 paths)",
+   "value": "0.12 pt",
+   "note": "mc_seed_noise.csv"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/final_summary.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/final_table.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/reconcile.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/sensitivity.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/replicate_critic.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/alt_central_sr.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/lag_check.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/shock_properties.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/effective_vol.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/series_sharpes.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/mc_seed_noise.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/mc_engine.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/01_series.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/02_shapes.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/03_replicate_critic.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/04_final.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/05_effective_vol.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/06_lag_check.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/07_alt_central.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/08_summary.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_rendement/series.pkl"
+ ]
+}

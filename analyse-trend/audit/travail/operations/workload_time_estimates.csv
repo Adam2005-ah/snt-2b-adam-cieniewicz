@@ -1,0 +1,7 @@
+setup,orders_per_day,roll_events_per_year,estimated_daily_time,estimated_setup_time,basis
+"84 markets, $1M, daily, fully automated (pysystemtrade + IB Gateway on a server)",12.1,300,"15-30 min/day monitoring + reconciliation; 2-4 h/month maintenance (contract/roll config, data fixes)","200-500 h (Python, IB API, data cleaning, roll configs for 84 instruments, testing)","Orders/rolls from workload_by_capital.csv; time = author estimate, not sourced"
+"84 markets, $1M, daily, manual (spreadsheet + TWS)",12.1,300,"~1-1.5 h/day every trading day across Asian/European/US sessions (12 orders x ~3 min + 1.2 rolls/day x ~5 min + data/signal ~20-30 min)",50-100 h,"Not sustainable part-time; high error risk"
+"20 markets, $250k, daily, semi-automated (script computes orders; manual entry)",4.0,83,"~30-40 min/day",50-150 h,author estimate
+"20 markets, $250k, weekly rebalancing, semi-automated",~4 orders/week net (fewer than daily),83,"~1-1.5 h/week + roll days",50-150 h,"Weekly costs ~0.06 Sharpe vs daily in variant 5 (1990-2026: 1.110 vs 1.171)"
+"20 markets, $100k, daily",1.9,66,"~20-30 min/day",50-150 h,"Tracking corr. vs fractional 0.965, TE ~5.6%/yr"
+"84 markets, $100k",1.6,85,"~20-30 min/day","n/a","Only ~15 of 84 markets held on average; 0 markets with >=4 contracts at average forecast -> not the backtested strategy (TE ~13%/yr)"

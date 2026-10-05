@@ -1,0 +1,205 @@
+{
+ "summary": "COMPLETENESS CRITIC: VARIANT 5 (\"Les deux\") IN PRACTICE\nMy scripts and outputs are in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/. No project file was modified.\n\nBOTTOM LINE\n- The audit's direction holds: the faithful 84-market variant 5 needs about $5M, and below about $1M only a 6–40 market subset is possible.\n- But three things no agent modelled push the forward numbers lower than any part of the audit states:\n  1. the ethanol data artefact;\n  2. a realistic execution lag;\n  3. the composition of the 2023-26 losses.\n- My forward 10-year median estimates for a French (EUR) investor are below. They assume the system's design vol of about 21% and come from a Monte Carlo in mc_tiers.csv.\n\n| Capital | Pre-tax nominal CAGR | After-tax (PFU 31.4%) | Pessimistic → optimistic range |\n|---|---|---|---|\n| $100k | about 2.8% | about 1.3% | −2.3% to +4.8% |\n| $250k | about 4.1% | about 2.3% | −1.4% to +5.6% |\n| $1M | about 5.0% | about 3.0% | −0.8% to +6.5% |\n\n- Median max drawdown is −50 to −54% in every tier.\n- After-tax cash (€STR 2.3% × 0.686) gives about 1.6%. At $100k the central DIY case does no better than after-tax cash, with large risk.\n- The UCITS trend ETF route (iMGP DBi EUR-hedged) on the same basis gives about 3.4% after tax at 12% vol with no workload. It beats DIY at $100k and $250k and roughly equals DIY at $1M.\n\nA. CONTRADICTIONS THE FINAL REPORT MUST RESOLVE (and the number to use)\n\n1. Retail subsets\n- Capital-audit table F is refuted. Its sets break their own contract rule. Use the corrected figures (verif_capital/corrected_subsets.txt and simulation/summary_today_notional.csv):\n\n| Capital | Rule | Markets | Sharpe 1990 / 2000 / 2010 |\n|---|---|---|---|\n| $100k | ≥1 contract | 14 | 0.73 / 0.55 / 0.39 |\n| $250k | ≥1 contract | 24 | 0.84 / 0.66 / 0.40 |\n| $1M | ≥1 contract | 40 | 1.00 / 0.70 / 0.38 |\n\n- With realistic costs and the ER4 correction, 2010-26 Sharpe is 0.41 (100k), 0.42 (250k) and 0.39 (1M).\n- The operations agent's \"Variant 5, 20 markets\" series disagrees with this. It shows Sharpe 1.16 since 1959, 0.442 since 2010 and +17.7% from 2022-09 to 2026-07. Its DIY central Sharpe of 0.40–0.45 is also above rendement's 0.35 and my 0.20–0.27.\n- Check needed: how those 20 markets were chosen. If they were picked by recent performance, it is hindsight.\n\n2. Tracking error at $100k\n- The agents report 12.2% (capital, 2023-26), 15.6% (costs, 2023-26, micros), 11.6% (simulation, 2000-26) and 5.6% (operations, 20 markets).\n- These figures are not comparable. Report the simulation's figure.\n- This does not change the conclusion: the 84-market system cannot be replicated below about $1M.\n\n3. Cost double-count risk\n- The costs audit's total drag adds +0.5%/yr of variable cost on top of the backtest. The simulation's subset Sharpes already include realistic per-contract fees plus half-spread.\n- For subsets, realistic cost (3.0–3.3%/yr) is about equal to the basis-point model (3.0–3.4%/yr). Both are above the full system's 2.4%/yr because concentrated subsets trade more per unit of capital.\n- So: use the subset Sharpes, then subtract only fixed costs, the cash shortfall and tax. Do not subtract +0.5% again.\n\n4. Cash policy versus margin\n- The costs audit's \"50% in T-bills\" policy conflicts with margin needs.\n- IBKR futures margin must be cash in the commodities segment and earns 0%. T-bills cannot be posted as margin.\n- Full v5 margin-to-equity is mean about 20–23%, p95 33–40%, max 46–62% (operations and verification estimates).\n- With 50% in T-bills, the peak margin days would exceed available cash, and IBKR would liquidate. For the full system, cap T-bills or XEON at about 30–40%, which raises the cash drag a little.\n- Small subsets (margin 10–18%) can hold 50%.\n- Use the corrected EUR shortfall versus €STR: 0.93% / 0.79% / 0.72% at 100k / 250k / 1M.\n\n5. Cash leg\n- The backtest's 29.6% CAGR including T-bill, and the costs agent's after-tax backtest, use the USD T-bill. For a EUR investor the cash leg is €STR, about 2.4% against 4.0% today.\n- Report excess returns plus €STR.\n\n6. Small inconsistencies to harmonise\n- Total max drawdown: −47.8% is correct; −47.6% came from a discount-yield approximation.\n- The rolling 5-year Sharpe ends on 2026-07-10, not 31/07.\n- \"Since 2023\" Sharpe −0.46 (from 2023-01) vs −0.42 (from 2023-07): state the start date.\n- SG Trend gross-of-fee Sharpes need the downward correction: 0.46–0.52 since 2000, 0.41–0.49 since 2010, 0.34–0.42 since 2015.\n\nB. MISSING CHECKS THAT CHANGE THE CONCLUSIONS (my new results)\n\n1. Ethanol data artefact, quantified (excua_sharpes.csv)\n- CUA1 is the most autocorrelated series in the dataset (AC1 +0.17, t = 11; 16% zero-return days). It is also the largest positive contributor since 2010 (+1.63%/yr gross).\n- I re-ran v5 with trend.run_vol_targeted without CUA1, and then also without SCO1 (SGX iron ore):\n\n| Universe | Sharpe 1990 | 2000 | 2010 | 2015 |\n|---|---|---|---|---|\n| All 84 | 1.182 | 0.853 | 0.546 | 0.390 |\n| Without CUA1 | 1.146 | 0.805 | 0.478 | 0.361 |\n| Without CUA1 and SCO1 | 1.115 | 0.762 | 0.411 | 0.266 |\n\n- The headline 1.17 and \"0.54 since 2010\" should be restated for a tradable universe.\n- Rendement's central forward Sharpe of 0.35 was anchored partly on v5's 0.38 since 2015, which becomes 0.27–0.36 once the artefact is removed.\n\n2. Execution lag, not modelled by any agent (lag_sensitivity.csv)\n- The backtest earns close-to-close from the same close used to compute the signal, which cannot be done in practice.\n- One extra day of lag lowers Sharpe in every period: 1.18→1.12, 0.85→0.79, 0.55→0.48, 0.39→0.33. That is about 1.1–1.2 points a year.\n- Realistic next-session execution probably costs about −0.03 to −0.06 Sharpe. The integer simulations also assume execution at the close.\n\n3. Where the 2023-26 losses came from (pnl_by_class.csv)\n- Since 2023-07, gross P&L by class:\n\n| Class | %/yr since 2023-07 |\n|---|---|\n| Bonds | −4.9 |\n| Energy | −6.5 |\n| FX | −4.1 |\n| STIR | −1.2 |\n| Agriculture | +6.2 |\n| Metals | +2.6 |\n| Equities | +1.6 |\n\n- Small-account subsets are heavy in agriculture, metals and micro FX and light in bonds. They show Sharpe about +0.39 since 2023-07 while the full system shows −0.42. That is composition luck, not robustness.\n- The subset selection also used 2023-26 median |position|, which correlates with how strongly those markets trended in 2023-26. That is a mild look-ahead I did not test.\n\n4. Long-horizon risk is understated\n- The variance ratio of v5 net returns is 1.24 at 21 days, 1.26 at 63 and 1.65 at 252.\n- The standard deviation of calendar-year returns is 34%, against a daily-annualised vol of 21.6%. Part of that comes from the fall in average returns over time.\n- Loss and drawdown probabilities based on daily vol, or on a bootstrap with 60-day blocks (rendement), are therefore optimistic. I used 126-day blocks.\n- The drag from arithmetic mean to CAGR was 1.9–2.2 points since 2010 and 2015.\n\n5. Other possibly sticky series (stale_scan.csv)\n- LH1 (AC1 0.10), SFI5 (0.10), CT1 (0.08), IK1 (0.075), FC1 (0.07) and RS1 (0.07).\n- Some of their trend P&L may come from limit moves or settlement conventions. Not checked.\n\n6. Unverified items that could move net Sharpe by 0.05 or more\n- Average daily volume and real spreads of the micros that make up the $100k–250k portfolios: MZC, MZW and MZS (launched 2025), 1OZ (2025), MNG, M6A/M6B/MJY, Nikkei micro, FSXE. About 25 micro spreads were assumed at 1.5× the standard contract. If real half-spreads are 2–3 ticks, subset costs rise from about 3% to 4% or more a year, roughly −0.05 Sharpe.\n- EU-retail KID status of those micros.\n- Actual IBKR margins, which can be above exchange margins.\n\n7. Vol target versus minimum capital\n- The Kelly and CRRA analysis recommends 10–15% vol for a private investor, against the design 21%.\n- Lower vol shrinks positions, so the minimum capital per market rises by about 1.8×. A $100k account at 12% vol has the granularity of the $50k tier (11 markets, Sharpe since 2010 about 0.28–0.30). Nobody combined the two.\n- In my Monte Carlo, 12% vol gives about the same after-tax median as 21% vol in the central case:\n\n| Capital | Median after-tax CAGR at 12% vol | Median maxDD at 12% vol |\n|---|---|---|\n| $100k | 1.5% | −33% |\n| $250k | 2.2% | −32% |\n| $1M | 2.6% | −31% |\n\n- That is a better risk profile, but it ignores the granularity loss.\n\n8. Tax scenarios not simulated\n- BNC requalification (art. 92-2-5° CGI): progressive scale instead of PFU, losses usable for 6 years and only against same-nature profits, so not against QQQ gains.\n- Method for converting USD P&L to EUR, and keeping records without an IFU from IBKR Ireland.\n- The costs agent's after-tax backtest uses the USD T-bill and the uncorrected interest model, so its after-tax CAGRs (19.9% / 13.0% / 7.2% / 4.6%) are overstated.\n\n9. Path dependency and the current drawdown\n- The system is at −43% in excess terms (a −54% trough) and has been under water for about 4 years.\n- A $100k account started in 2016 fell to $59k, below its own minimum-capital threshold.\n- Starting today carries a material risk of having to abandon mid-drawdown. That is not in any expected-return figure.\n\n10. Time cost not monetised\n- Setup takes 80–500 hours, then 1–2 hours a week (up to 30 minutes a day if trading daily), plus the weekly IBKR two-factor login.\n- At €25/hour, 75–100 hours a year is about 2–3% of capital at $100k, 0.8–1% at $250k and 0.2% at $1M. Including it makes DIY at $100k clearly negative against the ETF.\n\n11. Tail risk not modelled\n- Gross exposure averages 9× and peaks at 28×, mostly short-term rates and bonds. Jump risk (SNB 2015 type, gilts 2022) is only present as far as the 1990-2026 history contains it.\n- The vol-target scale was capped at 2.0 on 22% of days in 2023-26.\n\nC. MY BEST ESTIMATE\n\nForward Sharpe after variable costs and execution lag, before fixed costs, cash drag and tax:\n\n| Capital | Portfolio | Central | Pessimistic → optimistic |\n|---|---|---|---|\n| $100k | 14 markets | 0.20 | 0.00–0.40 |\n| $250k | 24 markets | 0.24 | 0.03–0.43 |\n| $1M | 40 markets | 0.27 | 0.05–0.47 |\n\nAnchors:\n- Corrected subset Sharpes since 2010 are 0.39–0.42. Since 2010 they gain almost nothing from diversification (14 markets 0.39, 66 markets 0.39). Since 2000 they do (0.55 → 0.71).\n- The clean ideal Sharpe without CUA1 and SCO1 is 0.41 since 2010 and 0.27 since 2015.\n- An execution lag of −0.04 to −0.06.\n- Real funds gross of fees score 0.41–0.49 since 2010, but they are institutional, run 100+ markets and pay lower costs. SG Trend net of fees scores 0.27 since 2010 and 0.21 since 2015.\n- About 25–35% shrinkage for in-sample selection (74 trials; DSR since 2010 is 0.39–0.89) and post-publication decay.\n\nDeductions:\n- Fixed costs (lean or minimal data, VPS, Norgate): 0.5% / 0.25% / 0.1% of capital a year.\n- EUR cash shortfall: 0.93% / 0.79% / 0.72%.\n- Cash: €STR at 2.3%.\n- Tax: PFU 31.4% each year, with a 10-year loss carry-forward.\n\nSimulation: 4,000 paths over 10 years, stationary bootstrap of the v5 shocks with 126-day blocks. Results at about 21% vol (median, with the 10th–90th percentile range in brackets):\n\n| | $100k | $250k | $1M |\n|---|---|---|---|\n| Arithmetic excess over €STR, after frictions | +2.9% | +4.1% | +5.0% |\n| Pre-tax CAGR | 2.8% [−7.0, +14.1] | 4.1% [−5.8, +15.5] | 5.0% [−5.0, +16.5] |\n| After-tax CAGR | 1.3% [−7.5, +9.7] | 2.3% [−6.4, +10.8] | 3.0% [−5.6, +11.5] |\n| After-tax, pessimistic / optimistic scenario | −2.3% / +4.8% | −1.4% / +5.6% | −0.8% / +6.5% |\n| P(nominal loss over 10 years) | 42% | 36% | 32% |\n| P(below after-tax cash) | 51% | 45% | 41% |\n| Median max drawdown | −54% | −52% | −51% |\n| Worst-decile max drawdown | about −74% | about −72% | about −71% |\n\n- In real terms, with about 2% inflation, the after-tax central is about −0.7%, +0.3% and +1.0% a year.\n\nBenchmark on the same basis: iMGP DBi Managed Futures UCITS ETF, EUR-hedged, TER inside the Sharpe, accumulating, PFU only at sale.\n\n| ETF Sharpe | Pre-tax median CAGR | After-tax median |\n|---|---|---|\n| 0.25 at 12% vol | 4.6% | 3.4% |\n| 0.10 / 0.40 | | 2.0% / 4.8% |\n\nInterpretation\n- DIY variant 5 only becomes worth it, before monetising time, above roughly $1M.\n- At $100k it is dominated: the cash shortfall (0.9%), fixed costs (0.5%), lost diversification and execution lag eat most of a Sharpe of about 0.2, at −50% drawdowns.\n- The real value of trend following for this investor is diversification of QQQ. The 50/50 equity + trend mix had the best risk/return in rendement's simulation. That value is obtainable through the ETF.\n\nCaveats\n- The forward Sharpes are judgement.\n- The Monte Carlo uses the v5 shock structure for subsets, ignores EUR/USD on the P&L, and treats all gains as realised yearly. That last point is mostly true because rolls realise P&L.\n- No BNC scenario was simulated.\n- At 12% vol the Monte Carlo does not apply the granularity penalty.",
+ "key_numbers": [
+  {
+   "name": "v5 Sharpe all 84 (1990/2000/2010/2015/2023-07)",
+   "value": "1.182 / 0.853 / 0.546 / 0.390 / -0.421",
+   "unit": "Sharpe, 261-day annualisation",
+   "source": "critic/excua_sharpes.csv"
+  },
+  {
+   "name": "v5 Sharpe ex ethanol CUA1",
+   "value": "1.146 / 0.805 / 0.478 / 0.361 / -0.382",
+   "unit": "Sharpe",
+   "source": "critic/excua_sharpes.csv (trend.run_vol_targeted re-run)"
+  },
+  {
+   "name": "v5 Sharpe ex CUA1 and SGX iron ore SCO1",
+   "value": "1.115 / 0.762 / 0.411 / 0.266 / -0.280",
+   "unit": "Sharpe",
+   "source": "critic/excua_sharpes.csv"
+  },
+  {
+   "name": "CUA1 lag-1 autocorrelation / zero-return share since 2010",
+   "value": "+0.169 (t=11.1) / 16.2%",
+   "unit": "",
+   "source": "critic/stale_scan.csv"
+  },
+  {
+   "name": "Sharpe cost of one extra day of execution lag (1990/2000/2010/2015)",
+   "value": "1.18->1.12 / 0.85->0.79 / 0.55->0.48 / 0.39->0.33",
+   "unit": "Sharpe (about -1.1 to -1.2 pt/yr)",
+   "source": "critic/lag_sensitivity.csv"
+  },
+  {
+   "name": "Gross P&L by class since 2023-07 (Bonds/Energy/FX/STIR/Ags/Metals/Equities)",
+   "value": "-4.9 / -6.5 / -4.1 / -1.2 / +6.2 / +2.6 / +1.6",
+   "unit": "% of capital per year",
+   "source": "critic/pnl_by_class.csv"
+  },
+  {
+   "name": "Variance ratio of v5 net excess returns at 21/63/126/252 days",
+   "value": "1.24 / 1.26 / 1.17 / 1.65",
+   "unit": "ratio",
+   "source": "critic/checks.py"
+  },
+  {
+   "name": "Std of calendar-year returns vs daily-annualised vol (since 1990)",
+   "value": "34.4% vs 21.6%",
+   "unit": "%",
+   "source": "critic/checks.py"
+  },
+  {
+   "name": "Subset cost: realistic fee+half-spread vs bp model, 2000-26 (100k/250k/1M)",
+   "value": "2.97 vs 3.00 / 4.14 (3.2 with ER4 fix) vs 3.44 / 2.95 vs 2.68",
+   "unit": "% of capital per year",
+   "source": "simulation/results.csv, verif_capital/er4_spread_sensitivity.csv"
+  },
+  {
+   "name": "Forward Sharpe after variable costs and lag, central (pess-opt): 100k / 250k / 1M",
+   "value": "0.20 (0.00-0.40) / 0.24 (0.03-0.43) / 0.27 (0.05-0.47)",
+   "unit": "Sharpe",
+   "source": "critic judgement (anchors in summary)"
+  },
+  {
+   "name": "10y median pre-tax nominal CAGR at ~21% vol, central: 100k / 250k / 1M",
+   "value": "2.8 / 4.1 / 5.0",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "10y median after-tax (PFU 31.4%) CAGR, central: 100k / 250k / 1M",
+   "value": "1.3 / 2.3 / 3.0",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "10y median after-tax CAGR pessimistic / optimistic: 100k / 250k / 1M",
+   "value": "-2.3/4.8 ; -1.4/5.6 ; -0.8/6.5",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "10y after-tax CAGR p10-p90, central: 100k / 250k / 1M",
+   "value": "-7.5..9.7 / -6.4..10.8 / -5.6..11.5",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "P(nominal loss over 10y), central: 100k / 250k / 1M",
+   "value": "42 / 36 / 32",
+   "unit": "%",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "Median 10y max drawdown at 21% vol / 12% vol, central",
+   "value": "-51 to -54 / -31 to -33",
+   "unit": "%",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "10y median after-tax CAGR at 12% vol, central: 100k / 250k / 1M",
+   "value": "1.5 / 2.2 / 2.6 (granularity penalty not applied)",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.csv"
+  },
+  {
+   "name": "UCITS trend ETF (iMGP DBi EUR-hedged) SR 0.25, 12% vol: pre-tax / after-tax median",
+   "value": "4.6 / 3.4 (SR 0.10: 2.0 ; SR 0.40: 4.8 after tax)",
+   "unit": "%/yr",
+   "source": "critic/mc_tiers.py"
+  },
+  {
+   "name": "After-tax EUR cash benchmark",
+   "value": "1.6 (2.3% x 0.686)",
+   "unit": "%/yr",
+   "source": "assumption €STR 2.3%, PFU 31.4%"
+  },
+  {
+   "name": "EUR cash shortfall vs €STR used (100k/250k/1M)",
+   "value": "0.93 / 0.79 / 0.72",
+   "unit": "%/yr",
+   "source": "verif_couts/total_drag_corrected.csv"
+  },
+  {
+   "name": "Fixed costs used (100k/250k/1M)",
+   "value": "0.5 / 0.25 / 0.1",
+   "unit": "% of capital per year",
+   "source": "couts fixed_cost_items (minimal-to-lean)"
+  },
+  {
+   "name": "Monetised time cost at 75-100 h/yr x EUR 25/h (100k/250k/1M)",
+   "value": "2-3 / 0.8-1 / 0.2",
+   "unit": "% of capital per year",
+   "source": "critic estimate from operations/workload_time_estimates.csv"
+  }
+ ],
+ "claims": [
+  {
+   "claim": "The ethanol series (CUA1) is a data artefact that inflates the headline backtest; removing it lowers v5 Sharpe since 2010 from 0.546 to 0.478 and since 2015 from 0.390 to 0.361; also removing SGX iron ore gives 0.411 / 0.266.",
+   "evidence": "critic/excua.py re-runs trend.run_vol_targeted with forecast_regime on 83 and 82 markets; CUA1 has AC1 +0.17 (t=11) and 16% zero days, the highest in the dataset, and is the top gross contributor since 2010 (+1.63%/yr).",
+   "confidence": "high"
+  },
+  {
+   "claim": "No agent modelled execution lag; one extra day costs about 0.06 Sharpe (1.1-1.2 pt/yr) in every period; realistic next-session execution probably costs 0.03-0.06.",
+   "evidence": "critic/lag_sensitivity.csv: P&L with positions.shift(2) instead of shift(1), same costs.",
+   "confidence": "high"
+  },
+  {
+   "claim": "The 2023-26 loss of the full system comes from bonds, energy, FX and STIR, while agriculture and metals made money; small-account subsets (ag/metal/micro-FX heavy) look better recently by composition, not robustness.",
+   "evidence": "critic/pnl_by_class.csv: since 2023-07 Bonds -4.9, Energy -6.5, FX -4.1, STIR -1.2, Ags +6.2, Metals +2.6, Equities +1.6 %/yr; subsets Sharpe since 2023-07 about +0.39 (verif_capital/compounding_late_starts.txt) vs -0.42 full.",
+   "confidence": "high"
+  },
+  {
+   "claim": "The costs audit's +0.5%/yr extra variable cost must not be added to the simulation's subset Sharpes, which already include realistic fee + half-spread (about equal to the bp model for subsets).",
+   "evidence": "simulation/results.csv: subset >=1c 2000-26 realistic 2.97 vs bp 3.00 (100k), 2.95 vs 2.68 (1M); 250k 4.14 is an ER4 mapping artefact (3.2 corrected).",
+   "confidence": "high"
+  },
+  {
+   "claim": "A 50%-in-T-bills cash policy is incompatible with full v5 margin peaks at IBKR, where only cash in the commodities segment counts as futures margin (and earns 0%).",
+   "evidence": "Margin-to-equity mean 20-23%, p95 33-40%, max 46-62% (operations/margin_summary_v5.csv, verif_operations/margin_recomputed_summary.csv); cash-only commodities segment per verif_couts.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Long-horizon risk is understated by daily-vol reasoning and 60-day block bootstraps: the variance ratio at 252 days is 1.65 and calendar-year return std is 34% vs 21.6% daily-annualised.",
+   "evidence": "critic/checks.py on operations/v5_net.pkl since 1990; part of the excess is due to the declining mean across decades.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Realistic 10y median after-tax nominal CAGR for a French investor at the design vol is about 1.3% at $100k, 2.3% at $250k and 3.0% at $1M (pre-tax about 2.8 / 4.1 / 5.0%), with median max drawdowns about -51 to -54%.",
+   "evidence": "critic/mc_tiers.csv: 4,000-path stationary bootstrap (126-day blocks) of v5 shocks, forward SR 0.20/0.24/0.27 after variable costs and lag, fixed costs 0.5/0.25/0.1%, EUR cash shortfall 0.93/0.79/0.72%, €STR 2.3%, PFU 31.4% yearly with 10y carry-forward.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "On the same after-tax basis, a UCITS trend ETF (iMGP DBi EUR-hedged, SR about 0.25 at 12% vol) gives about 3.4% after tax, beating DIY v5 at $100k-250k and roughly matching it at $1M, with no workload and tax deferral.",
+   "evidence": "critic/mc_tiers.py ETF block; fund Sharpe anchors SG Trend net 0.27 since 2010, SG CTA 0.33 since 2000, DBMF 0.55 since 2019 (operations/funds_vs_v5_track_records.csv).",
+   "confidence": "medium"
+  },
+  {
+   "claim": "The operations agent's 20-market subset (Sharpe 1.16 since 1959, +17.7% from 2022-09 to 2026-07) and its DIY central Sharpe 0.40-0.45 are inconsistent with the verified subset results (0.38-0.42 since 2010 before lag) and need their selection rule checked for hindsight.",
+   "evidence": "operations/funds_vs_v5_track_records.csv and diy_vs_fund_scenarios.csv vs verif_capital/corrected_subsets.txt and simulation/summary_today_notional.csv.",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Lowering the vol target to the recommended 10-15% roughly doubles minimum capital, so a $100k account at 12% vol has the granularity of the $50k tier (11 markets); this interaction is not in any part of the audit.",
+   "evidence": "Positions scale linearly with the risk target (trend.py); 50k subset >=1c has 11 markets, Sharpe since 2010 0.28-0.30 (verif_capital/corrected_subsets.txt, simulation).",
+   "confidence": "high"
+  },
+  {
+   "claim": "Still unverified and able to move net Sharpe by about 0.05 or more: liquidity and real spreads of the 2025-launched micros (MZC/MZW/MZS, 1OZ) and other micros, EU-retail KID status, actual IBKR margins, other sticky series (LH1, SFI5, CT1, IK1, FC1, RS1 with AC1 0.07-0.10), and the BNC tax scenario.",
+   "evidence": "critic/stale_scan.csv; verification agents report the search budget was exhausted before these checks.",
+   "confidence": "medium"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/checks.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/excua.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/excua_sharpes.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/stale_scan.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/pnl_by_class.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/pnl_by_market.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/lag_sensitivity.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/mc_tiers.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/critic/mc_tiers.csv"
+ ]
+}

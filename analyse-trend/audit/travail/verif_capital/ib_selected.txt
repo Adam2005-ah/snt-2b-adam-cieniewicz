@@ -1,0 +1,391 @@
+                     IBSymbol IBExchange IBCurrency  IBMultiplier  priceMagnifier    Pointsize                                                         Description
+Instrument                                                                                                                                                        
+AEX                       EOE        FTA        EUR        200.00               1       200.00                                        Netherlands equity index AEX
+AEX_mini                  EOE        FTA        EUR         20.00               1        20.00                                                            AEX mini
+ALUMINIUM                 ALI      COMEX        USD         25.00               1        25.00                                                NYMEX Aluminum Index
+ALUMINIUM_LME              AH     LMEOTC        USD         25.00               1        25.00                                        High-Grade Primary Aluminium
+AUD                       AUD        CME        NaN     100000.00               1    100000.00                                                     AUDUSD currency
+AUD_micro                 M6A        CME        USD      10000.00               1     10000.00                                                        AUDUSD micro
+AUD-ICE                   AUD      ICEUS        USD     100000.00               1    100000.00                                                             AUD.USD
+AUD-SGX                    AU        SGX        USD      25000.00               1     25000.00                          SGX Australian Dollar in US Dollar Futures
+AUDCAD                    ACD        CME        CAD     200000.00               1    200000.00                                              Australlian dollar CAD
+AUDJPY                    AJY        CME        JPY     200000.00               1    200000.00                                          Australlian dollar Yen CME
+AUDJPY-SGX                 AJ        SGX        JPY      25000.00               1     25000.00                       SGX Australian Dollar in Japanese Yen Futures
+BITCOIN                   MBT        CME        USD          0.10               1         0.10                                                       Micro Bitcoin
+BRENT                      BB      NYMEX        USD       1000.00               1      1000.00                                 NYMEX Brent Financial Futures Index
+BRENT_W                  COIL        IPE        USD       1000.00               1      1000.00                                                  Brent crude summer
+BRENT-LAST                 BZ      NYMEX        USD       1000.00               1      1000.00                                          Brent Crude Oil - Last Day
+BRREUR               BTCEURRR        CME        EUR          5.00               1         5.00                                  CME CF Bitcoin-Euro Reference Rate
+BTP                       BTP      EUREX        NaN       1000.00               1      1000.00                                            Italian 10 year bond BTP
+BTP3                      BTS      EUREX        EUR       1000.00               1      1000.00                         Short-Term Euro-BTP Italian Government Bond
+BTP5                      BTM      EUREX        EUR       1000.00               1      1000.00                           Mid-Term Euro-BTP Italian Government Bond
+BUND                      GBL      EUREX        NaN       1000.00               1      1000.00                                            German 10 year bond Bund
+CAC                     CAC40      MONEP        EUR         10.00               1        10.00                                           French equity index CAC40
+CAD                       CAD        CME        USD     100000.00               1    100000.00                                                     CADUSD currency
+CAD_micro                 MCD        CME        USD      10000.00               1     10000.00                                                        CADUSD_micro
+CAD10                     CGB        CDE        CAD       1000.00               1      1000.00                                               Canadian 10 year bond
+CAD2                      CGZ        CDE        CAD       1000.00               1      1000.00                                                Canadian 2 year bond
+CAD5                      CGF        CDE        CAD       1000.00               1      1000.00                                                Canadian 5 year bond
+CADJPY                    CJY        CME        JPY     200000.00               1    200000.00                                                             CAD.JPY
+CADJPY2                   CJY      NYBOT        JPY     200000.00               1    200000.00                                                             CAD.JPY
+CADSTIR                   BAX        CDE        CAD       2500.00               1      2500.00                                       Canadian STIR Bank acceptance
+CAN-GOLD                  SXA        CDE        CAD        200.00               1       200.00                                              S&P TSE CAN Gold Index
+CANOLA                     RS      NYBOT        CAD         20.00               1        20.00                                            Rapeseed (Canola) in CAD
+CHF                       CHF        CME        USD     125000.00               1    125000.00                                                     CHFUSD currency
+CHF_micro                 MSF        CME        USD      12500.00               1     12500.00                                                        CHFUSD micro
+CHFJPY                    SJY        CME        JPY     250000.00               1    250000.00                                                              CHFJPY
+CHFJPY-ICE                 ZY      ICEUS        JPY     250000.00               1    250000.00                                                              CHFJPY
+CHINAA-CON                MCA       HKFE        USD         25.00               1        25.00                                       MSCI China A 50 Connect Index
+CLP                       CLP        CME        USD   50000000.00               1  50000000.00                                                        Chilean peso
+CNH                        UC        SGX        CNH     100000.00               1    100000.00                    SGX US Dollar in offshore Chinese Renminbi (CNH)
+CNH-CME                   RMB        CME        USD    1000000.00               1   1000000.00                                                       CNHUSD on CME
+CNH-CME_micro             MNH        CME        CNH      10000.00               1     10000.00                                                   CHNHUSD micro CME
+CNH-HK                    CNH       HKFE        CNH     100000.00               1    100000.00                                                        CNHUSD on HK
+CNH-onshore                CY        SGX        USD     500000.00               1    500000.00    SGX onshore Chinese Renminbi (CNY) in US Dollar Futures (CY@SGX)
+CNHEUR                    RME        CME        EUR    1000000.00               1   1000000.00                                                              CNHEUR
+COCOA                      CC      NYBOT        USD         10.00               1        10.00                                                            Cocoa NY
+COCOA_LDN                   C  ICEEUSOFT        GBP         10.00               1        10.00                                                        Cocoa London
+COFFEE                     KC      NYBOT        USD      37500.00             100       375.00                                                              Coffee
+COPPER                     HG      COMEX        NaN      25000.00               1     25000.00                                                              Copper
+COPPER_LME                 CA     LMEOTC        USD         25.00               1        25.00                                                Grade A Copper - LME
+COPPER-micro              MHG      COMEX        USD       2500.00               1      2500.00                                                        Copper micro
+COPPER-mini                QC      COMEX        USD      12500.00               1     12500.00                                                   COMEX MINY Copper
+CORN                       ZC       CBOT        NaN       5000.00             100        50.00                                                                Corn
+CORN_mini                  YC       CBOT        USD       1000.00             100        10.00                                                           Corn mini
+CORN-EURO                 EMA      MATIF        EUR         50.00               1        50.00                                                                Corn
+CORN-JPN                 TGCN    OSE.JPN        JPY      50000.00               1     50000.00                                                        Corn - Japan
+COTTON                     TT      NYMEX        USD      50000.00               1     50000.00                                                  NYMEX Cotton index
+COTTON2                    CT      NYBOT        USD      50000.00             100       500.00                                                           Cotton #2
+CRUDE_ICE                 WTI        IPE        USD       1000.00               1      1000.00                   West Texas Intermediate Light Sweet Crude Oil ICE
+CRUDE_W                    CL      NYMEX        NaN       1000.00               1      1000.00                                            Light sweet crude Winter
+CRUDE_W_micro             MCL      NYMEX        USD        100.00               1       100.00                                                 micro WTI crude oil
+CRUDE_W_mini               QM      NYMEX        USD        500.00               1       500.00                                       Light sweet crude Winter mini
+DAX                       DAX      EUREX        EUR          1.00               1         1.00                           DAX 30 Index (Deutsche Aktien Xchange 30)
+DIVDAX                   DDAX      EUREX        EUR        200.00               1       200.00                                                  DivDAX Price Index
+DIVDAX-DIVI          DDXDIVPT      EUREX        EUR       1000.00               1      1000.00                                        DivDAX Dividend Points Index
+DIVDAX-DIVI2          DXDIVPT      EUREX        EUR        100.00               1       100.00                                           DAX Dividend Points Index
+DJSTX-SMALL            DJ200S      EUREX        EUR         50.00               1        50.00                                     Dow Jones STOXX Small 200 Index
+DJUBS                   DJUBS      EUREX        USD        250.00               1       250.00                                       Dow Jones-UBS Commodity Index
+DOW                       MYM       CBOT        USD          0.50               1         0.50                     Micro E-Mini Dow Jones Industrial Average Index
+DOW_mini                   YM       CBOT        USD          5.00               1         5.00                          Mini Sized Dow Jones Industrial Average $5
+DOW_YEN                  DJIA    OSE.JPN        JPY        100.00               1       100.00                                    OSE Dow Jones Industrial Average
+EDOLLAR                    GE        CME        NaN       2500.00               1      2500.00                                                  US STIR Eurodollar
+EPRA-EURO                EPEU      MONEP        EUR         10.00               1        10.00                                          FTSE EPRA-NAREIT Euro Zone
+EPRA-EUROPE              EPRA      MONEP        EUR         10.00               1        10.00                                             FTSE EPRA-NAREIT Europe
+ETHANOL                    AC       CBOT        USD      29000.00               1     29000.00                                                         Ethanol CME
+ETHER-micro               MET        CME        USD          0.10               1         0.10                                                      Ethereum micro
+ETHRREUR             ETHEURRR        CME        EUR         50.00               1        50.00                                    CME CF Ether-Euro Reference Rate
+EU-AUTO                  SXAP      EUREX        EUR         50.00               1        50.00                             Dow Jones STOXX 600 Automobiles & Parts
+EU-BANKS                 SX7E      EUREX        EUR         50.00               1        50.00                                    Dow Jones Euro STOXX Banks Index
+EU-BANKS-DIVI            DBEA      EUREX        EUR        500.00               1       500.00                             EURO STOXX Banks Index Dividend Futures
+EU-BANKS2                SX7P      EUREX        EUR         50.00               1        50.00                                           Dow Jones STOXX 600 Banks
+EU-BASIC                 SXPP      EUREX        EUR         50.00               1        50.00                           Dow Jones STOXX 600 Basic Resources Index
+EU-CHEM                  SX4P      EUREX        EUR         50.00               1        50.00                                       Dow Jones STOXX 600 Chemicals
+EU-CONSTRUCTION          SXOP      EUREX        EUR         50.00               1        50.00                        Dow Jones STOXX 600 Construction & Materials
+EU-DIV30                 DJSD      EUREX        EUR         10.00               1        10.00                       Dow Jones Euro STOXX Select Dividend 30 Index
+EU-DIV30-DVP            SD3ED      EUREX        EUR        100.00               1       100.00                                   Euro Stoxx Select Dividend 30 DVP
+EU-DIV50                DESX5      EUREX        EUR        100.00               1       100.00                            Dow Jones EURO STOXX 50 Index-Dividenden
+EU-DJ-AUTO                ESA      EUREX        EUR         50.00               1        50.00                         Dow Jones Euro STOXX 600 Automobile & Parts
+EU-DJ-BASIC              SXPE      EUREX        EUR         50.00               1        50.00                                Dow Jones Euro STOXX Basic Resources
+EU-DJ-CHEM               SX4E      EUREX        EUR         50.00               1        50.00                                      Dow Jones Euro STOXX Chemicals
+EU-DJ-CONSTRUCTION       SXOE      EUREX        EUR         50.00               1        50.00                                   Dow Jones Euro STOXX Construction
+EU-DJ-FINANCE             ESF      EUREX        EUR         50.00               1        50.00                       Dow Jones Euro STOXX Financial Services Index
+EU-DJ-FOOD               SX3E      EUREX        EUR         50.00               1        50.00                                 Dow Jones Euro STOXX Food&Beverages
+EU-DJ-HEALTH             SXDE      EUREX        EUR         50.00               1        50.00                                     Dow Jones Euro STOXX Healthcare
+EU-DJ-HOUSE              SXQE      EUREX        EUR         50.00               1        50.00                     Dow Jones Euro STOXX Personal & Household Goods
+EU-DJ-INDUSTRY           SXNE      EUREX        EUR         50.00               1        50.00                      Dow Jones Euro STOXX Industrial Goods&Services
+EU-DJ-INDUSTRY2          SXNP      EUREX        EUR         50.00               1        50.00               Dow Jones STOXX 600 Industrial Goods & Services Index
+EU-DJ-INSURE              ESI      EUREX        EUR         50.00               1        50.00                                      Dow Jones Euro STOXX Insurance
+EU-DJ-MEDIA               ESM      EUREX        EUR         50.00               1        50.00                                    Dow Jones Euro STOXX Media Index
+EU-DJ-OIL                 ESE      EUREX        EUR         50.00               1        50.00                                      Dow Jones Euro STOXX Oil & Gas
+EU-DJ-RETAIL             SXRE      EUREX        EUR         50.00               1        50.00                                         Dow Jones Euro STOXX Retail
+EU-DJ-TECH               SX8E      EUREX        EUR         50.00               1        50.00                                     Dow Jones Euro STOXX Technology
+EU-DJ-TELECOM            SXKE      EUREX        EUR         50.00               1        50.00                             Dow Jones Euro STOXX Telecommunications
+EU-DJ-TRAVEL             SXTE      EUREX        EUR         50.00               1        50.00                               Dow Jones Euro STOXX Travel & Leisure
+EU-DJ-UTIL                ESU      EUREX        EUR         50.00               1        50.00                                Dow Jones Euro STOXX Utilities Index
+EU-ESG               SEESGSEP      EUREX        EUR        100.00               1       100.00                                  STOXX Europe ESG Leaders Select 30
+EU-FINANCE               SXFP      EUREX        EUR         50.00               1        50.00                        Dow Jones STOXX 600 Financial Services Index
+EU-FOOD                  SX3P      EUREX        EUR         50.00               1        50.00                           Dow Jones STOXX 600 Food & Beverage Index
+EU-HEALTH                SXDP      EUREX        EUR         50.00               1        50.00                                      Dow Jones STOXX 600 Healthcare
+EU-HOUSE                 SXQP      EUREX        EUR         50.00               1        50.00                      Dow Jones STOXX 600 Personal & Household Goods
+EU-INSURE                SXIP      EUREX        EUR         50.00               1        50.00                                       Dow Jones STOXX 600 Insurance
+EU-MEDIA                 SXMP      EUREX        EUR         50.00               1        50.00                                           Dow Jones STOXX 600 Media
+EU-MID                  DJ200      EUREX        EUR         50.00               1        50.00                                       Dow Jones STOXX MID 200 Index
+EU-OIL                   SXEP      EUREX        EUR         50.00               1        50.00                                       Dow Jones STOXX 600 Oil & Gas
+EU-REALESTATE           SX86P      EUREX        EUR         50.00               1        50.00                                     Dow Jones STOXX 600 Real Estate
+EU-RETAIL                SXRP      EUREX        EUR         50.00               1        50.00                                          Dow Jones STOXX 600 Retail
+EU-TECH                  SX8P      EUREX        EUR         50.00               1        50.00                                      Dow Jones STOXX 600 Technology
+EU-TELECOM               SXKP      EUREX        EUR         50.00               1        50.00                              Dow Jones STOXX 600 Telecommunications
+EU-TRAVEL                SXTP      EUREX        EUR         50.00               1        50.00                                Dow Jones STOXX 600 Travel & Leisure
+EU-UTILS                 SX6P      EUREX        EUR         50.00               1        50.00                                       Dow Jones STOXX 600 Utilities
+EUA                       ECF      ENDEX        EUR       1000.00               1      1000.00                           ECX EU carbon emissions allowance futures
+EUIRS10                     P      ICEEU        EUR       1000.00               1      1000.00                                               10 year euro swapnote
+EUIRS2                    TWS      ICEEU        EUR       1000.00               1      1000.00                                                2 Year euro swapnote
+EUIRS5                      O      ICEEU        EUR       1000.00               1      1000.00                                                5 year euro swapnote
+EUR                       EUR        CME        NaN     125000.00               1    125000.00                                                     EURUSD currency
+EUR_micro                 M6E        CME        USD      12500.00               1     12500.00                                                        EURUSD micro
+EUR_mini                   E7        CME        USD      62500.00               1     62500.00                                                         EURUSD mini
+EUR-ICE                    EO      ICEUS        USD     125000.00               1    125000.00                                                             EUR.USD
+EURAUD                    EAD        CME        AUD     125000.00               1    125000.00                                                              EURAUD
+EURAUD-ICE                EAD      ICEUS        AUD     125000.00               1    125000.00                                                             EUR.AUD
+EURCAD                    ECD        CME        CAD     125000.00               1    125000.00                                                              EURCAD
+EURCAD-ICE                ECD      ICEUS        CAD     125000.00               1    125000.00                                                             EUR.CAD
+EURCHF                     RF        CME        CHF     125000.00               1    125000.00                                                            Euro/chf
+EURCHF-ICE                 RZ      ICEUS        CHF     125000.00               1    125000.00                                                            Euro/chf
+EURCZK                    ECK        CME        EUR    4000000.00               1   4000000.00                                                             CZK.EUR
+EURHUF                    EHF        CME        EUR   30000000.00               1  30000000.00                                                             HUF.EUR
+EURIBOR                   EU3      EUREX        EUR       2500.00               1      2500.00                                                 Three Month EURIBOR
+EURIBOR-ICE                 I      ICEEU        EUR       2500.00               1      2500.00                                       3 Month EURIBOR Interest Rate
+EURINR                 EURINR        NSE        INR       1000.00               1      1000.00                                                              EURINR
+EURMXP                   EURO     MEXDER        MXN      10000.00               1     10000.00                                                              EURMXP
+EURO600                 DJ600      EUREX        EUR         50.00               1        50.00                                           Dow Jones STOXX 600 Index
+EURO600-ESG          SXXPESGX      EUREX        EUR        100.00               1       100.00                                              STOXX Europe 600 ESG-X
+EUROFIRST100              FEO      MONEP        EUR         10.00               1        10.00                                                 FTSEurofirst 80 NEW
+EUROFIRST80               FEF      MONEP        EUR         10.00               1        10.00                                                 FTSEurofirst 80 NEW
+EUROSTX                ESTX50      EUREX        NaN         10.00               1        10.00                                   European equity index EUROSTOXX50
+EUROSTX-CORE             EUN2      EUREX        EUR        100.00               1       100.00                                          ISHARES CORE EURO STOXX 50
+EUROSTX-DJ                STX      EUREX        EUR         10.00               1        10.00                                                   Dow Jones STOXX50
+EUROSTX-LARGE           DJESL      EUREX        EUR         50.00               1        50.00                                                    Euro Stoxx Large
+EUROSTX-MID             DJESM      EUREX        EUR         50.00               1        50.00                                                      Euro Stoxx Mid
+EUROSTX-PRICE            DJES      EUREX        EUR         50.00               1        50.00                                    Dow Jones Euro STOXX Price Index
+EUROSTX-SMALL           DJESS      EUREX        EUR         50.00               1        50.00                                                    Euro Stoxx Small
+EUROSTX200-LARGE       DJ200L      EUREX        EUR         50.00               1        50.00                                     Dow Jones STOXX Large 200 Index
+FEEDCOW                    GF        CME        USD      50000.00             100       500.00                                                       Feeder cattle
+FTSE100                     Z      ICEEU        GBP       1000.00             100        10.00                                                       FTSE100 Index
+FTSE100-DIV              F1DV      ICEEU        GBP         10.00               1        10.00                                             FTSE 100 Dividend Index
+FTSE250                     Y      ICEEU        GBP          2.00               1         2.00                                                            FTSE 250
+FTSEAFRICA40            TOP40       HKFE        HKD         10.00               1        10.00                                         FTSE-JSE Africa Top40 Index
+FTSECHINAA             XINA50        SGX        USD          1.00               1         1.00                                               FTSE/Xinhua China A50
+FTSECHINAA-CSOP          2822       HKFE        HKD       5000.00               1      5000.00                                         CSOP FTSE CHINA A50 ETF-HKD
+FTSECHINAA-IS            2823       HKFE        HKD       5000.00               1      5000.00                                        ISHARES FTSE CHINA A50 E-HKD
+FTSECHINAH              XIN0I        SGX        USD          2.00               1         2.00                                                      FTSE China H50
+FTSEINDO                WIIDN        SGX        USD          5.00               1         5.00                                                FTSE Indonesia Index
+FTSETAIWAN                TWN        SGX        USD         40.00               1        40.00                       FTSE Taiwan RIC Capped Price Return TWD Index
+FTSEVIET              FIVNM30        SGX        USD          5.00               1         5.00                                  FTSE Vietnam 30 Price Return Index
+GAS_US                     NG      NYMEX        NaN      10000.00               1     10000.00                                                      Natural gas US
+GAS_US_mini                QG      NYMEX        USD       2500.00               1      2500.00                                                 Natural gas US mini
+GASOIL                   GOIL        IPE        USD        100.00               1       100.00                                           ICE-EU Low Sulphur Gasoil
+GASOILINE                  RB      NYMEX        USD      42000.00               1     42000.00                                                    RBOB Gasoline US
+GASOILINE_ICE            RBOB        IPE        USD      42000.00               1     42000.00                                               ICE NYH RBOB Gasoline
+GASOILINE_micro           MRB      NYMEX        USD       4200.00               1      4200.00                                     NYMEX micro Gasoline RBOB Index
+GBP                       GBP        CME        NaN      62500.00               1     62500.00                                                     GBPUSD currency
+GBP_micro                 M6B        CME        USD       6250.00               1      6250.00                                                        GBPUSD_micro
+GBP-ICE                    MP      ICEUS        USD      62500.00               1     62500.00                                                             GBP.USD
+GBPCHF                    PSF        CME        CHF     125000.00               1    125000.00                                                              GBPCHF
+GBPCHF-ICE                 SS      ICEUS        CHF     125000.00               1    125000.00                                                             GBP.CHF
+GBPEUR                     RP        CME        GBP     125000.00               1    125000.00                                                     GBPEUR currency
+GBPEUR-ICE                 GB      ICEUS        GBP     125000.00               1    125000.00                                                                 GBP
+GBPINR                 GBPINR        NSE        INR       1000.00               1      1000.00                                                              GBPINR
+GBPJPY                    PJY        CME        JPY     125000.00               1    125000.00                                                              GBPJPY
+GBPJPY-ICE                 SY      ICEUS        JPY     125000.00               1    125000.00                                                             GBP.JPY
+GOLD                       GC      COMEX        NaN        100.00               1       100.00                                                                Gold
+GOLD_micro                MGC      COMEX        USD         10.00               1        10.00                                                          Gold micro
+GOLD-CHINA                SGC      COMEX        CNH       1000.00               1      1000.00  Shanghai Gold Exchange Gold Benchmark PM Price Index - CNH Futures
+GOLD-CHINA-USD           SGUF      COMEX        USD         32.15               1        32.15  Shanghai Gold Exchange Gold Benchmark PM Price Index - USD Futures
+GOLD-CN-HK                GDR       HKFE        CNH       1000.00               1      1000.00                                              CNH Gold Futures in HK
+GOLD-HK                   GDU       HKFE        USD       1000.00               1      1000.00                                              USD Gold futures in HK
+GOLD-JPN                 GOLD    OSE.JPN        JPY       1000.00               1      1000.00                                             Gold (Standard) - Japan
+GOLD-JPN_mini            M-GD    OSE.JPN        JPY        100.00               1       100.00                                                 Gold (Mini) - Japan
+GOLD-mini                  QO      COMEX        USD         50.00               1        50.00                                                           Gold mini
+HANG                      HSI       HKFE        HKD         50.00               1        50.00                                    Hong Kong equity index Hang Seng
+HANG_mini                 MHI       HKFE        HKD         10.00               1        10.00                               Hong Kong equity index Hang Seng mini
+HANG-DIV               HSIDPI       HKFE        HKD         50.00               1        50.00                                            HSI Dividend Point Index
+HANGTECH               HSTECH       HKFE        HKD         50.00               1        50.00                                                Hang Seng TECH Index
+HANGENT                HHI.HK       HKFE        HKD         50.00               1        50.00                                    Hang Seng China Enterprise Index
+HANGENT_mini           MCH.HK       HKFE        HKD         10.00               1        10.00                               Hang Seng China Enterprise Index mini
+HANGENT-GTR            HSCEIG       HKFE        HKD         50.00               1        50.00                Hang Seng China Enterprises Gross Total Return Index
+HANGENT-NTR            HSCEIN       HKFE        HKD         50.00               1        50.00                  Hang Seng China Enterprises Net Total Return Index
+HEAT-DEG-AMS               D2        CME        GBP         20.00               1        20.00                         Amsterdam Schiphol Heating Degree Day Index
+HEAT-DEG-LON               D0        CME        GBP         20.00               1        20.00                                     London Heating Degree Day Index
+HEAT-DEG-NY                H4        CME        USD         20.00               1        20.00                                   New York Heating Day Degree Index
+HEATOIL                    HO      NYMEX        USD      42000.00               1     42000.00                                                         Heating oil
+HEATOIL_micro             MHO      NYMEX        USD       4200.00               1      4200.00                                                Micro NY Harbor ULSD
+HEATOIL-ICE              HOIL        IPE        USD      42000.00               1     42000.00                                                     ICE HEATING OIL
+HEATOIL-mini               QH      NYMEX        USD      21000.00               1     21000.00                                        NYMEX MINY Heating Oil Index
+HSCEI-DIV              HHIDPI       HKFE        HKD         50.00               1        50.00                                          HSCEI Dividend Point Index
+HUFEUR                    EHF        CME        EUR   30000000.00               1  30000000.00                                                              HUFEUR
+IBEX_mini                IBEX     MEFFRV        EUR          1.00               1         1.00                                                        IBEX 35 mini
+IND-BANK            BANKNIFTY        NSE        INR          1.00               1         1.00                                                          Nifty Bank
+IND-FIN                NSEFIN        NSE        INR          1.00               1         1.00                          NSE Nifty Financial Services Index Futures
+INR-micro                 MIR        CME        USD    1000000.00           10000       100.00                                                        Indian Rupee
+IRON                      SCI        SGX        USD        100.00               1       100.00                                            SGX TSI Iron Ore Futures
+IRON-CME                  TIO      COMEX        USD        500.00               1       500.00                             Iron Ore 62% Fe CFR China (TSI) Futures
+IRON-HK                   TSI       HKFE        USD        100.00               1       100.00                    TSI Iron Ore Fines 62% Fe CFR China Index (HKFE)
+IRS                       ILS        CME        USD    1000000.00               1   1000000.00                                                      Israeli shekel
+JGB                       JGB    OSE.JPN        JPY    1000000.00               1   1000000.00                    Standardized 6% 10-Year Japanese Government Bond
+JGB-mini                   MJ    OSE.JPN        JPY     100000.00               1    100000.00                                                    Mini 10 Year JGB
+JGB-SGX-mini              SGB        SGX        JPY     100000.00               1    100000.00                                                  SGX Mini JGB Index
+JPY                       JPY        CME        NaN   12500000.00               1  12500000.00                                                     JPYUSD currency
+JPY_micro                 M6J        CME        JPY      10000.00               1     10000.00                                                             USD.JPY
+JPY_mini                   J7        CME        USD    6250000.00               1   6250000.00                                                         JPYUSD mini
+JPY-SGX                    UY        SGX        JPY     100000.00               1    100000.00                    SGX US Dollar in Japanese Yen Futures (Standard)
+JPY-SGX-TITAN              UJ        SGX        JPY     500000.00               1    500000.00                       SGX US Dollar in Japanese Yen Futures (Titan)
+JPYINR                 JPYINR        NSE        INR     100000.00               1    100000.00                                                              JPYINR
+KOSPI                    K200        KSE        NaN     250000.00               1    250000.00                                           Korean equity index KOSPI
+KOSPI_mini              K200M        KSE        KRW      50000.00               1     50000.00                                                          KOSPI mini
+KOSPI300                 K300        KSE        KRW      50000.00               1     50000.00                                                      KOSPI300 Index
+KRWJPY                     KJ        SGX        JPY   25000000.00               1  25000000.00                              SGX Korean Won in Japanese Yen Futures
+KRWUSD_mini                KU        SGX        USD   25000000.00            1000     25000.00                          SGX Korean Won in US Dollar Futures (Mini)
+LEANHOG                    HE        CME        NaN      40000.00             100       400.00                                                           Lean hogs
+LIVECOW                    LE        CME        NaN      40000.00             100       400.00                                                         Live cattle
+LUMBER-new                LBR        CME        USD         27.50               1        27.50                                         Random Length Lumber - mini
+MIB                     FTMIB       IDEM        EUR          5.00               1         5.00                                                      FTSE MIB INDEX
+MIB_micro               FTMIB       IDEM        EUR          0.20               1         0.20                                                FTSE MIB INDEX Micro
+MIB_mini                FTMIB       IDEM        EUR          1.00               1         1.00                                                 FTSE MIB INDEX Mini
+MIB-DIVI               MIBDIV       IDEM        EUR          5.00               1         5.00                                             FTSE MIB Dividend Index
+MID-DAX                  MDAX      EUREX        EUR          1.00               1         1.00                                                          Midcap DAX
+MILLWHEAT                 EBM      MATIF        EUR         50.00               1        50.00                                               Milling Wheat Futures
+MSCIASIA                 M1MS      EUREX        USD        100.00               1       100.00                                          MSCI Emerging Markets Asia
+MSCIASIAEXJP         NDUECAXJ      ICEEU        USD        100.00               1       100.00               The MSCI All Countries Asia ex Japan Net Total Return
+MSCIBRAZIL           NDUEBRAF      ICEEU        USD        100.00               1       100.00                                    The MSCI Brazil Net Total Return
+MSCICHINA               M1CNX      EUREX        USD         50.00               1        50.00                        MSCI China Free Net Total Return (USD) Index
+MSCICHINANET           MCN.HK       HKFE        USD         50.00               1        50.00                 MSCI China Free Net Total Return (USD) Index (HKFE)
+MSCIEAFA                 MXEA  NYSELIFFE        USD         50.00               1        50.00                                                     MSCI EAFA Index
+MSCIEAFA-TOT             M1EA        CME        USD         20.00               1        20.00                                    MSCI EAFE Net Total Return Index
+MSCIEM                   M1EF      EUREX        USD        100.00               1       100.00                                      MSCI EM Net Total Return Index
+MSCIEM-LIFFE             MXEF  NYSELIFFE        USD         50.00               1        50.00                                  MSCI EMERGING MARKETS INDEX (CBOE)
+MSCIEMASIA              M1MSA  NYSELIFFE        USD        100.00               1       100.00                         MSCI Emerging Markets Asia Net Total Return
+MSCIEURONET              M7EU      EUREX        EUR        100.00               1       100.00                                    MSCI Europe Net Return EUR Index
+MSCIEURONET-ICE      M7EU0FNN      ICEEU        EUR        100.00               1       100.00                         The MSCI Europe Financials Net Total Return
+MSCIEUROPE               MXEU      EUREX        EUR        100.00               1       100.00                                                     MSCI Europe NTR
+MSCIEUROPE-ICE        NDDUE15      ICEEU        USD         10.00               1        10.00                                    The MSCI Europe Net Total Return
+MSCIEUROPE-LIFFE         M1EU  NYSELIFFE        USD         10.00               1        10.00                                                     MSCI Europe NTR
+MSCIINDO               MID.HK       HKFE        USD          2.00               1         2.00                                   MSCI Indonesia Index (USD) - HKFE
+MSCIJAPAN              MXJPUS      EUREX        USD         10.00               1        10.00                                              MSCI JAPAN INDEX - USD
+MSCIJAPAN-LIFFE          M1JP  NYSELIFFE        USD         10.00               1        10.00                                                  The MSCI Japan NTR
+MSCILATIN                MXLA  NYSELIFFE        USD         20.00               1        20.00                                   MSCI Emerging Latin America Index
+MSCIPACIFIC           NDDUPXJ      ICEEU        USD         10.00               1        10.00                          The MSCI Pacific ex Japan Net Total Return
+MSCIPANEURO-LIFFE        MSPE  NYSELIFFE        EUR         20.00               1        20.00                                                 MSCI Pan-Euro Index
+MSCIRUSSIA               MXRU      EUREX        USD         10.00               1        10.00                                                   MSCI Russia Index
+MSCISING                  SSG        SGX        SGD        100.00               1       100.00                                           MSCI Singapore Free Index
+MSCITAIWAN                MTW       HKFE        USD        100.00               1       100.00                                      MSCI Taiwan (USD) Index - HKFE
+MSCIUSA                  MXUS  NYSELIFFE        USD         50.00               1        50.00                                                      MSCI USA index
+MSCIWORLD                MXWO      EUREX        USD         10.00               1        10.00                                                    MSCI World Index
+MSCIWORLD-MINVOL      M00IWOO      ICEEU        USD         10.00               1        10.00                  The MSCI World Minimum Volatility Net Total Return
+MSCIWORLDNET-EUR         MBWO      EUREX        EUR        100.00               1       100.00                                          MSCI World Net EUR Index 1
+MSCIWORLDNET-ICE       NDDUWI      ICEEU        USD         10.00               1        10.00                                     The MSCI World Net Total Return
+MSCIWORLDNET-USD         M1WO      EUREX        USD         10.00               1        10.00                                           MSCI World NETR USD Index
+MXP                        6M        CME        NaN     500000.00               1    500000.00                                                     MEXUSD currency
+NASBIO-mini               BQX        CME        USD         50.00               1        50.00                                     CME E-Mini NASDAQ Biotechnology
+NASDAQ                     NQ        CME        NaN         20.00               1        20.00                                              US equity index Nasdaq
+NASDAQ_micro              MNQ        CME        USD          2.00               1         2.00                                                        NASDAQ micro
+NASDAQ_mini               QCN        CME        USD         20.00               1        20.00                                             E-mini NASDAQ Composite
+NIFTY                   NIFTY        SGX        USD          2.00               1         2.00                                                     CNX Nifty Index
+NIFTY-IN              NIFTY50        NSE        INR          1.00               1         1.00                                                      Nifty 50 india
+NIKKEI                  N225M    OSE.JPN        JPY        100.00               1       100.00                                                     Nikkei 225 Mini
+NIKKEI_large             N225    OSE.JPN        JPY       1000.00               1      1000.00                                                Nikkei 225 full size
+NIKKEI-CME                NKD        CME        USD          5.00               1         5.00                                 Dollar Denominated Nikkei 225 Index
+NIKKEI-JPY                NIY        CME        JPY        500.00               1       500.00                                    Yen Denominated Nikkei 225 Index
+NIKKEI-JPY_mini           NIY        CME        JPY        100.00               1       100.00                             E-mini Yen Denominated Nikkei 225 Index
+NIKKEI-SGX              SGXNK        SGX        JPY        500.00               1       500.00                                                     SGX: Nikkei 225
+NIKKEI-SGX_mini        SGXNKM        SGX        JPY        100.00               1       100.00                                                SGX: NIKKEI 225 Mini
+NIKKEI-SGX-DIV         NKYDIV        SGX        JPY      10000.00               1     10000.00                           Nikkei Stock Average Dividend Point Index
+NIKKEI-SGX-USD          N225U        SGX        USD          5.00               1         5.00                                           SGX: USD Nikkei 225 Index
+NIKKEI400             JPNK400    OSE.JPN        JPY        100.00               1       100.00                                                JPX-Nikkei Index 400
+NOK                       NOK        CME        USD    2000000.00               1   2000000.00                                                     NOKUSD currency
+NZD                       NZD        CME        NaN     100000.00               1    100000.00                                                     NZDUSD currency
+OAT                       OAT      EUREX        NaN       1000.00               1      1000.00                                             French 10 year bond OAT
+OAT5                      OAM      EUREX        EUR       1000.00               1      1000.00                                                   Mid-Term Euro-OAT
+OATIES                     ZO       CBOT        USD       5000.00             100        50.00                                                         Oat Futures
+OMX                    OMXH25      EUREX        EUR         10.00               1        10.00                                               OMX Helsinki 25 Index
+OMX-SWE                OMXS30        OMS        SEK        100.00               1       100.00                                                  OMX Index [Sweden]
+OMXESG                 OMXESG        OMS        SEK        100.00               1       100.00                                        OMXS30 ESG Responsible Index
+OMXSB                   OMXSB        OMS        SEK        100.00               1       100.00                                                   OMXSB Share Index
+PALLAD                     PA      NYMEX        NaN        100.00               1       100.00                                                           Palladium
+PIPELINE                   LT      NYMEX        USD      42000.00               1     42000.00                            Gulf Coast ULSD (Platts) Up-Down Futures
+PLAT                       PL      NYMEX        NaN         50.00               1        50.00                                                            Platinum
+PLAT-JPN                 PLAT    OSE.JPN        JPY        500.00               1       500.00                                         Platinum (Standard) - Japan
+PLAT-JPN_mini            M-PT    OSE.JPN        JPY        100.00               1       100.00                                             Platinum (Mini) - Japan
+PLZEUR                    EPZ        CME        EUR     500000.00               1    500000.00                                                   Polish zloty EURO
+R1000                     RSV        CME        USD         50.00               1        50.00                             E-Mini Russell 1000 Value Index Futures
+R1000_mini                RS1        CME        USD         50.00               1        50.00                                   E-mini Russell 1000 Index Futures
+R1000GROWTH-mini          RSG        CME        USD         50.00               1        50.00                            E-mini Russell 1000 Growth Index Futures
+RAPESEED                  ECO      MATIF        EUR         50.00               1        50.00                                            European Rapeseed Future
+REDWHEAT                   KE       CBOT        USD       5000.00             100        50.00                                       Hard Red Winter Wheat -KCBOT-
+ROBUSTA                     D  ICEEUSOFT        USD         10.00               1        10.00                                                      Robusta Coffee
+RUSSELL                   M2K        CME        USD          5.00               1         5.00                                     Micro E-Mini Russell 2000 Index
+RUSSELL_mini              RTY        CME        USD         50.00               1        50.00                                           E-Mini Russell 2000 Index
+RUSSELL-GROWTH            RUO        CME        USD         50.00               1        50.00                                           Russell 2000 Growth Index
+RUSSELL-VALUE             RUJ        CME        USD         50.00               1        50.00                                            Russell 2000 Value Index
+SEK                       SEK        CME        USD    2000000.00               1   2000000.00                                                     SEKUSD currency
+SGD_mini                   US        SGX        SGD      25000.00               1     25000.00                    SGX US Dollar in Singapore Dollar (Mini) Futures
+SGX                       STI        SGX        SGD          2.00               1         2.00                                             SGX Straits Times Index
+SILVER                     SI      COMEX        USD       1000.00               1      1000.00                                                  NYMEX Silver Index
+SILVER-mini                QI      COMEX        USD       2500.00               1      2500.00                                                   COMEX MINY Silver
+SMI                       SMI      EUREX        NaN         10.00               1        10.00                                              Swiss equity index SMI
+SMI-DIV                 SMIDP      EUREX        CHF        100.00               1       100.00                                           SMI Dividend Points Index
+SMI-MID                  SMIM      EUREX        CHF         10.00               1        10.00                                                 Swiss Mid-cap Index
+SMIETF                  CSSMI      EUREX        CHF        100.00               1       100.00                                                  ISHARES SMI ETF CH
+SOFR                    SOFR3        CME        USD       2500.00               1      2500.00           Secured Overnight Financing Rate 3-month average of rates
+SOFR1                   SOFR1        CME        USD       4167.00               1      4167.00           Secured Overnight Financing Rate 1-month average of rates
+SONIA                   SONIA        CME        GBP       2500.00               1      2500.00                                    Sterling Overnight Index Average
+SONIA1                SONIO.N      ICEEU        GBP       2500.00               1      2500.00                                                     One Month SONIA
+SONIA3                SONIA.N      ICEEU        GBP       2500.00               1      2500.00                                                   Three Month SONIA
+SOYBEAN                    ZS       CBOT        NaN       5000.00             100        50.00                                                             Soybean
+SOYBEAN_mini               YK       CBOT        USD       1000.00             100        10.00                                                        Soybean mini
+SOYMEAL                    ZM       CBOT        USD        100.00               1       100.00                                                        Soybean Meal
+SOYOIL                     ZL       CBOT        USD      60000.00             100       600.00                                                         Soybean oil
+SP400                     EMD        CME        USD        100.00               1       100.00                                       E-mini S&P Midcap 400 Futures
+SP500                      ES        CME        NaN         50.00               1        50.00                                              US equity index S&P500
+SP500_micro               MES        CME        USD          5.00               1         5.00                                                       S&P 500 micro
+SP500_mini            SPXESUP        CME        USD        500.00               1       500.00                                                  E-mini S&P 500 ESG
+SP500-GROWTH              SGX        CME        USD        250.00               1       250.00                                    S&P 500 / Citigroup Growth Index
+SP500-VALUE               SVX        CME        USD        250.00               1       250.00                                     S&P 500 / Citigroup Value Index
+SP600-SMALL               SMC        CME        USD        100.00               1       100.00                                     E-Mini S&P SmallCap 600 Futures
+SPI200                    SPI       SNFE        AUD         25.00               1        25.00                                                    ASX SPI200 Index
+SS-HK-EXCH-CLEAR          388       HKFE        HKD        100.00               1       100.00                                  HONG KONG EXCHANGES & CLEAR (SEHK)
+SUGAR_WHITE                 W  ICEEUSOFT        USD         50.00               1        50.00                                                         White sugar
+SUGAR11                    SB      NYBOT        USD     112000.00             100      1120.00                                                           Sugar #11
+SUGAR16                    SF      NYBOT        USD     112000.00             100      1120.00                                                           Sugar #16
+TECDAX                    TDX      EUREX        EUR         10.00               1        10.00                                                              TECDAX
+TOPIX                   MNTPX    OSE.JPN        JPY       1000.00               1      1000.00                                                    Japan Mini Topix
+TOPIX_Large              TOPX    OSE.JPN        JPY      10000.00               1     10000.00                                                     TOPIX full size
+TOPIX30                TPXC30    OSE.JPN        JPY       1000.00               1      1000.00                                                        Topix Core30
+TSX                       TSX        CDE        CAD          5.00               1         5.00                                 Canadian equity index TSX composite
+TWD                       TWD        SGX        USD    3000000.00            1000      3000.00                 SGX Taiwan Dollar in US Dollar Futures (Full-Sized)
+TWD-mini                   TD        SGX        USD    1000000.00              10    100000.00                       SGX Taiwan Dollar in US Dollar Futures (Mini)
+US-SEMICONDUCTOR        SPSOX        CME        USD         25.00               1        25.00                                    E-mini PHLX Semiconductor Sector
+US10U                      TN       CBOT        USD       1000.00               1      1000.00                                      Ultra 10-Year US Treasury Note
+US10Y_micro               10Y       CBOT        USD       1000.00               1      1000.00                                        10 Year Micro Treasury Yield
+US20-new                  TWE       CBOT        USD       1000.00               1      1000.00                                    Ultra 20-Year U.S. Treasury Bond
+US2Y_micro                2YY       CBOT        USD       1000.00               1      1000.00                                         2 Year Micro Treasury Yield
+US30                       UB       CBOT        USD       1000.00               1      1000.00                                                 Ultra Treasury Bond
+US30Y_micro               30Y       CBOT        USD       1000.00               1      1000.00                                        30 Year Micro Treasury Yield
+US30Y_small            30YSME       SMFE        USD        100.00               1       100.00                                        Small 30YR US Treasury Yield
+US5Y_micro                5YY       CBOT        USD       1000.00               1      1000.00                                         5 Year Micro Treasury Yield
+USDCAD_micro              M6C        CME        CAD      10000.00               1     10000.00                                                        USDCAD_micro
+USDCHF_micro              M6S        CME        CHF      10000.00               1     10000.00                                                        USDCHF_micro
+USDCNH-CME                CNH        CME        CNH     100000.00               1    100000.00                                                      USDCNME on CME
+USDCNH-HK                 MCS       HKFE        CNH      20000.00               1     20000.00                                                           USDCNH HK
+USDCNH-SGX_mini           MUC        SGX        CNH      25000.00               1     25000.00                                          SGX USD-CNH Futures (Mini)
+USDMXP                   DEUA     MEXDER        MXN      10000.00               1     10000.00                                                              USDMXP
+USIRS10                   N1U       CBOT        USD       1000.00               1      1000.00                                                     US 10 year swap
+USIRS10_ICE               USP      ICEEU        USD       1000.00               1      1000.00                                       Ten year dollar swapnote, ICE
+USIRS10ERIS               LIY       CBOT        USD       1000.00               1      1000.00                                           10-Year Eris Swap Futures
+USIRS12ERIS               LII       CBOT        USD       1000.00               1      1000.00                                           12-Year Eris Swap Futures
+USIRS15ERIS               LIL       CBOT        USD       1000.00               1      1000.00                                           15-Year Eris Swap Futures
+USIRS2                    T1U       CBOT        USD       1000.00               1      1000.00                       2-Year Deliverable Interest Rate Swap Futures
+USIRS2_ICE                USW      ICEEU        USD       1000.00               1      1000.00                                       Two year dollar swapnote, ICE
+USIRS20ERIS               LIO       CBOT        USD       1000.00               1      1000.00                                           20-Year Eris Swap Futures
+USIRS2ERIS                LIT       CBOT        USD       1000.00               1      1000.00                                            2-Year Eris Swap Futures
+USIRS30                   B1U       CBOT        USD       1000.00               1      1000.00                      30-Year Deliverable Interest Rate Swap Futures
+USIRS3ERIS                LIC       CBOT        USD       1000.00               1      1000.00                                            3-Year Eris Swap Futures
+USIRS4ERIS                LID       CBOT        USD       1000.00               1      1000.00                                            4-Year Eris Swap Futures
+USIRS5                    F1U       CBOT        USD       1000.00               1      1000.00                                                      US 5 year swap
+USIRS5_ICE                USO      ICEEU        USD       1000.00               1      1000.00                                      Five year dollar swapnote, ICE
+USIRS5ERIS                LIW       CBOT        USD       1000.00               1      1000.00                                            5-Year Eris Swap Futures
+USIRS5ERIS_SOFR           YIW       CBOT        USD       1000.00               1      1000.00                                       5-Year Eris SOFR Swap Futures
+USIRS7ERIS                LIB       CBOT        USD       1000.00               1      1000.00                                            7-Year Eris Swap Futures
+V2X                      V2TX      EUREX        NaN        100.00               1       100.00                                             Vol European equity V2X
+VHANG                    VHSI       HKFE        HKD       5000.00               1      5000.00                                          Hang Seng Volatility Index
+VIX_mini                  VXM        CFE        USD        100.00               1       100.00                                              Vol US equity VIX mini
+VNKI                     NKVI    OSE.JPN        JPY      10000.00               1     10000.00                                         Nikkei 225 Volatility Index
+VOLQ                     VOLQ        CME        USD        100.00               1       100.00                                         NASDAQ-100 Volatility Index
+WATER-CALI              NQH2O        CME        USD         10.00               1        10.00                             The Nasdaq Veles California Water Index
+WHEAT                      ZW       CBOT        NaN       5000.00             100        50.00                                                               Wheat
+WHEAT_ICE                   T  ICEEUSOFT        GBP        100.00               1       100.00                                                           Wheat ICE
+WHEAT_mini                 YW       CBOT        USD       1000.00             100        10.00                                                          Wheat mini
+WHEAT-ASX                  WH       SNFE        AUD         20.00               1        20.00                                                       WHEAT FUTURES
+WTI_small                 SMO       SMFE        USD        100.00               1       100.00                                                  Small US Crude Oil
+YENEUR                     RY        CME        JPY     125000.00               1    125000.00                                                     YENEUR currency
+YENEUR-ICE                 EJ      ICEUS        JPY     125000.00               1    125000.00                                                             EUR.JPY

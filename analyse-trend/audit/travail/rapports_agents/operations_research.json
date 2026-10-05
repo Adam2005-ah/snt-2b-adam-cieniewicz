@@ -1,0 +1,235 @@
+{
+ "summary": "AUDIT: OPERATIONAL FEASIBILITY OF VARIANT 5 \"LES DEUX\" (strategy 13 + portfolio vol targeting). Reproduced exactly: Sharpe 1.171, vol 21.4% (1990-2026). All outputs are in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/. No project files were modified.\n\n1) MARGIN (2000-01 to 2026-07-10, 84 markets)\n- Gross notional exposure: mean 9.2x capital, p95 18.8x, max 28.1x (2020-07-21).\n- Exchange margins found by WebSearch, as % of notional at 2026 prices: ES ~7% (US$22-29k per contract), ZN 1.9% ($2,062), Bund ~2.0% (EUR 2,120-2,890), SR3 deferred ~0.2% ($380-501), 6E 2.1% ($2,970), CL ~9.5%, GC 9% (CME has used a %-of-notional margin since Jan 2026), corn 4.9%, soybeans 3.7%, live cattle 3.9%, coffee 8.5%. Margin divided by annualised vol gives k = 0.20-0.40 (median 0.25).\n- Model B is the main model: margin_i = k_class x max(EWMA32 vol, 1-year vol) x |position|. Results: mean 20.0%, median 19.5%, p95 33.2%, p99 37.6%, max 47.3% (2009-09-16). Other peaks: 44.0% (2012-05-23), 40.6% (2013-12), 39.9% (2014-09 and 2019-04), 38.6% (2025-09-22), 38.4% (2020-12-17). Above 30% on 10.8% of days, above 40% on 0.4% of days, never above 50%. On 2026-07-10 it was 27.3%.\n- Model A uses fixed 2025-26 % of notional: mean 22.6%, p95 40.2%, p99 53.4%, max 62.3% (2014-09-03). It overstates margin in the low-vol 2013-2019 period, when the bond/STIR books were 20-25x capital.\n- 20-market subset: mean 17%, p95 27.6%, max 44.6%.\n- Average contribution by class (model B): equities 4.8 pts, bonds 3.4, metals 3.4, FX 3.0, agriculture 2.7, energy 2.3, STIR 0.4.\n- Benchmarks: CTAs typically run 10-20% margin-to-equity, 30% at most (RCM/IASG). Brokers suggest 10-40% and below 50%. So the averages are normal, but the peaks sit at the top of the range.\n- Worst losses: 1-day -10.6% (2023-03-13), -9.2% (2021-11-26), -8.8% (2015-12-03), -8.5% (2023-03-10). 5-day -18.4% (2023-03-15), -14.0% (2007-03), -12.8% (2018-02). 21-day -19.0% (to 2023-04-06).\n- SVB, March 2023: margin 37% and a 19% drawdown within the month. If exchanges had also doubled margins, margin would have reached about 91% of equity, which is just above maintenance (about 0.9x initial).\n- Stress test (margin x2 plus the realised next-5-day loss): max 96% of equity (Sept 2009), p99 77%. For scale, CME S&P 500 initial margin rose 82% between 26 Feb and end-March 2020.\n- IBKR does not issue margin calls. It liquidates automatically, in real time, at market, choosing the positions itself. So a single bad week does not threaten the account, but the combination of a peak margin, an exchange hike and a 15-20% drawdown can trigger forced liquidation. Recommended control: cap margin/equity at 40-50% and keep all capital at the broker.\n- Caveats: the margin data mixes exchange and broker figures from secondary sites (the ES figure is uncertain). SPAN offsets are ignored, so totals are conservative. Broker house margins may be higher. Margins before 2010 are proxies.\n\n2) WORKLOAD\nMethod: integer contracts using Carver's rounded buffer, the smallest retail contract per market (micros/minis, notional at 2026-07-10, in contracts.csv), period 2016-07 to 2026-07.\n- Fractional positions (infinite capital), 84 markets: 51 position changes per day, 421 roll events per year.\n- 84 markets by capital:\n  - $25k: 2.7 markets held on average, 0.28 orders/day, correlation with the model 0.58, tracking error (TE) 18.5%/yr. This is not the strategy.\n  - $100k: 15 markets held, 0 markets with 4 or more contracts, 1.6 orders/day, 85 rolls/yr, correlation 0.85, TE 12.9%.\n  - $250k: 30 markets, 4.0 orders/day, 163 rolls, correlation 0.93, TE 8.7%.\n  - $500k: 44 markets, 7.3/day, 233 rolls, TE 5.7%.\n  - $1M: 58 markets, 12.1/day (60/week), 300 rolls/yr, about 4,600 contracts traded plus about 1,600 rolled per year, correlation 0.99, TE 3.2%.\n  - $5M: 77 markets, 28/day, 389 rolls.\n- 20-market subset by capital (ES, Euro Stoxx, Nikkei, Hang Seng, US 2y, US 10y, Bund, Schatz, SOFR, EUR, JPY, GBP, AUD, crude, natural gas, gold, copper, corn, soybeans, live cattle):\n  - $25k: correlation 0.80, TE 12.8%.\n  - $100k: 12.7 markets held, 1.9 orders/day, 66 rolls/yr, correlation 0.965, TE 5.6%.\n  - $250k: 4.0/day, 83 rolls, correlation 0.99, TE 2.7%.\n  - $1M: 7.8/day, 97 rolls.\n- Backtest Sharpe, 20 markets vs 84: 0.905 vs 1.171 (1990-), 0.683 vs 0.845 (2000-), 0.442 vs 0.541 (2010-), +0.149 vs -0.460 (2023-).\n- Weekly instead of daily rebalancing (variant 5): Sharpe 1.110 vs 1.171, costs 2.1% vs 2.4%/yr.\n- Time estimates (my own, not sourced):\n  - Full 84 markets at $1M by hand: about 1-1.5 h every trading day across Asian, European and US sessions. Not feasible part-time.\n  - Full automation (pysystemtrade + IB Gateway): 15-30 min/day, plus 200-500 h to set up.\n  - 20 markets at $250k, semi-automated: about 30-40 min/day, or 1-1.5 h/week if rebalanced weekly.\n- Must be automated: data download and cleaning (spike filter), forecasts and vol, orders to target from reconciled positions, roll calendar and first-notice-day alerts, reconciliation, risk report, currency sweeps.\n- Failure modes and controls are listed in failure_modes_controls.csv.\n- Several of the 84 series are impractical for a French retail account: Ethanol, SGX iron ore, GIFT Nifty, SGX Taiwan, ICE MSCI EM, SONIA, ASX bills, etc.\n\n3) BEHAVIOUR (net excess returns, 1990-2026)\n- Drawdowns over 20%: 1999 -20.7% (5.5 months), 2001-02 -28.6% (9.9 mo), 2006-07 -22.8% (13.8 mo), 2009 -21.1% (11.9 mo), 2012-14 -29.3% (26.6 mo), 2016-20 -47.2% (49.9 months underwater), and 2022-09-27 to now: trough -54.0% on 2025-05-15, still unrecovered after 45.4 months.\n- Including T-bills: max drawdown -47.6%. On 2026-07-10 the current drawdown is -43.1% (excess) and -32.1% (total).\n- From 2022-09-30 to 2026-07-10: -41.4% excess and -30.1% total. Over the same period: SG Trend +2.6%, SG CTA +2.1%, DBMF +13.8%, AQMIX +33.8%, KMLM -16.4%, and the 20-market subset of variant 5 +17.7%. Implementation choices therefore create very large dispersion.\n- Negative years: 9 of 37 (excess), 8 of 37 (total). 2023 -10.5%, 2024 -14.3%, 2025 +2.0%, 2026 YTD -2.1%; 2016 -18.1%, 2017 -13.5%.\n- Rolling returns: 1-year negative 18% of the time, 3-year 12%, 5-year 0.9%, 10-year never (minimum +5.1%/yr).\n- Time spent below the peak: more than 10% below for 41% of days, more than 20% for 19%, more than 30% for 10%. Worst month -13.2% (Feb 2018); 41% of months negative.\n- Morningstar Mind the Gap: investors lose 1.2 pts/yr on average to bad timing, and 2.1 pts/yr in the most volatile funds.\n\n4) ALTERNATIVES FOR A FRENCH INVESTOR (alternatives_ucits.csv)\n- iMGP DBi Managed Futures UCITS ETF: R USD LU2951555403 (TER 0.75%, Euronext Paris DBMF:FP, since 2025-03-07) and R EUR HP LU3359622902 (TER 0.75%, Xetra since 2026-05, Euronext Paris MFEH:FP since 2026-09-21). Fund AUM $698M. It is the only managed-futures UCITS ETF found. Buyable in a CTO; not PEA-eligible; assurance-vie not verified. Its US twin DBMF (2019-05 to 2026-07): CAGR 9.2%, vol 12.4%, Sharpe 0.55, max drawdown -20%.\n- Man AHL Trend Alternative (LU0424370004 / LU0428380124): OCF about 1.72%, about 3.2%/yr since 2009.\n- Winton Trend UCITS (IE00BG382P13): TER about 1.0%, 5-year +36%.\n- Aspect Diversified Trends (IE00B3Q12S92): 1.5% + 20% performance fee.\n- Candriam Diversified Futures (FR0010794792): 1.70% fee, about 1.6%/yr over 10 years, not pure trend.\n- Schroder GAIA BlueTrend EUR-H (LU1293073745): poor 1-, 3- and 5-year returns.\n- Lynx UCITS: ISIN not found.\n- US ETFs (DBMF, KMLM, CTA) remain blocked for EEA retail investors because they have no PRIIPs KID.\n\n5) DIY vs FUND (scenarios, diy_vs_fund_scenarios.csv)\nAssumptions: EUR cash 2.5% (ECB deposit rate 2.25-2.50%; search results conflict) and PFU 31.4% from 2026.\n- Fund (12% vol): net Sharpe 0.20 / 0.35 / 0.50, i.e. 2.4 / 4.2 / 6.0% excess. Central case: about 6.7% pre-tax, about 5.0% after tax if held 10 years (tax deferred to sale).\n- DIY variant 5 (20% vol): Sharpe 0.20 / 0.45 / 0.70, i.e. 4 / 9 / 14% excess, before about 0.5-1%/yr of extra slippage and data costs.\n  - Central case, 84 markets: about 11.5% pre-tax, about 7.9% after tax; futures gains are taxed every year because rolls realise the P&L.\n  - 20 markets: about 10.5% pre-tax, about 7.2% after tax.\n- At equal risk, DIY gains only about +0.05-0.10 Sharpe (lower fees). In exchange it needs at least $250k (20 markets) or $1-2M (84 markets), hundreds of hours of setup, and carries the operational and margin tail risks described above.",
+ "key_numbers": [
+  {
+   "name": "Gross exposure mean / p95 / max (2000-2026)",
+   "value": "9.2x / 18.8x / 28.1x (2020-07-21)",
+   "unit": "x capital",
+   "source": "margin_summary_v5.csv"
+  },
+  {
+   "name": "Margin/equity vol-scaled model mean / p95 / p99 / max",
+   "value": "20.0% / 33.2% / 37.6% / 47.3% (2009-09-16)",
+   "unit": "% equity",
+   "source": "margin_summary_v5.csv"
+  },
+  {
+   "name": "Margin/equity fixed-%-notional model mean / p95 / max",
+   "value": "22.6% / 40.2% / 62.3% (2014-09-03)",
+   "unit": "% equity",
+   "source": "margin_summary_v5.csv"
+  },
+  {
+   "name": "Margin/equity on 2026-07-10 (model B)",
+   "value": "27.3%",
+   "unit": "% equity",
+   "source": "margin_84_vs_20.csv"
+  },
+  {
+   "name": "Stressed margin (2x hike + realised next-5d loss) max / p99",
+   "value": "96% / 77%",
+   "unit": "% equity",
+   "source": "loss_vs_cushion_v5.csv"
+  },
+  {
+   "name": "SVB March 2023: margin, drawdown, stressed ratio",
+   "value": "37%, -19.3%, 91%",
+   "unit": "% equity",
+   "source": "margin_crisis_episodes_v5.csv"
+  },
+  {
+   "name": "Worst 1-day / 5-day / 21-day loss",
+   "value": "-10.6% (2023-03-13) / -18.4% (2023-03-15) / -19.0% (2023-04-06)",
+   "unit": "%",
+   "source": "loss_vs_cushion_v5.csv"
+  },
+  {
+   "name": "Orders/day 84 markets at $100k / $250k / $1M / $5M",
+   "value": "1.6 / 4.0 / 12.1 / 27.9",
+   "unit": "orders per trading day",
+   "source": "workload_by_capital.csv"
+  },
+  {
+   "name": "Roll events/yr 84 markets at $100k / $1M",
+   "value": "85 / 300",
+   "unit": "rolls per year",
+   "source": "workload_by_capital.csv"
+  },
+  {
+   "name": "Tracking error vs fractional, 84 markets at $100k / $250k / $1M",
+   "value": "12.9% / 8.7% / 3.2%",
+   "unit": "% per year",
+   "source": "workload_by_capital.csv"
+  },
+  {
+   "name": "Tracking error vs fractional, 20 markets at $100k / $250k",
+   "value": "5.6% / 2.7%",
+   "unit": "% per year",
+   "source": "workload_by_capital.csv"
+  },
+  {
+   "name": "20-market subset Sharpe 1990- / 2000- / 2010- / 2023-",
+   "value": "0.905 / 0.683 / 0.442 / 0.149",
+   "unit": "Sharpe",
+   "source": "workload.py output"
+  },
+  {
+   "name": "Weekly vs daily variant 5 Sharpe (1990-)",
+   "value": "1.110 vs 1.171",
+   "unit": "Sharpe",
+   "source": "v5_daily_vs_weekly.csv"
+  },
+  {
+   "name": "Current drawdown on 2026-07-10, excess / total",
+   "value": "-43.1% / -32.1% (peak 2022-09-27; 45.4 months underwater)",
+   "unit": "%",
+   "source": "drawdowns_over20_v5.csv"
+  },
+  {
+   "name": "Maximum drawdown, excess / total",
+   "value": "-54.0% (2025-05-15) / -47.6%",
+   "unit": "%",
+   "source": "drawdowns_over20_v5.csv"
+  },
+  {
+   "name": "Negative years 1990-2026, excess / total",
+   "value": "9/37 / 8/37",
+   "unit": "years",
+   "source": "years_v5.csv"
+  },
+  {
+   "name": "Share of time >10% / >20% / >30% below peak (total return)",
+   "value": "41% / 19% / 10%",
+   "unit": "% of days",
+   "source": "behaviour.py"
+  },
+  {
+   "name": "Return 2022-09-30 to 2026-07-10: v5 84 / v5 20 / SG Trend / DBMF / AQMIX / KMLM",
+   "value": "-30.1% / +17.7% / +2.6% / +13.8% / +33.8% / -16.4%",
+   "unit": "% cumulative",
+   "source": "funds_vs_v5_track_records.csv"
+  },
+  {
+   "name": "DBMF (US twin of UCITS ETF) 2019-05-08 to 2026-07-10",
+   "value": "CAGR 9.2%, vol 12.4%, Sharpe 0.55, max DD -20.4%",
+   "unit": "",
+   "source": "funds_vs_v5_track_records.csv / local alm0421 DBMF.csv"
+  },
+  {
+   "name": "iMGP DBi Managed Futures UCITS ETF TER",
+   "value": "0.75%",
+   "unit": "% per year",
+   "source": "https://www.finanzfluss.de/informer/etf/lu2951555403/"
+  },
+  {
+   "name": "Central after-tax CAGR, 10y, EUR: fund ETF / DIY 84 / DIY 20",
+   "value": "5.0% / 7.9% / 7.2%",
+   "unit": "% per year",
+   "source": "diy_vs_fund_scenarios.csv (assumption-driven)"
+  },
+  {
+   "name": "PFU from 2026",
+   "value": "31.4%",
+   "unit": "%",
+   "source": "https://placement.meilleurtaux.com/placement-financier/actualites/2026-avril/flat-tax-a-31-4-ce-qui-change-depuis-janvier-2026.html"
+  }
+ ],
+ "claims": [
+  {
+   "claim": "Variant 5's average margin-to-equity (about 20-23%) is within normal CTA practice, but its p95-max (33-62%) is at the top of, or above, the 10-40% guidance.",
+   "evidence": "Model B mean 20.0%, p95 33.2%, max 47.3%; model A mean 22.6%, p95 40.2%, max 62.3%. CTA norms: about 20%, at most 30% (https://www.rcmalternatives.com/?p=3555 ; https://iasg.com/?p=515); 10-40% suggested, below 50% (https://futures.stonex.com/blog/whats-your-margin-equity-ratio)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Exchange margins can roughly double in crises.",
+   "evidence": "CME S&P 500 initial margin went from $33,000 (26 Feb) to $60,000 (end-March 2020), +82% (https://www.clarusft.com/cme-sp-500-futures-margins-in-march-2020/?amp=1). LME nickel March 2022 margin chaos (https://www.mining.com/web/ukraine-crisis-rocks-the-london-metal-exchange/). CME switched precious-metals margins to % of notional and raised gold to 9% in 2026 (https://investinglive.com/commodities/cme-raises-margins-on-comex-gold-again-20260205/)",
+   "confidence": "high"
+  },
+  {
+   "claim": "IBKR liquidates automatically in real time when equity falls below maintenance margin, without a margin call.",
+   "evidence": "https://www.lynxbroker.com/media/doc/IBIE/4761_IBIE_DISCLOSURE_OF_RISKS_OF_MARGIN_TRADING_ENG.pdf ; https://ibkb.interactivebrokers.com/it/tag/margin?page=7",
+   "confidence": "high"
+  },
+  {
+   "claim": "Under a 2x margin hike combined with a realised drawdown, margin would have reached 91-96% of equity at the worst points (SVB Mar 2023, Sep 2009), close to forced liquidation.",
+   "evidence": "margin_crisis_episodes_v5.csv, loss_vs_cushion_v5.csv (own computation; margin model approximate)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "With $100k or less the 84-market system cannot be implemented: about 15 markets are held, none with 4 or more contracts, and tracking error vs the backtest is about 13%/yr.",
+   "evidence": "workload_by_capital.csv (integer contracts, smallest retail contracts, Carver rounded buffer, 2016-07 to 2026-07)",
+   "confidence": "high"
+  },
+  {
+   "claim": "A 20-market micro/mini subset tracks its own fractional version well from about $100k-250k (correlation 0.965-0.99), but it is a different strategy with a lower long-run backtest Sharpe (0.68 vs 0.85 since 2000).",
+   "evidence": "workload_by_capital.csv; workload.py output",
+   "confidence": "high"
+  },
+  {
+   "claim": "Running 84 markets at $1M means about 12 orders/day and about 300 rolls/yr across ~15 exchanges, which is realistic only with full automation.",
+   "evidence": "workload_by_capital.csv; time estimates are my own (workload_time_estimates.csv)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Variant 5 is in a 45-month, unrecovered drawdown (-43% excess, -32% total on 2026-07-10), while real trend indices were flat-to-positive over the same period.",
+   "evidence": "drawdowns_over20_v5.csv; funds_vs_v5_track_records.csv (SG Trend +2.6%, DBMF +13.8% since 2022-09-30)",
+   "confidence": "high"
+  },
+  {
+   "claim": "The worst daily losses (March 2023) may be partly data artefacts in the generic Bloomberg series (e.g. PA1 +8.4% and SI1 +6.9% on 2023-03-13 in the dataset).",
+   "evidence": "Attribution in margin analysis; not cross-checked against exchange settlement prices",
+   "confidence": "low"
+  },
+  {
+   "claim": "The only managed-futures UCITS ETF available to French investors is iMGP DBi Managed Futures (USD LU2951555403; EUR-hedged LU3359622902 on Euronext Paris since 2026-09-21; TER 0.75%).",
+   "evidence": "https://rankiapro.com/en/news/imgp-dbi-managed-futures-eur-hedged-etf-euronext-paris/ ; https://www.finanzfluss.de/informer/etf/lu2951555403/ ; https://europes only listing claim: https://rankiapro.com/en/news/europes-only-managed-futures-ucits-etf-now-listed-on-deutsche-borse-xetra/",
+   "confidence": "high"
+  },
+  {
+   "claim": "US managed-futures ETFs (DBMF, KMLM) cannot be bought by EEA retail investors because they have no PRIIPs KID.",
+   "evidence": "https://ibkb.interactivebrokers.com/node/2993 ; https://www.europarl.europa.eu/doceo/document/E-9-2021-004745_EN.html",
+   "confidence": "high"
+  },
+  {
+   "claim": "Traditional UCITS trend funds charge 1-1.7% plus sometimes performance fees, and have delivered roughly 1.5-6%/yr.",
+   "evidence": "Man AHL Trend Alt OCF ~1.72%, ~3.2%/yr since 2009 (https://fondsen.abnamro.nl/fundscreener/en/pdf/fund?id=1356); Winton TER ~1.0%, 5y +36% (https://www.finanzen.at/fonds/daten-gebuehr/winton-trend-fund-i-ie00bg382p13); Aspect 1.5%+20% (https://www.finect.com/fondos-inversion/IE00B3Q12S92-Aspect_diversified_trends_c_eur_instl); Candriam 1.70%, 10y +17% (https://www.fonds-super-markt.de/fondsfinder/fondsdetails/FR0010794792/)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "At equal risk, DIY's advantage over the ETF is only about +0.05-0.10 Sharpe (fee saving), against large operational, margin and behavioural risks.",
+   "evidence": "diy_vs_fund_scenarios.csv (assumption-driven scenarios); SG Trend net Sharpe 0.33 (2000-2026), DBMF 0.55 (2019-2026)",
+   "confidence": "low"
+  },
+  {
+   "claim": "Investors in volatile funds lose about 2.1 pts/yr to bad timing (vs 1.2 on average).",
+   "evidence": "https://www.morningstar.com/en-us/business/insights/research/mind-the-gap",
+   "confidence": "medium"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_summary_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_peaks_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_by_year_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_daily_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_calibration.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_crisis_episodes_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin_84_vs_20.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/loss_vs_cushion_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/contracts.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/workload_by_capital.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/workload_time_estimates.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/v5_daily_vs_weekly.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/failure_modes_controls.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/drawdowns_over20_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/longest_underwater_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/years_v5.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/funds_vs_v5_track_records.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/alternatives_ucits.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/diy_vs_fund_scenarios.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/margin.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/workload.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/behaviour.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/funds.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/operations/run_v5.py"
+ ]
+}

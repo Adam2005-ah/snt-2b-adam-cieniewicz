@@ -1,0 +1,20 @@
+source,valeur,type,url
+"SG Trend Index (net of fees), excess of T-bill, 2000-2026-08",SR 0.33 (daily); 4.2%/yr excess at 12.6% vol,own computation from pofo SG_Trend_Index_daily.csv minus DTB3,https://wholesale.banking.societegenerale.com/fileadmin/indices_feeds/ti_screen/data/4.nav.csv
+"SG Trend gross of fees (1-2% mgmt + 20% perf added back, HWM)",SR 0.48-0.55 since 2000; 0.43-0.52 since 2010; 0.37-0.46 since 2015; fee drag 2.4-3.4%/yr,own computation (fonds_reels_frais_reintegres.csv),
+BTOP50 (net) 1987-2026,SR 0.43 full; 0.32 since 2000; 0.26 since 2010,own computation,https://portal.barclayhedge.com/cgi-bin/barclay_stats/bcndx.cgi?dump=excel&prog_cod=BTOP50
+"AQR/MOP TSMOM factor (gross, no costs, no fees)",SR 0.98 since 1985; 0.67 since 2000; 0.40 since 2010; 0.24 since 2015,own computation from AQR_TSMOM_excess_index_monthly.csv,
+"Hurst, Ooi, Pedersen (2017) A Century of Evidence on Trend-Following Investing, 1880-2016, 67 markets","~0.76 SR net of 2/20 fees and costs, vol ~9.7%, positive every decade (as reported by secondary sources; per-decade average ~0.4 according to CXO summary - discrepancy not resolved)",search results (secondary),https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing ; https://www.etf.com/sections/index-investor-corner/swedroe-why-trend-following-works ; https://www.cxoadvisory.com/momentum-investing/trend-following-with-intrinsic-momentum-over-the-very-long-run
+Babu et al. (AQR 2020) You Can't Always Trend When You Want,"SG Trend SR 2010-2018 ~0.05 vs 0.28 since 2000; weakness attributed to smaller market moves, not loss of efficacy",search results,https://theideafarm.com/alternative-investment/you-cant-always-trend-when-you-want/
+"Suhonen, Lennkh, Perez (2017) Quantifying Backtest Overfitting in Alternative Beta Strategies",215 bank alt-beta strategies: median SR 1.20 backtest -> 0.31 live (-73%); more complex = worse,search results,https://alphaarchitect.com/looking-at-alternatives-avoid-complexity-and-magical-backtests/
+"Rej, Seager, Bouchaud (CFM 2019) How should you discount your backtest PnL?",discount factor ~2 for typical CTA SR 0.3-0.5,search results,https://arxiv.org/abs/1902.01802
+"Harvey & Liu (2015) Backtesting, JPM 41(1)","haircut non-linear: high SR mildly penalised, marginal SR heavily; 50% rule of thumb is wrong in general",search results,https://people.duke.edu/~charvey/Research/Published_Papers/P120_Backtesting.PDF
+McLean & Pontiff (2016) JF,"anomaly returns -26% out-of-sample, -58% post-publication",search results,https://ivey.uwo.ca/media/3775549/pontiff.pdf
+"Bailey & Lopez de Prado (2014) Deflated Sharpe Ratio, JPM 40(5)",formula used in deflated_sharpe.csv,search results,https://papers.ssrn.com/abstract=2460551
+Carver (Systematic Trading / AFTS),realistic SR rarely exceed 1.0 (secondary summary); half-Kelly sizing on conservative SR - exact book figures not verifiable via proxy,search results (secondary),https://www.cxoadvisory.com/big-ideas/a-few-notes-on-systematic-trading
+SG Trend 2025,+2.39% for 2025 after Q1 loss >4.5%,search results,https://thefullfx.com/ctas-end-2025-on-a-positive-note/
+J.P. Morgan 2026 LTCMA,"US large cap 6.7%/yr, US cash 3.1%/yr (10-15y)",search results,https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/ltcma-2026-us-matrix_usd.pdf
+Vanguard 2026 outlook,US equities ~3.9-5.9%/yr nominal next 10y,search results,https://corporate.vanguard.com/content/corporatesite/us/en/corp/vemo/vemo-return-forecasts.html
+AQR 2026 CMA,US equities 3.6% real (5-10y),search results,https://www.aqr.com/Insights/Research/Alternative-Thinking/2026-Capital-Market-Assumptions-for-Major-Asset-Classes
+ECB deposit rate,2.50% since 16 Sep 2026,search results,https://www.auguste-patrimoine.fr/blog/hausse-taux-bce-septembre-2026
+French PFU 2026,31.4% (12.8% IR + 18.6% PS) from 1 Jan 2026,search results,https://blog.nalo.fr/flat-tax
+IBKR cash interest,no interest on first USD 10k; accounts NAV < USD 100k paid proportionally; USD BM-0.5%,search results,https://investors.interactivebrokers.com/en/accounts/fees/pricing-interest-rates.php

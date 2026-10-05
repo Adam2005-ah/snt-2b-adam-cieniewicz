@@ -1,0 +1,258 @@
+{
+ "summary": "AUDIT « RENDEMENT FUTUR » — variante 5 « Les deux » (v5) et variante 2 « base » (v2). Dossier : /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/. Le backtest est reproduit à l'identique : v5 SR 1,17, vol 21,4 %, coûts 2,4 %/an, exposition brute moyenne 8,8× ; v2 SR 0,92, vol 17,6 %, exposition 5,6×.\n\n1) DÉCROISSANCE : LES FAITS\n- Sharpe en excès du T-bill, données quotidiennes. v5 : 1990-99 2,03 ; 2000-09 1,34 ; 2010-19 0,47 ; 2020-26 0,64. Depuis 2000 0,84, depuis 2010 0,54, depuis 2015 0,38, depuis 2023 −0,46. v2 sur les mêmes périodes : 1,75 / 0,96 / 0,23 / 0,67, puis 0,65 / 0,41 / 0,29 / −0,35. Sur 2010-2026, la tendance a perdu entre la moitié et les deux tiers de son Sharpe.\n- Sharpe glissant sur 5 ans de v5. Médiane 1,16 sur tout l'historique, mais 0,59 depuis 2015. Valeur au 31/07/2026 : 0,03, la plus basse depuis 2019 (−0,01). Pour v2, la valeur actuelle est 0,16.\n- Drawdown de v5 en excès : −54 %, du 27/09/2022 au 15/05/2025. Le système était encore à −43 % au 10/07/2026 (−32 % en total avec le T-bill ; le maxDD total est de −47,6 %). Le backtest lui-même est donc sous l'eau depuis près de 4 ans.\n- Fonds réels, nets de frais, en excès du T-bill :\n  - SG Trend 2000-2026 : SR 0,33 (4,2 %/an pour 12,6 % de vol) ; depuis 2010 : 0,27 ; depuis 2015 : 0,21 ; depuis 2023 : −0,14.\n  - SG CTA : 0,33 depuis 2000.\n  - BTOP50 : 0,43 depuis 1987, 0,32 depuis 2000, 0,26 depuis 2010.\n  - Facteur AQR TSMOM (brut, sans coûts ni frais) : 0,98 depuis 1985, 0,67 depuis 2000, 0,40 depuis 2010, 0,24 depuis 2015.\n- Comparaison à frais égaux. J'ai réintégré les frais mois par mois (gestion 1 à 2 % + 20 % de performance avec high-water mark). Les frais coûtent 2,4 à 3,4 %/an. SG Trend brut de frais atteint alors un SR de 0,48 à 0,55 depuis 2000, 0,43 à 0,52 depuis 2010, 0,37 à 0,46 depuis 2015.\n  - Ratio SR fonds bruts / SR backtest : face à v5, 0,58-0,67 depuis 2000 mais 0,79-0,95 depuis 2010. Face à v2 : 0,75-0,86 depuis 2000, environ 1,0-1,2 depuis 2010.\n  - Lecture : l'écart se concentre sur 1990-2009 (alpha hebdomadaire de v5 contre SG Trend : IR 1,6 en 2000-09, 0,4-0,6 après 2010). Après 2010, le backtest ressemble à ce qu'obtiennent les fonds réels avant frais. Le SR de 1,17 vient surtout des années 1990-2000, où des coûts constants de type « micro-futures 2026 » sous-estiment certainement les coûts réels de l'époque.\n- Corrélations hebdomadaires 2000-2026 : v5/SG Trend 0,80, v5/S&P −0,13 (−0,07 en quotidien, −0,10 en mensuel depuis 1990), v2/S&P −0,24 à −0,30. Bêta de v5 sur SG Trend : 1,3 à 1,5.\n\n2) BIAIS DE TESTS MULTIPLES\n- Essais comptés : 74 configurations dans les CSV (ameliorations 7, taille_vol 12, taille_perf 28, portefeuille 6, sous_ensembles 6, carry 15). Il y en a 53 « tendance seule » sur les mêmes données ; l'écart-type de leurs Sharpe est de 0,12.\n- Deflated Sharpe Ratio (Bailey & López de Prado), avec skew quotidien −0,20 et kurtosis 6,96 pour v5. Sur 1990-2026, le DSR vaut environ 1,00 pour N = 20, 50 ou 74 : le Sharpe ne doit rien au hasard des essais. Le seuil SR0 est de 0,23 à 0,30 (0,48 à 0,61 si l'on suppose une dispersion de 0,25 entre essais), d'où un SR « dégonflé » de 0,56 à 0,93.\n- Sur l'échantillon récent, c'est différent. Depuis 2010 : DSR 0,84-0,89 si la dispersion vaut 0,12, mais 0,39-0,60 si elle vaut 0,25. Depuis 2015 : DSR 0,22-0,70.\n- Décotes de Harvey-Liu (Bonferroni/Šidák, t-stat mensuel) :\n  - 1990-2026 : seulement 7 à 10 % (t = 6,6) ;\n  - depuis 2000 : 17 à 25 % (SR 0,83 ramené à 0,62-0,69) ;\n  - depuis 2010 : 64 à 100 %, le SR de 0,55 n'étant plus significatif pour N ≥ 20 ;\n  - le seuil HLZ t > 3 exige un SR de 0,74 sur 16,5 ans.\n- L'amélioration v5 contre v2 (v5 ramenée à la vol de v2, t de Newey-West). t = 3,3 sur 1990-2026, contre un maximum attendu par hasard de 2,25 avec N = 47 : elle franchit le seuil. Mais t = 2,1 depuis 2000, 1,2 depuis 2010, 0,7 depuis 2015 et −0,18 depuis 2020. Le gain est plausible car la stratégie 13 de Carver était choisie ex ante, mais il est faible et s'érode. Je ne retiens qu'environ +0,05 de SR pour v5 par rapport à v2 à l'avenir.\n- Littérature :\n  - Hurst-Ooi-Pedersen 2017 (1880-2016) : SR net 2/20 d'environ 0,76, positif à chaque décennie (sources secondaires ; CXO cite aussi une moyenne par décennie d'environ 0,4, écart non résolu).\n  - Babu et al. (AQR 2020) : SG Trend à SR 0,05 en 2010-18 contre 0,28 depuis 2000, attribué à des mouvements de marché plus faibles plutôt qu'à une perte d'efficacité.\n  - Suhonen-Lennkh-Perez 2017 : SR médian de 1,20 en backtest, 0,31 en réel (−73 %).\n  - Rej-Seager-Bouchaud (CFM) : facteur d'escompte d'environ 2 pour un CTA typique.\n  - McLean-Pontiff : −26 % hors échantillon, −58 % après publication.\n  - Carver : « des SR durablement > 1 sont rarement atteints » (résumé CXO) ; ses chiffres exacts n'ont pas pu être vérifiés car le blog est bloqué par le proxy.\n\n3) SCÉNARIOS (SR avant frictions de mise en œuvre retail)\n- v5 : 0,15 / 0,35 / 0,55. v2 : 0,10 / 0,30 / 0,50.\n- Justification :\n  - pessimiste : SG Trend net depuis 2015 à 0,21, v2 en 2010-19 à 0,23, TSMOM depuis 2015 à 0,24 ;\n  - central : fonds bruts de frais depuis 2010-2015 à 0,37-0,52, v5 depuis 2015 à 0,38, 1,17 × (1 − 0,73) = 0,32 ;\n  - optimiste : v5 depuis 2010 à 0,54, fonds bruts depuis 2000 à 0,52-0,63, 1,17/2 = 0,59.\n- v5 (vol 21,4 %) :\n  - excès arithmétique 3,2 / 7,5 / 11,8 % ;\n  - excès géométrique (SR·σ − σ²/2) 0,9 / 5,2 / 9,5 % ;\n  - total avec 3 % de cash : 3,9 / 8,2 / 12,5 % ; avec 2,5 % en EUR (dépôt BCE à 2,50 % depuis le 16/09/2026), retirer 0,5 point.\n- v2 (vol 17,6 %) : excès géométrique 0,2 / 3,7 / 7,3 %, total 3,2 / 6,7 / 10,3 %.\n- Repère pour l'orchestrateur : chaque −0,10 de SR dû aux frictions (moins de marchés, contrats entiers, coûts retail, intérêts IBKR nuls sur les premiers 10k USD et proportionnels sous 100k de NAV) retire environ 2,1 points par an à v5 et 1,8 point à v2.\n- Vue Kelly : la vol optimale égale le SR.\n  - À SR 0,35, les 21,4 % de vol représentent 0,61 Kelly et captent 85 % de la croissance maximale (5,2 % contre 6,1 %).\n  - À SR 0,15, c'est 1,43 Kelly, du sur-levier : excès géométrique de 0,9 % seulement contre 3,2 % arithmétique.\n  - Optimisation par bootstrap sur 10 ans, incertitude sur le SR comprise : E[log] maximal vers 35 % de vol ; CRRA γ = 2 → 12,5-15 % ; γ = 3 → 7,5-10 % ; γ = 5 → 5 % ; contrainte P(DD < −30 % sur 10 ans) ≤ 25 % → environ 10 % de vol.\n  - Pour un particulier, un objectif raisonnable se situe entre 10 et 15 % de vol, soit 0,5 à 0,7× le levier actuel de v5. Attention : un risque cible plus bas augmente le capital minimum pour la granularité des contrats (point à croiser avec l'agent capital).\n\n4) MONTE CARLO\n- Méthode : bootstrap stationnaire, blocs de 60 jours en moyenne, 6 000 trajectoires, 261 jours par an. Rendements v5/v2 1990-2026 recentrés sur le SR du scénario, vol ramenée à 21,4 / 17,6 %. Le S&P 500 (ES1 en excès) est recentré à 1,5 / 3,5 / 5,5 % à 16,5 % de vol, tiré avec les mêmes blocs pour conserver la corrélation historique (−0,08).\n- Calibration : au Sharpe historique, le bootstrap donne un maxDD médian sur 10 ans de −30 %, contre −28 % sur les fenêtres historiques glissantes.\n- Fiscalité : PFU de 31,4 % sur les gains annuels, avec report des pertes.\n- v5 à 10 ans, scénarios pessimiste / central / optimiste :\n  - CAGR total médian 3,8 / 8,3 / 13,1 % ; 5e centile −8,2 / −4,2 / 0,0 % ;\n  - après impôt (médian) 2,1 / 5,6 / 9,0 % ;\n  - P(perte nominale) 31 / 14 / 5 % ; P(sous le cash) 46 / 25 / 11 % ;\n  - maxDD médian −51 / −45 / −41 %, 5 % pires −75 / −68 / −62 % ; P(DD < −50 %) 53 / 37 / 22 % ;\n  - plus longue période sous l'eau, médiane 4,9 / 3,8 / 3,0 ans.\n- v5 à 5 ans : médiane 3,9 / 8,5 / 13,2 % ; P(perte) 36 / 23 / 13 % ; maxDD médian −41 / −37 / −33 %.\n- v2 à 10 ans, scénarios 0,10 / 0,30 / 0,50 : médiane 3,0 / 6,7 / 10,6 % ; après impôt 1,6 / 4,4 / 7,3 % ; P(perte) 30 / 12,5 / 3,5 % ; P(sous le cash) 50 / 27 / 10,5 % ; maxDD médian −43 / −37 / −33 %.\n- S&P 500 seul à 10 ans, excès 1,5 / 3,5 / 5,5 % : médiane 3,3 / 5,4 / 7,6 % ; P(perte) 23 / 13 / 6 % ; maxDD médian −35 / −33 / −32 %.\n- Mélange 50/50 actions + v5 (cas central, tendance à SR 0,35, actions à 3,5 % d'excès) : vol 13 %, SR ex ante d'environ 0,42, supérieur à chacun des deux. Médiane 7,8 %, P(perte) 2,9 %, P(sous le cash) 13 %, maxDD médian −24 %, 5 % pires −38 %. C'est le meilleur couple rendement/risque.\n- 100 % actions + overlay v5 à demi-taille : médiane 8,7 %, maxDD médian −34 %, P(perte) 5,6 %.\n- Conclusion : la valeur de la tendance tient surtout à la diversification (corrélation négative, gains pendant les krachs) plutôt qu'à son rendement autonome.\n\nHYPOTHÈSES ET LIMITES\n- Les SR futurs relèvent du jugement (fourchette large).\n- Le bootstrap ne capte l'autocorrélation que jusqu'à environ 60 jours. Or le ratio de variance de v5 vaut 1,25 à 21-63 jours et 1,65 à 252 jours : la vol « mensuelle et annuelle » réelle de v5 est d'environ 23-27 %, au-dessus de 21,4 %, si bien que les drawdowns sont plutôt sous-estimés.\n- Les queues de distribution sont celles de l'historique 1990-2026 (pas de choc de gap au-delà). Avec une exposition brute moyenne de 8,8× et une maximale d'environ 30×, le risque de gap sur les taux courts et les obligations n'est pas modélisé.\n- La fiscalité est simplifiée (report des pertes illimité dans l'horizon au lieu de 10 ans). Le change EUR/USD sur le P&L est ignoré.\n- Les frictions retail (capital, nombre de marchés) sont exclues et doivent venir des autres agents.",
+ "key_numbers": [
+  {
+   "name": "v5 Sharpe 1990-2026 (reproduced)",
+   "value": "1.17 (vol 21.4%, costs 2.4%/yr, gross exposure 8.8x)",
+   "source": "01_run.py"
+  },
+  {
+   "name": "v5 Sharpe since 2010 / 2015 / 2020 / 2023",
+   "value": "0.54 / 0.38 / 0.64 / -0.46",
+   "unit": "annualised, daily",
+   "source": "sharpe_par_periode.csv"
+  },
+  {
+   "name": "v2 Sharpe since 2010 / 2015 / 2023",
+   "value": "0.41 / 0.29 / -0.35",
+   "source": "sharpe_par_periode.csv"
+  },
+  {
+   "name": "v5 rolling 5y Sharpe: median full / since 2015 / latest (2026-07)",
+   "value": "1.16 / 0.59 / 0.03",
+   "source": "sharpe_glissant_5ans.csv"
+  },
+  {
+   "name": "v5 excess max drawdown (2022-09-27 -> 2025-05-15); current at 2026-07-10",
+   "value": "-54% ; -43% (total incl. T-bill: -47.6%; -32%)",
+   "source": "computed"
+  },
+  {
+   "name": "SG Trend net-of-fees Sharpe since 2000 / 2010 / 2015",
+   "value": "0.33 / 0.27 / 0.21",
+   "source": "pofo SG_Trend_Index_daily minus DTB3"
+  },
+  {
+   "name": "SG Trend gross of fees (1-2% + 20%) Sharpe since 2000 / 2010 / 2015",
+   "value": "0.48-0.55 / 0.43-0.52 / 0.37-0.46",
+   "source": "fonds_reels_frais_reintegres.csv"
+  },
+  {
+   "name": "Fee drag of real trend funds",
+   "value": "2.4-3.4",
+   "unit": "%/yr",
+   "source": "fonds_reels_frais_reintegres.csv"
+  },
+  {
+   "name": "Ratio SR SG Trend gross / SR v5, since 2000 vs since 2010",
+   "value": "0.58-0.67 vs 0.79-0.95",
+   "source": "fonds_reels_frais_reintegres.csv"
+  },
+  {
+   "name": "Weekly correlation v5 / SG Trend; v5 / S&P 500",
+   "value": "0.80 ; -0.13 (daily -0.07, monthly -0.10 since 1990)",
+   "source": "03_fees.py"
+  },
+  {
+   "name": "Trials counted in project",
+   "value": "74 (53 trend-only same data, SR std 0.12)",
+   "source": "essais_comptes.csv"
+  },
+  {
+   "name": "Deflated Sharpe Ratio v5 1990-2026 (N=20/50/74)",
+   "value": "~1.00; deflated SR 0.56-0.93",
+   "source": "deflated_sharpe.csv"
+  },
+  {
+   "name": "DSR v5 since 2010 (N=20-74, sd 0.12-0.25)",
+   "value": "0.39-0.89",
+   "source": "deflated_sharpe.csv"
+  },
+  {
+   "name": "Harvey-Liu haircut v5 since 2000 / since 2010 (N=20-74)",
+   "value": "17-25% / 64-100%",
+   "source": "haircut_harvey_liu.csv"
+  },
+  {
+   "name": "t-stat v5 vs v2 improvement (NW) 1990 / 2000 / 2010 / 2015 / 2020",
+   "value": "3.3 / 2.1 / 1.2 / 0.7 / -0.2 (E[max t] N=47 = 2.25)",
+   "source": "test_amelioration_v5_vs_v2.csv"
+  },
+  {
+   "name": "Forward SR scenarios v5 (before retail frictions)",
+   "value": "0.15 / 0.35 / 0.55",
+   "source": "judgement, see summary"
+  },
+  {
+   "name": "Forward SR scenarios v2",
+   "value": "0.10 / 0.30 / 0.50",
+   "source": "judgement"
+  },
+  {
+   "name": "v5 expected geometric excess (pess/central/opt)",
+   "value": "0.9 / 5.2 / 9.5",
+   "unit": "%/yr",
+   "source": "scenarios_rendement.csv"
+  },
+  {
+   "name": "v5 expected total return with 3% cash (pess/central/opt)",
+   "value": "3.9 / 8.2 / 12.5",
+   "unit": "%/yr (subtract 0.5 pt for EUR cash 2.5%)",
+   "source": "scenarios_rendement.csv"
+  },
+  {
+   "name": "v5 10y MC median total CAGR (pess/central/opt)",
+   "value": "3.8 / 8.3 / 13.1",
+   "unit": "%/yr",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "v5 10y MC median after-tax CAGR (PFU 31.4%)",
+   "value": "2.1 / 5.6 / 9.0",
+   "unit": "%/yr",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "v5 10y P(lose money) / P(underperform cash), central",
+   "value": "14% / 25%",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "v5 10y median max DD / worst 5% max DD, central",
+   "value": "-45% / -68%",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "v5 10y median longest time under water, central",
+   "value": "3.8",
+   "unit": "years",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "v2 10y MC median total CAGR (0.10/0.30/0.50)",
+   "value": "3.0 / 6.7 / 10.6",
+   "unit": "%/yr",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "Kelly fraction of v5 at SR 0.15 / 0.35 / 0.55",
+   "value": "1.43 / 0.61 / 0.39",
+   "source": "kelly_analytique.csv"
+  },
+  {
+   "name": "Vol maximising CRRA gamma=2 / gamma=3 / DD constraint (10y, SR uncertain)",
+   "value": "12.5-15% / 7.5-10% / ~10%",
+   "source": "levier_optimal_resume.csv"
+  },
+  {
+   "name": "50/50 equity + v5 (central) 10y median CAGR, P(loss), median maxDD",
+   "value": "7.8%, 2.9%, -24% (vol 13%, ex-ante SR ~0.42)",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "S&P 500 alone (3.5% excess) 10y median CAGR, P(loss), median maxDD",
+   "value": "5.4%, 13%, -33%",
+   "source": "monte_carlo.csv"
+  },
+  {
+   "name": "SR to excess-return mapping for frictions",
+   "value": "-0.10 SR = -2.1 pt/yr (v5), -1.8 pt/yr (v2)",
+   "source": "SR x vol"
+  },
+  {
+   "name": "ECB deposit rate (EUR cash)",
+   "value": "2.50% since 16/09/2026",
+   "source": "https://www.auguste-patrimoine.fr/blog/hausse-taux-bce-septembre-2026"
+  },
+  {
+   "name": "French PFU 2026",
+   "value": "31.4%",
+   "source": "https://blog.nalo.fr/flat-tax"
+  },
+  {
+   "name": "JPM 2026 LTCMA US large cap / US cash",
+   "value": "6.7% / 3.1%",
+   "source": "https://am.jpmorgan.com/content/dam/jpm-am-aem/global/en/insights/ltcma-2026-us-matrix_usd.pdf"
+  }
+ ],
+ "claims": [
+  {
+   "claim": "Most of v5's in-sample Sharpe of 1.17 comes from 1990-2009. Since 2010 it has realised 0.54, since 2015 0.38, and since 2023 it has been negative.",
+   "evidence": "sharpe_par_periode.csv: v5 SR per decade 2.03, 1.34, 0.47, 0.64; since 2015 0.383; since 2023 -0.456",
+   "confidence": "high"
+  },
+  {
+   "claim": "After 2010 the backtest's Sharpe is close to what real trend funds earn gross of fees (ratio about 0.8-0.95 for v5, about 1.0-1.2 for v2). The large backtest-vs-real gap is concentrated in 2000-2009.",
+   "evidence": "fonds_reels_frais_reintegres.csv; weekly regression of v5 on SG Trend gives alpha IR 1.61 in 2000-09 and 0.39-0.57 after 2010",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Multiple testing inside the project does not explain the full-sample Sharpe (DSR about 1). The edge of v5 over v2 is fragile: t-stat 3.3 over 1990-2026, falling to 1.2 since 2010 and below zero since 2020.",
+   "evidence": "deflated_sharpe.csv, test_amelioration_v5_vs_v2.csv",
+   "confidence": "high"
+  },
+  {
+   "claim": "A realistic central forward Sharpe for v5 before retail frictions is about 0.35, within a plausible range of 0.15-0.55. That gives about 5% geometric excess and about 8% total return with 3% cash, about 5.5% after French PFU.",
+   "evidence": "Fund Sharpe gross of fees since 2010-2015 is 0.37-0.52; Suhonen et al. median 73% decay; CFM discount factor about 2; MC median 10y total CAGR 8.3%",
+   "confidence": "medium"
+  },
+  {
+   "claim": "At realistic Sharpe ratios, the 21.4% vol of v5 implies a median 10-year max drawdown of about -45%, a 37% chance of a drawdown worse than -50%, and a 25% chance of underperforming cash over 10 years.",
+   "evidence": "monte_carlo.csv (block bootstrap, 6000 paths); a Gaussian iid check gives a median of -41%; bootstrap at the historical mean reproduces the historical 10y max DD (-30% vs -28%)",
+   "confidence": "high"
+  },
+  {
+   "claim": "At SR 0.35, v5 runs at about 0.6 Kelly. If SR is 0.15 it is over-levered (1.4 Kelly). For a risk-averse retail investor, 10-15% vol (0.5-0.7x current leverage) is the better target.",
+   "evidence": "kelly_analytique.csv, levier_optimal_resume.csv (CRRA gamma=2 gives 12.5-15%, gamma=3 gives 7.5-10%, the drawdown constraint gives about 10%)",
+   "confidence": "medium"
+  },
+  {
+   "claim": "Combining trend with equities dominates either alone. A 50/50 mix has ex-ante SR about 0.42 against 0.35 for trend and 0.21 for equities, a 10y median max drawdown of -24% against -45% and -33%, and P(loss over 10y) of 3% against 14% and 13%.",
+   "evidence": "monte_carlo.csv, joint bootstrap preserving the historical correlation of -0.08",
+   "confidence": "medium"
+  },
+  {
+   "claim": "The v5 backtest itself was still in a -43% excess drawdown (-32% total) at 2026-07-10, with its peak on 2022-09-27.",
+   "evidence": "computed from trend.run_vol_targeted output",
+   "confidence": "high"
+  },
+  {
+   "claim": "Real trend funds lose about 2.4-3.4%/yr to 1-2% + 20% fees. SG Trend net Sharpe since 2000 is 0.33 (4.2%/yr excess at 12.6% vol).",
+   "evidence": "fonds_reels_frais_reintegres.csv; SG Trend index data",
+   "confidence": "high"
+  },
+  {
+   "claim": "The literature supports a large backtest-to-live discount: Suhonen et al. 2017 report a median -73%, CFM (Rej-Seager-Bouchaud) a factor of about 2, McLean-Pontiff -58% after publication. Hurst-Ooi-Pedersen report a positive net Sharpe in every decade since 1880.",
+   "evidence": "https://alphaarchitect.com/looking-at-alternatives-avoid-complexity-and-magical-backtests/ ; https://arxiv.org/abs/1902.01802 ; https://ivey.uwo.ca/media/3775549/pontiff.pdf ; https://www.aqr.com/Insights/Research/Journal-Article/A-Century-of-Evidence-on-Trend-Following-Investing",
+   "confidence": "medium"
+  },
+  {
+   "claim": "The drawdown and volatility figures are probably understated: v5 returns are positively autocorrelated (variance ratio 1.25 at 1-3 months, 1.65 at 1 year), so its effective monthly or annual vol is about 23-27%, not 21.4%.",
+   "evidence": "variance ratio computation on v5_net 1990-2026",
+   "confidence": "medium"
+  }
+ ],
+ "files": [
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/scenarios_rendement.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/monte_carlo.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/sharpe_par_periode.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/sharpe_glissant_5ans.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/sharpe_glissant_5ans_fin_annee.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/fonds_reels_frais_reintegres.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/correlations_hebdo.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/deflated_sharpe.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/haircut_harvey_liu.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/test_amelioration_v5_vs_v2.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/essais_comptes.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/kelly_analytique.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/levier_optimal_bootstrap.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/levier_optimal_resume.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/litterature_priors.csv",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/01_run.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/02_decay.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/03_fees.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/04_dsr.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/05_mc.py",
+  "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/rendement/06_kelly.py"
+ ]
+}

@@ -1,0 +1,253 @@
+{
+ "summary": "ADVERSARIAL VERIFICATION OF THE \"OPERATIONS\" AUDIT (variant 5). Outputs are in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_operations/: repro.py, beh.py, marg.py, kcal.py, sub.py, sub_margin.py, funds_chk.py, margin_recomputed_summary.csv, margin_spot_dates.csv, margin_k_calibration_cme.csv, margin_B_ewm_only_daily.csv, funds_recheck.csv and sources_used.csv. No project file was modified.\n\nIMPORTANT LIMITATION: the session's WebSearch budget was already used up (200 of 200), so no new web searches were possible. External facts were checked another way:\n- CME historical maintenance margins for GC, SI, HG, CL, ZC, ZS, 6E, 6J and ZN, 2020-06 to 2026-06, transcribed from CME's margin PDFs in a public GitHub dataset (pranavrevuri/margin-event-study).\n- Raw Yahoo front-month futures prices (mastermindx-market-intelligence/macro).\n- Third-party GitHub fund catalogues (bpineau/pofo, simonesassi-eng/tarzan, madebymlai/aegis and others).\nAll of these are secondary sources of medium reliability.\n\n1) REPRODUCTION. I reran variant 5 independently: Sharpe 1.1707, vol 21.4%, max drawdown (excess) −54.0% on 2025-05-15. This matches exactly.\n\n2) BEHAVIOUR STATISTICS: essentially all confirmed. Two small notes:\n- The yearly figures quoted (2023 −10.5%, 2024 −14.3%, ...) are total returns. The excess-return figures are worse: 2023 −15.0%, 2024 −18.6%, 2025 −2.2%, 2026 YTD −4.0%.\n- The total-return max drawdown is −47.6% to −47.8%, depending on how the T-bill is accrued.\nFund comparisons from 2022-09-30 to 2026-07-10 are confirmed: SG Trend +2.6%, DBMF +13.8%, AQMIX +33.8%, KMLM −16.4%, the 20-market subset +17.7%. DBMF's CAGR (9.2%), Sharpe (0.55) and max drawdown (−20.4%) are also confirmed.\n\n3) MARGIN\n- The model B and model A numbers reproduce exactly.\n- The CME data supports the structure of model B: margin ≈ k × vol × notional, with k stable around 0.24-0.28 over 2020-2026.\n- Two individual margin rates were wrong:\n  - Gold: 9% is wrong for mid-2026. It was a peak from February to early March 2026; on 2026-06-30 initial margin was about 5.5% of notional.\n  - Crude (CL): about 12.3% initial on 2026-06-30, not 9.5%.\n- Correcting the class k values barely changes the result: mean 20.0% (unchanged), max 45.6% instead of 47.3%.\n- The bigger issue is how the model measures volatility. It uses the larger of 32-day EWMA vol and 1-year vol. The 2009-09-16 peak of 47% comes from the 1-year leg: equity 1-year vol was 42% against 19% for the EWMA. Using the 32-day EWMA alone gives mean 16.7%, p95 25.7%, max 33%.\n- The stress test (margin doubled plus the next 5 days' loss) holds the 5-day book fixed. It ignores how fast the system cuts exposure itself (gross exposure fell from 13.4× to 3.5× between 9 and 13 March 2023). It is also partly double counting, because model B margin already rises with volatility.\n  - Recomputed day by day, the SVB stress is 76%, not 91%.\n  - With EWMA-only margins, the worst stress is about 70%.\n  - None of these cases reaches IBKR maintenance-margin liquidation (that requires an initial-margin ratio above about 110%).\n- The suggestion that the March 2023 losses were data artefacts is refuted. Raw prices show palladium +8.43% and silver +6.96% on 2023-03-13; the losses were real.\n\n4) UCITS FUNDS. Several material corrections:\n- LU2951555403 is the R EUR unhedged class (ticker DBMFE), not R USD. Three independent sources agree. The USD class is LU2951555585 (DBMF on Euronext Paris).\n- \"The only managed-futures UCITS ETF\" is refuted: the BNP Paribas Easy Managed Futures UCITS ETF (LU3307218399, TER 0.60%) launched on 29 May 2026. It is tiny and swap-based.\n- The AQR Managed Futures UCITS fund is missing from the list, and it is the closest UCITS equivalent to the user's own trend system.\n  - Classes: RAE LU1662502183, IAET LU1662498721, IAE1FT LU2622190622 (1.26% flat), A USD LU1103257975.\n  - Fees: 0.6% plus a 10% performance fee, or 1.0% flat, plus a 0.18-0.25% expense cap.\n  - Minimum investment: about 100k, which can be waived.\n- Confirmed ISINs: Man AHL Trend Alternative LU0424370004 (DNY H EUR), Candriam FR0010794792, Schroder GAIA BlueTrend LU1293073745 (A Acc EUR Hedged).\n- Not verified: Winton IE00BG382P13 (the class I could find is IE00BG382Q20, I GBP), Aspect IE00B3Q12S92 (the fund itself exists, synthetic via a total return swap), and the hedged class MFEH's Euronext Paris listing of 2026-09-21. A pofo note written about August 2026 said MFEH was \"Xetra only, not yet registered for sale in France\".\n- PFU 31.4% is confirmed by an independent source.",
+ "checked": [
+  {
+   "claim": "Variant 5 reproduced: Sharpe 1.171, vol 21.4% (1990-2026)",
+   "verdict": "confirmed",
+   "evidence": "Independent rerun (verif_operations/repro.py): Sharpe 1.1707, vol 0.2142, CAGR (excess) 26.1%, max drawdown (excess) -53.996% on 2025-05-15."
+  },
+  {
+   "claim": "Gross notional exposure (2000-2026): mean 9.2x, p95 18.8x, max 28.1x on 2020-07-21",
+   "verdict": "confirmed",
+   "evidence": "marg.py on the independently reproduced positions: mean 9.218, p95 18.82, max 28.05 on 2020-07-21."
+  },
+  {
+   "claim": "Model B margin/equity: mean 20.0%, median 19.5%, p95 33.2%, p99 37.6%, max 47.3% (2009-09-16); above 30% on 10.8% of days, above 40% on 0.4%, never above 50%; 27.3% on 2026-07-10",
+   "verdict": "confirmed",
+   "evidence": "Reproduced exactly (margin_recomputed_summary.csv). Caveat: the maximum depends on the vol lookback. The model uses max(EWMA32, 1-year vol). On 2009-09-16 equity 1-year vol was 0.425 against EWMA32 0.19, so equities alone contribute 15.9 points on 0.94x gross equity exposure. With EWMA32 only: mean 16.7%, p95 25.7%, p99 28.7%, max 33.2%, and 26.2% on 2009-09-16 (margin_B_ewm_only_daily.csv). Report a range (mean 17-20%, p95 26-33%, max 33-47%) rather than a single number.",
+   "correct_value": "Range across vol lookbacks: mean 17-20%, p95 26-33%, max 33-47%. The 47% peak is an upper bound driven by post-2008 1-year vol."
+  },
+  {
+   "claim": "Model A (fixed % of notional at 2025-26 levels): mean 22.6%, p95 40.2%, max 62.3% on 2014-09-03",
+   "verdict": "confirmed",
+   "evidence": "Recomputed: 0.226 / 0.402 / 0.623 on 2014-09-03. Setting metals to 6% and energy to 12% gives 0.220 / 0.394 / 0.611. On 2014-09-03 bonds were 10.4x and STIR 7.7x gross, so the agent's own caveat (model A overstates the 2013-19 period) holds."
+  },
+  {
+   "claim": "Gold margin is 9% of notional (CME switched to %-of-notional margins in Jan 2026)",
+   "verdict": "corrected",
+   "evidence": "CME data (pranavrevuri/margin-event-study, from CME's GC PDF): GC maintenance changed daily from 2026-01-13, which confirms the %-of-notional switch. It rose from $24,000 (Dec 2025) to $47,075 (2026-02-27) and was cut from 2026-03-06. On 2026-06-30 maintenance was $20,115, i.e. 4.98% of notional (100 oz x 4,038.5), so about 5.5% initial at 1.1x. The 9% level applied only from February to early March 2026 (initial up to 9.9% on 2026-03-05). The k implied for gold is 0.20 on 2026-06-30 and 0.23 on average over 2025-07 to 2026-07, not 0.335.",
+   "correct_value": "About 5.5% initial (~$22.1k) at 2026-06-30; 9-10% only at the Feb-Mar 2026 peak. Metals class k about 0.22-0.25, not 0.34."
+  },
+  {
+   "claim": "Crude oil (CL) margin ~$6,750, i.e. 9.5% of notional",
+   "verdict": "corrected",
+   "evidence": "CME CL tier-1 maintenance on 2026-06-30 was $7,775, so about $8,550 initial = 12.3% of notional at $69.5. It was $11-12k maintenance from March to May 2026 (12-13%). k = 0.25 at 2026-06 (0.27 on average over 2025-07 to 2026-07), not 0.21.",
+   "correct_value": "About $8,550 initial (12.3% of notional) at 2026-06-30. Energy k about 0.25-0.27."
+  },
+  {
+   "claim": "6E margin $2,970 (2.1% of notional)",
+   "verdict": "corrected",
+   "evidence": "CME maintenance for 6E was cut to $2,400 on 2026-05-01, i.e. $2,640 initial = 1.85% of $143,075, k = 0.24. The agent's $2,970 corresponds to the Oct 2025-Apr 2026 level ($2,700 x 1.1).",
+   "correct_value": "$2,640 initial, 1.85% of notional."
+  },
+  {
+   "claim": "ZN margin $2,062 (1.9% of notional)",
+   "verdict": "confirmed",
+   "evidence": "CME maintenance was $1,875 from 2025-01-31 (the latest observation in the dataset); x1.1 = $2,062.5 initial. k = 0.37. Note: the dataset has nothing after Jan 2025 for ZN."
+  },
+  {
+   "claim": "Soybeans $2,200 (3.7%); corn $990-1,072 (4.9%)",
+   "verdict": "corrected",
+   "evidence": "CME maintenance was raised on 2026-05-20: ZS $2,200 and ZC $1,100, i.e. initial $2,420 (4.3%) and $1,210 (5.9% at the 2026-06 price). The agent mixed maintenance and initial margins. k ≈ 0.27-0.28 at 2026-06.",
+   "correct_value": "ZS about $2,420 initial; ZC about $1,210 initial. Agriculture k about 0.25-0.27."
+  },
+  {
+   "claim": "ES ~7% ($22-29k); Bund ~2.0%; SR3 deferred ~0.2%; live cattle 3.9%; coffee 8.5%",
+   "verdict": "unverifiable",
+   "evidence": "WebSearch budget exhausted and these products are not in the CME margin dataset I found. An equity k of 0.40 is plausible (index margins have historically been richer relative to vol than commodity margins), but it is the largest single driver of model B, so it should be flagged."
+  },
+  {
+   "claim": "Margin divided by annualised vol gives k = 0.20-0.40 (median 0.25)",
+   "verdict": "confirmed",
+   "evidence": "From CME data with initial = 1.1 x maintenance and vol = max(EWMA32, 1-year): k at 2026-06 was GC 0.20, SI 0.17, HG 0.24, CL 0.25, ZC 0.27, ZS 0.28. Medians over 2020-2026 were 0.24-0.28, and yearly medians stayed between 0.15 and 0.33 (margin_k_calibration_cme.csv). This supports the margin ∝ vol structure. With the corrected class k (metals 0.24, energy 0.27, agriculture 0.26), model B mean is still 20.0%, p95 33.1% and max 45.6%."
+  },
+  {
+   "claim": "Average margin contribution by class (model B): equities 4.8, bonds 3.4, metals 3.4, FX 3.0, agriculture 2.7, energy 2.3, STIR 0.4 points",
+   "verdict": "corrected",
+   "evidence": "Reproduced exactly with the agent's k. With the CME-corrected k: metals 2.4, energy 3.0, agriculture 3.1 points; the other classes are unchanged.",
+   "correct_value": "Equities 4.8, bonds 3.4, agriculture 3.1, FX 3.0, energy 3.0, metals 2.4, STIR 0.4"
+  },
+  {
+   "claim": "20-market subset margin: mean 17%, p95 27.6%, max 44.6%",
+   "verdict": "confirmed",
+   "evidence": "sub_margin.py: 0.170 / 0.276 / 0.446 on 2009-09-11; 0.195 on 2026-07-10."
+  },
+  {
+   "claim": "Exchange margins can roughly double in crises",
+   "verdict": "confirmed",
+   "evidence": "CME data: GC maintenance went from $24,000 (2025-12) to $47,075 (2026-02-27), x1.96. SI went from $32,500 to $83,414, x2.57. CL went from $4,508 (2026-02) to $12,116 (2026-04), x2.7. As a % of notional the increases are x1.5-2.0 (GC 5.4% to 8.8%, SI 9.0% to 17.6%). The CME S&P +82% figure from March 2020 is unverifiable but arithmetically consistent."
+  },
+  {
+   "claim": "Stress test (margin x2 plus the realised next-5-day loss): max 96% of equity (Sept 2009), p99 77%",
+   "verdict": "corrected",
+   "evidence": "Numerically reproduced (0.964 on 2009-09-17), but conservative for two reasons. (a) It holds a static 5-day book, whereas the system itself de-levers; gross exposure fell 13.4x → 10.0x → 3.5x over 9, 10 and 13 March 2023, with 6.5x of notional traded on 3/13. (b) Model B margin already rises with vol. A dynamic 1-day version (2 x yesterday's book margin / equity after today's P&L) gives max 95% (2009-09-21, the 1-year-vol artefact) and p99 76%. With EWMA32-only margins: max 69-71%, p99 57-58%.",
+   "correct_value": "Upper bound about 95%. A more realistic range is a max of 70-95% and p99 of 57-76%. None reaches IBKR maintenance liquidation, which needs an initial-margin ratio above about 110%."
+  },
+  {
+   "claim": "SVB, March 2023: margin 37%, drawdown -19.3%, about 91% of equity if exchanges had doubled margins",
+   "verdict": "corrected",
+   "evidence": "Margin of 36.9% on 2023-03-09 confirmed; worst 5-day loss -18.4% and worst 21-day loss -19.0% confirmed. The 91% figure applies the 3/8-3/9 book over five days and ignores the system's own cut. The dynamic figure on 2023-03-13 is 2 x 0.339 / (1 - 0.1056) = 76%, or 38% with no exchange hike. The wording 'just above maintenance' is misleading: an initial-margin ratio of 91% is a maintenance ratio of about 83%, so there would be no liquidation.",
+   "correct_value": "About 76% (dynamic, with 2x margins), 38% without a hike."
+  },
+  {
+   "claim": "Worst losses: 1-day -10.6% (2023-03-13), -9.2% (2021-11-26), -8.8% (2015-12-03), -8.5% (2023-03-10); 5-day -18.4% (2023-03-15); 21-day -19.0% (to 2023-04-06)",
+   "verdict": "confirmed",
+   "evidence": "beh.py gives identical values. Over 1990-2026 the 5th-worst day is 1998-06-17 at -7.4% (the agent's list starts in 2000)."
+  },
+  {
+   "claim": "The worst daily losses (March 2023) may be partly data artefacts (PA1 +8.4% and SI1 +6.9% on 2023-03-13)",
+   "verdict": "refuted",
+   "evidence": "Independent raw Yahoo futures for 2023-03-13: PA=F +8.43%, SI=F +6.96%, GC=F +2.64%. These match the dataset. The -10.6% day is real. It comes from a 10x gross book losing in every asset class: metals -1.9, FX -2.0, bonds -2.5, STIR -1.5, equities -1.5 points."
+  },
+  {
+   "claim": "IBKR does not issue margin calls; it liquidates automatically in real time",
+   "verdict": "confirmed",
+   "evidence": "This is well-known IBKR policy (agent cited the IBIE margin risk disclosure). Not re-fetched because the search budget was exhausted."
+  },
+  {
+   "claim": "CTAs typically run 10-20% margin-to-equity, 30% at most; brokers suggest 10-40% and below 50%",
+   "verdict": "unverifiable",
+   "evidence": "Search budget exhausted. Plausible and consistent with common industry figures."
+  },
+  {
+   "claim": "Drawdowns over 20% (excess): 1999 -20.7%, 2001-02 -28.6%, 2006-07 -22.8%, 2009 -21.1%, 2012-14 -29.3%, 2016-20 -47.2% (49.9 months), 2022-09-27 to now -54.0% (trough 2025-05-15), 45.4 months unrecovered",
+   "verdict": "confirmed",
+   "evidence": "beh.py gives the same max drawdown (-54.0% on 2025-05-15), peak 2022-09-27 and current drawdown of -43.1%. The episode table matches the agent's file."
+  },
+  {
+   "claim": "Max drawdown including T-bills -47.6%; current drawdown on 2026-07-10: -43.1% excess, -32.1% total",
+   "verdict": "confirmed",
+   "evidence": "Excess -43.13% confirmed. Total: -47.7% max and -32.4% current with act/360 calendar-day T-bill accrual, against -47.6% and -32.1% with value/252 (context says -47.8%). The differences come from the accrual convention only."
+  },
+  {
+   "claim": "2022-09-30 to 2026-07-10: -41.4% excess, -30.1% total",
+   "verdict": "confirmed",
+   "evidence": "-41.37% excess; total -30.08% (value/252 accrual) or -30.3% (act/360)."
+  },
+  {
+   "claim": "Negative years: 9/37 excess, 8/37 total; 2023 -10.5%, 2024 -14.3%, 2025 +2.0%, 2026 YTD -2.1%, 2016 -18.1%, 2017 -13.5%",
+   "verdict": "confirmed",
+   "evidence": "The counts are correct, but the yearly figures quoted are total returns. In excess terms: 2016 -18.4%, 2017 -14.3%, 2023 -15.0%, 2024 -18.6%, 2025 -2.2%, 2026 YTD -4.0%. They should be labelled."
+  },
+  {
+   "claim": "Rolling returns negative: 1y 18%, 3y 12%, 5y 0.9%, 10y never (min +5.1%/yr)",
+   "verdict": "confirmed",
+   "evidence": "Total-return basis. Calendar-year windows give 18.2%, 12.6%, 0.5% and 0%, with a 10-year minimum of +5.2%. The differences come from 252-day windows versus calendar years."
+  },
+  {
+   "claim": "Time below peak: >10% for 41% of days, >20% for 19%, >30% for 10%; worst month -13.2% (Feb 2018); 41% of months negative",
+   "verdict": "confirmed",
+   "evidence": "Total return: 41.5%, 19.4%, 9.8%; worst month -13.19% in 2018-02; 40.8% of months negative. In excess terms: 43.9%, 21.8%, 12.0%."
+  },
+  {
+   "claim": "Return from 2022-09-30 to 2026-07-10: SG Trend +2.6%, SG CTA +2.1%, DBMF +13.8%, AQMIX +33.8%, KMLM -16.4%, variant 5 20-market subset +17.7%",
+   "verdict": "confirmed",
+   "evidence": "funds_chk.py: SG Trend +2.58%, SG CTA +2.07%, DBMF +13.82%, AQMIX +33.85%, KMLM -16.38%. sub.py: 20-market subset +17.68%."
+  },
+  {
+   "claim": "DBMF 2019-05-08 to 2026-07-10: CAGR 9.2%, vol 12.4%, Sharpe 0.55, max drawdown -20.4%",
+   "verdict": "confirmed",
+   "evidence": "0.0921 / 0.1239 / 0.553 / -0.204. Note: alternatives_ucits.csv gives KMLM a CAGR of 7.4%, but that runs to 2026-10-01. To 2026-07-10 KMLM's CAGR is 5.7% (Sharpe 0.23).",
+   "correct_value": "KMLM to 2026-07-10: CAGR 5.7%, Sharpe 0.23"
+  },
+  {
+   "claim": "SG Trend net Sharpe 0.33 (2000-2026), 3.5%/yr above cash",
+   "verdict": "confirmed",
+   "evidence": "Sharpe 0.333; excess CAGR 3.6%."
+  },
+  {
+   "claim": "20-market subset Sharpe 0.905 / 0.683 / 0.442 / 0.149 (1990- / 2000- / 2010- / 2023-) vs 1.171 / 0.845 / 0.541 / -0.460 for 84 markets",
+   "verdict": "confirmed",
+   "evidence": "sub.py reproduces all eight values exactly."
+  },
+  {
+   "claim": "Weekly vs daily rebalancing: Sharpe 1.110 vs 1.171; costs 2.1% vs 2.4%/yr",
+   "verdict": "confirmed",
+   "evidence": "Weekly Sharpe 1.110 (1990-); weekly costs (trading + roll) 2.15%/yr."
+  },
+  {
+   "claim": "iMGP DBi Managed Futures UCITS ETF R USD = LU2951555403, TER 0.75%, Euronext Paris DBMF:FP since 2025-03-07",
+   "verdict": "corrected",
+   "evidence": "Three independent GitHub sources (bpineau/pofo recipes.go and portfolio files; simonesassi-eng/tarzan instrument_taxonomy.csv; madebymlai/aegis research doc) map LU2951555403 to the R EUR (unhedged) class, ticker DBMFE. pofo gives a Paris launch of 2025-03-24. The USD class is LU2951555585 (DBMF.PA, launched 2025-04-22 per pofo; justETF profile). TER 0.75% is confirmed (tarzan 0.0075).",
+   "correct_value": "LU2951555403 = R EUR (unhedged EUR, ticker DBMFE); USD class = LU2951555585 (DBMF on Euronext Paris); TER 0.75%"
+  },
+  {
+   "claim": "EUR-hedged class LU3359622902 (MFEH), TER 0.75%, Xetra since 2026-05, Euronext Paris since 2026-09-21; fund AUM $698M",
+   "verdict": "unverifiable",
+   "evidence": "ISIN, hedged class and 0.75% TER confirmed (pofo, tarzan). pofo gives a launch of 2026-05-13 and, at its time of writing (around Aug 2026), about EUR 11m in the class, 'Xetra only', 'not yet registered for sale in France'. I could not verify the Paris listing of 2026-09-21 or the $698M AUM without search. Check French registration on the AMF GECO register before recommending it."
+  },
+  {
+   "claim": "The only managed-futures UCITS ETF available to French investors is iMGP DBi",
+   "verdict": "refuted",
+   "evidence": "The BNP Paribas Easy Managed Futures UCITS ETF (LU3307218399, TER 0.60%, launched 29 May 2026, swap on an in-house systematic index, no minimum, tiny AUM; Paris ticker FOLOW per pofo, EEAU per tarzan) exists. Man Group also registered a 'Man Active Trend UCITS ETF' in Europe (etfstream, cited in Luka24/diversitas); its launch status is unverified. The rankiapro 'Europe's only' claim predates the BNP launch.",
+   "correct_value": "At least two managed-futures UCITS ETFs: iMGP DBi (0.75%) and BNP Paribas Easy Managed Futures (0.60%, launched May 2026)"
+  },
+  {
+   "claim": "(Omission) The list of UCITS alternatives is complete",
+   "verdict": "refuted",
+   "evidence": "The AQR Managed Futures UCITS Fund is missing, even though it is the closest UCITS analogue to direct time-series momentum. Classes: A USD LU1103257975, RAE (retail) LU1662502183, IAET LU1662498721, IAE1FT LU2622190622 (1.26% flat, launched 2026-05), RAEF LU1662501532. Fees: 0.60% plus 10% performance fee over €STR, or 1.00% flat, plus a 0.18-0.25% expense cap. Minimum 100k EUR/USD, which can be waived. Source: pofo docs/specs/aqr-mf.txt, which cites the AQR UCITS prospectus Supplement 2."
+  },
+  {
+   "claim": "Man AHL Trend Alternative LU0424370004 / LU0428380124, OCF about 1.72%",
+   "verdict": "confirmed",
+   "evidence": "LU0424370004 = 'Man AHL Trend Alternative DNY H EUR Acc', July 2009 (incratio curvo_class.json). LU0428380124 exists as a EUR asset in FundsXML samples, but the class name is unconfirmed. The OCF of 1.72% is unverifiable."
+  },
+  {
+   "claim": "Winton Trend UCITS IE00BG382P13 (I USD), TER about 1.0%",
+   "verdict": "unverifiable",
+   "evidence": "IE00BG382P13 was not found in any source available to me. IE00BG382Q20 is 'Winton Trend UCITS I GBP Acc' (Alastair-Pandelus/Portfolio; pofo)."
+  },
+  {
+   "claim": "Aspect Diversified Trends IE00B3Q12S92, 1.5% + 20% performance fee",
+   "verdict": "unverifiable",
+   "evidence": "The fund exists (UCITS since 2010-12-28; exposure via an unfunded total return swap on the Aspect Diversified Trends Index, per FinanceDatabase). The ISIN and fees were not confirmed. pofo says Aspect 'failed on minimum, empty class or performance fee'."
+  },
+  {
+   "claim": "Candriam Diversified Futures FR0010794792, fee 1.70%, not pure trend",
+   "verdict": "confirmed",
+   "evidence": "FR0010794792 = 'Candriam Diversified Futures Classique', Alt - Systematic Futures (oantiza/BDB-FONDOS); AUM about EUR 147M in Jul 2026. The fee is not re-verified."
+  },
+  {
+   "claim": "Schroder GAIA BlueTrend A Acc EUR Hedged LU1293073745",
+   "verdict": "confirmed",
+   "evidence": "jacormenzana/fondos Morningstar log: LU1293073745 = 'Schroder GAIA BlueTrend A Accumulation EUR Hedged'. pofo notes BlueTrend's assets fell 64% in 2.5 years."
+  },
+  {
+   "claim": "Lynx UCITS: ISIN not found",
+   "verdict": "confirmed",
+   "evidence": "The fund exists (Lynx UCITS Fund, USD 147M AUM in Sept 2026, per aglick555/fund-development-); I could not find its ISIN either."
+  },
+  {
+   "claim": "US managed-futures ETFs (DBMF, KMLM, CTA) cannot be bought by EEA retail investors (no PRIIPs KID)",
+   "verdict": "confirmed",
+   "evidence": "Standard PRIIPs rule and IBKR KB 2993 (also cited by the capital agent)."
+  },
+  {
+   "claim": "PFU 31.4% from 2026",
+   "verdict": "confirmed",
+   "evidence": "Independent source pofo (dragon-decumulation-household.txt): social levies 18.6% versus 31.4% PFU, i.e. 12.8% + 18.6%."
+  },
+  {
+   "claim": "Central after-tax CAGR (10y, EUR): fund 5.0%, DIY 84 markets 7.9%, DIY 20 markets 7.2%",
+   "verdict": "confirmed",
+   "evidence": "The arithmetic is correct: 1.067^10 with 31.4% tax on the gain at sale gives 4.98%; 11.5% x 0.686 = 7.89%; 10.5% x 0.686 = 7.20%. The inputs are assumptions (DIY central Sharpe 0.45, against a 0.54 backtest since 2010 and -0.46 since 2023). DIY also ignores that IBKR pays no interest on commodity-segment margin cash (see verif_couts)."
+  },
+  {
+   "claim": "Morningstar Mind the Gap: 1.2 points/yr on average, 2.1 points in the most volatile funds",
+   "verdict": "unverifiable",
+   "evidence": "Search budget exhausted. The 1.2-point average is consistent with my recollection of the 2025 edition; the 2.1-point figure could not be checked."
+  }
+ ],
+ "problems": [
+  "The WebSearch budget for the session was used up (200 of 200) before this verifier started, so no fresh web searches were possible. External facts were checked against secondary GitHub-hosted data: CME margin history transcribed from CME PDFs, raw Yahoo futures prices, and third-party fund catalogues. Treat the fund facts as medium confidence until checked on justETF, the AMF GECO register and broker product search.",
+  "The gold margin input (9% of notional) is stale. It was the Feb-Mar 2026 peak; on 2026-06-30 CME gold initial margin was about 5.5% (maintenance $20,115). Crude is understated: about 12.3% initial ($8,550), not 9.5%. 6E is overstated ($2,640, not $2,970). The agent mixed maintenance and initial margins (ZS $2,200 is maintenance; ZN $2,062 is initial). The class k values for metals (0.34) and energy (0.21) are therefore off, although the effect on total margin/equity is small (mean unchanged at 20.0%, max 47.3% → 45.6%).",
+  "The model B peak (47% on 2009-09-16) is driven by the 1-year-vol leg of max(EWMA32, 1y), which still contained Q4-2008 equity volatility (1y vol 0.42 against EWMA 0.19). With EWMA32-only margins the max is 33% and the mean 16.7%. The report should give a range, not a single peak.",
+  "The stress test (2x margin plus the next-5-day loss) assumes a static book. It ignores the system's own fast de-levering (gross exposure 13.4x → 3.5x in three trading days in March 2023) and partly double counts, since model B already scales with volatility. The SVB 91% figure is an upper bound; recomputed day by day it is about 76%. 'Close to forced liquidation' is overstated: IBKR liquidates on maintenance margin, i.e. an initial-margin ratio of about 110% or more.",
+  "The claim that the March 2023 losses may be data artefacts is wrong. Palladium +8.4% and silver +7.0% on 2023-03-13 are confirmed by independent raw prices. The -10.6% day is a genuine consequence of about 10x gross leverage concentrated in short rates.",
+  "The previous agent took UCITS share-class identities from unreliable sources. LU2951555403 is the EUR unhedged class (DBMFE), not R USD (that class is LU2951555585). The claim that iMGP DBi is the only managed-futures UCITS ETF is false: BNP Paribas Easy Managed Futures, LU3307218399, launched in May 2026. The AQR Managed Futures UCITS fund, the most relevant direct time-series momentum vehicle, is missing.",
+  "The yearly returns in the behaviour summary (2023 -10.5%, 2024 -14.3%, ...) are total returns but sit next to excess-return counts. In excess terms, 2023 is -15.0% and 2024 -18.6%. The labelling should be fixed.",
+  "Minor date inconsistency: KMLM's CAGR (7.4%) in alternatives_ucits.csv is measured to 2026-10-01, while the other comparisons stop at 2026-07-10 (KMLM 5.7% to that date).",
+  "The workload contract table (contracts.csv) uses full-size contracts where smaller ones exist (ICE Mini FTSE GBP1, Euronext Mini CAC EUR1, Eurex Micro-SMI, OSE Nikkei micro, CME micro ags). As a result, small-capital diversification is slightly understated. Historical notionals are rebased on excess-return indices rather than actual prices, which is approximate (not re-verified in detail).",
+  "Back-adjusted prices are only valid as real prices on the last row: the back-adjusted CL1 sits about $20 below actual WTI in 2025. Any historical %-of-notional calculation must not use them. The agent's calibration correctly used 2026 only."
+ ]
+}
