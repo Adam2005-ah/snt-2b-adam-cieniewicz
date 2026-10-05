@@ -1,0 +1,14 @@
+phase,task,time,note
+setup,"IBKR Pro account (IBIE), futures permissions, check each contract is tradeable (KID), 2nd username for the API, paper account",3-8 h,+ several days of account approval
+setup,"VPS: Ubuntu, SSH keys, firewall, Docker, gnzsnz/ib-gateway-docker (IBC), VNC only over SSH tunnel, paper mode first",4-12 h,
+setup,"pysystemtrade + MongoDB/Parquet install; instrument, roll and IB contract config for 14/24/40 markets",15-40 h,pysystemtrade ships configs for most of these markets
+setup,"Port variant 5 (EWMAC, strategy 13 vol regime, portfolio vol targeting) as custom rules; or write a lean ib_async script",30-100 h,"trend.py is ~200 lines; the hard part is production plumbing, not the formulas"
+setup,"Seed back history (free CSVs + IB expired contracts), splice with backtest data, reconcile live positions vs backtest positions",15-40 h,
+setup,Paper trading,"8-12 weeks, ~1-2 h/week",include at least one roll cycle per market and one Gateway upgrade
+setup,TOTAL setup,80-200 h,for someone fluent in Python; 200-500 h for all 84 markets (audit)
+recurring,Approve the weekly 2FA push on IBKR Mobile (Sunday after 01:00 ET or before Monday's first job),~2 min/week,must be reachable; a missed login = no trading until approved
+recurring,"Read daily email report (spikes, unfilled orders, position breaks)",5-10 min/trading day,
+recurring,Roll checks and confirmations,5-15 h/yr,"roll orders/yr 62 (100k), 106 (250k), 169 (1M) from the simulation"
+recurring,"Monthly: statements, FX sweeps, contract chain/expiry config, data fixes",1-2 h/month,
+recurring,"Yearly: margins, costs, contract specs review; IB Gateway/IBC/pysystemtrade upgrades",10-20 h/yr,
+recurring,TOTAL recurring,"about 1-2 h/week on average, plus incidents",

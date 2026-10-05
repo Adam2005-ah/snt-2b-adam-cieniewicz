@@ -1,0 +1,401 @@
+{
+ "key": "avant_impot",
+ "work": {
+  "summary": "I re-ran the audit's final forward Monte Carlo with every tax set to zero, keeping all other assumptions of the verified final run. The work is in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/. It uses the same series.pkl, the same seed (20261005) and the same order of index generation, so the bootstrap shocks are identical: stationary bootstrap, mean block 126 days, 5,000 paths, horizons 5 and 10 years.\n\n**Sanity check: exact match.** With the previous fixed costs (500/625/1,000), the new pre-tax medians, P10 and P90 for all 36 DIY rows equal the pre_med/pre_p10/pre_p90 of cv_rendement/final_table.csv. The largest gap is 1e-14 point. The UCITS trend ETF and 100 % equity rows also match exactly. There is no gap to explain: the old pre_med already came from sim_diy with pfu=0 on the same shocks.\n\n**Two engine defects had to be fixed in my copy of mc_engine.py.** Setting the taxes to zero as the brief describes would not have removed all tax.\n- (i) In sim_diy, sim_etf and sim_mix, P_below_cash always compared against the cash fund after a 31.4 % tax. I added a `cash_tax` argument and set it to 0, so the cash benchmark is now 2.30 %/yr (€STR 2.4 % minus 0.10 %).\n- (ii) sim_mix taxed gains realised at the annual rebalance at a hard-coded 31.4 %, even with tax_e=tax_t=0. I added `reb_tax` and set it to 0.\n\n**Mix check without the engine.** A direct recomputation of the 70/30 mix with no tax matches the engine to within 0.003 point. That remaining gap comes from reading the equity drift back from a rounded text label in the check script, not from the engine. A direct recomputation of the ETF matches exactly.\n\n**Central results at 10 years, before tax, DIY fixed costs USD 400/yr.** Each figure is the median CAGR, with the 10th–90th percentile range in brackets.\n- Cash: 2.30 %.\n- DIY at 21 % vol: 100k 3.55 % [−4.9; 12.4]; 250k 4.85 % [−4.3; 14.3]; 1M 5.56 % [−3.9; 15.6].\n- DIY at 12 % vol: 100k 2.21 % [−2.5; 7.1]; 250k 3.67 % [−1.1; 8.5]; 1M 4.69 % [−0.6; 10.1].\n- UCITS trend ETF: 4.76 % [0.1; 9.7].\n- 100 % S&P-type: 6.00 % [−1.7; 13.0]. This median is the calibration target, so it is set by assumption.\n- 100 % Nasdaq-type: 6.00 % [−5.1; 15.5].\n- 70/30 S&P/ETF: 6.08 % [1.1; 10.9].\n- 70/30 Nasdaq/ETF: 6.30 % [−0.7; 12.6].\n\n**Fixed costs.** Going from USD 150 to USD 1,000 a year moves the 10-year central DIY median by:\n- 0.81 point at 100k and 21 % vol (3.78 % to 2.97 %);\n- 0.85 point at 100k and 12 % vol (2.45 % to 1.60 %);\n- 0.30 point at 250k (4.93 % to 4.63 %);\n- 0.08 point at 1M (5.59 % to 5.51 %).\n\n**Time cost.** Valuing 80 h × EUR 25 (about USD 2,340/yr) on top of USD 400 gives medians of 1.11 % at 100k/21 %, −0.31 % at 100k/12 %, 3.98 % at 250k/21 % and 5.37 % at 1M/21 %.\n\n**MC noise.** I re-ran the central 10-year cases with 6 fresh seeds. The seed-to-seed standard deviation of the median is 0.06–0.15 point. The main seed is a favourable draw for DIY at 21 % vol: +0.27 point at 100k and +0.24 at 250k against the 6-seed mean, +0.09 at 1M, and +0.14 to +0.15 at 12 % vol for 100k and 250k. It is neutral for the ETF (−0.004) and for 70/30 (+0.035). So at 250k and 21 % vol, DIY (4.85 %, or 4.61 % on the 6-seed mean) and the ETF (4.76 %) cannot be told apart. At 1M, DIY at 21 % vol is about 0.7–0.8 point above the ETF before time cost.\n\n**Column names.** In the new tables the at_* columns keep their old names so rapport_audit.py can read them, but here they are pre-tax (pre_* equals at_*). DIY rows carry two new columns, fixed_set and fixed_usd. Wealth is in USD-equivalent units, so the 100k tier means USD 100k.\n\n**Internal only.** sanity_check_pre_med.csv also contains the old after-tax medians and a tax_drag_pt column, for the check alone. Under the user's request these must not go into the report.",
+  "facts": [
+   {
+    "topic": "sanity check",
+    "fact": "With the previous fixed costs (USD 500/625/1,000), the new pre-tax DIY medians, P10 and P90 are bit-identical to pre_med/pre_p10/pre_p90 in cv_rendement/final_table.csv; the largest absolute gap is about 1e-14 point. The UCITS ETF and 100 % equity pre_med are also identical. The reason is the same seed, same order of index generation and same series, and the old pre-tax column was already computed with pfu=0.",
+    "confidence": "high",
+    "source": "cv_avant_impot/sanity_check_pre_med.csv"
+   },
+   {
+    "topic": "engine fix",
+    "fact": "The old engine always measured P_below_cash against the cash fund after 31.4 % tax (cash_benchmark default tax=PFU), even when pfu=0 or tax=0 was passed. The patched copy adds cash_tax, set to 0, so the cash benchmark is 2.30 %/yr.",
+    "confidence": "high",
+    "source": "cv_avant_impot/mc_engine.py (diff vs cv_rendement/mc_engine.py)"
+   },
+   {
+    "topic": "engine fix",
+    "fact": "sim_mix taxed gains realised at the annual rebalance at a hard-coded PFU (31.4 %), even with tax_e=tax_t=0. A reb_tax argument was added and set to 0. A direct recomputation without the engine confirms the 70/30 results to within 0.003 point (the gap comes only from parsing a rounded equity drift in the check script); the ETF matches exactly.",
+    "confidence": "high",
+    "source": "cv_avant_impot/check_mix_direct.csv"
+   },
+   {
+    "topic": "central 10y pre-tax, fixed $400",
+    "fact": "Median CAGR [P10; P90]: cash MMF 2.30; DIY 21 % vol 100k 3.55 [-4.91; 12.44], 250k 4.85 [-4.28; 14.28], 1M 5.56 [-3.92; 15.64]; DIY 12 % vol 100k 2.21 [-2.52; 7.07], 250k 3.67 [-1.09; 8.54], 1M 4.69 [-0.56; 10.06]; UCITS trend ETF 4.76 [0.13; 9.70]; 100 % S&P-type 6.00 [-1.74; 13.04]; 100 % Nasdaq-type 6.00 [-5.10; 15.45]; 70/30 S&P/ETF 6.08 [1.10; 10.86]; 70/30 Nasdaq/ETF 6.30 [-0.68; 12.58].",
+    "confidence": "high",
+    "source": "cv_avant_impot/rendement_attendu_10ans_avant_impot.csv"
+   },
+   {
+    "topic": "risk metrics 10y central, fixed $400",
+    "fact": "P(nominal loss) / P(below cash) / median max drawdown / worst-decile max drawdown / P(account touches 60 % of start). DIY 21 %: 100k 29.9 / 43.0 / -46.0 / -65.3 / 26.0; 250k 25.7 / 37.0 / -46.5 / -65.8 / 24.4; 1M 22.9 / 33.1 / -45.9 / -64.7 / 22.7. DIY 12 %: 100k 27.8 / 51.1 / -29.0 / -44.1 / 6.3; 250k 16.2 / 36.1 / -26.1 / -39.2 / 2.7; 1M 12.3 / 28.0 / -26.2 / -39.8 / 2.8. ETF 9.5 / 25.8 / -25.0 / -35.9. S&P 15.7 / 26.4 / -39.6 / -58.5. Nasdaq 24.6 / 33.6 / -51.4 / -75.0. 70/30 S&P 5.6 / 16.3 / -26.4 / -37.2. 70/30 Nasdaq 12.2 / 23.3 / -33.8 / -52.7.",
+    "confidence": "high",
+    "source": "cv_avant_impot/final_summary_avant_impot.csv"
+   },
+   {
+    "topic": "real returns 10y central",
+    "fact": "Real median (2 % inflation): cash 0.29; DIY 21 % 1.52 / 2.79 / 3.49 (100k / 250k / 1M); DIY 12 % 0.21 / 1.63 / 2.64; ETF 2.71; S&P and Nasdaq 3.92; 70/30 S&P 4.00; 70/30 Nasdaq 4.21.",
+    "confidence": "high",
+    "source": "cv_avant_impot/rendement_attendu_10ans_avant_impot.csv"
+   },
+   {
+    "topic": "pess/opt 10y medians",
+    "fact": "Pessimistic / optimistic medians: DIY 21 % 100k -0.93 / 8.18; 250k 0.19 / 9.23; 1M 0.69 / 10.19. DIY 12 % 100k -0.28 / 4.76; 250k 1.18 / 6.21; 1M 1.96 / 7.24. ETF 2.89 / 6.66. Equities 3.50 / 8.00. 70/30 S&P 3.76 / 8.06. 70/30 Nasdaq 3.97 / 8.28. Cash 1.80 / 2.80 (€STR -0.5 / +0.5).",
+    "confidence": "high",
+    "source": "cv_avant_impot/rendement_attendu_10ans_avant_impot.csv"
+   },
+   {
+    "topic": "5y central pre-tax, fixed $400",
+    "fact": "Median CAGR at 5 years: DIY 21 % 3.47 / 4.94 / 5.77 (100k / 250k / 1M), with P(loss) 35.7 / 31.3 / 28.8 %. DIY 12 % 2.15 / 3.63 / 4.91. ETF 4.68 (P(loss) 18.2 %). S&P 6.46. Nasdaq 6.79. 70/30 S&P 6.23. 70/30 Nasdaq 6.63. Cash 2.30.",
+    "confidence": "high",
+    "source": "cv_avant_impot/final_summary_avant_impot.csv"
+   },
+   {
+    "topic": "fixed costs (IB Gateway budgets)",
+    "fact": "10y central DIY median at USD 150 / 400 / 1,000 per year (previous budget in brackets): 21 % vol 100k 3.78 / 3.55 / 2.97 (500: 3.45); 250k 4.93 / 4.85 / 4.63 (625: 4.76); 1M 5.59 / 5.56 / 5.51 (1,000: 5.51). 12 % vol 100k 2.45 / 2.21 / 1.60 (2.11); 250k 3.76 / 3.67 / 3.46 (3.59); 1M 4.71 / 4.69 / 4.64. The fixed budget matters only at 100k (about 0.8 point between 150 and 1,000).",
+    "confidence": "high",
+    "source": "cv_avant_impot/final_summary_avant_impot.csv, sensitivity_avant_impot.csv"
+   },
+   {
+    "topic": "sensitivity",
+    "fact": "Forward Sharpe ±0.10 moves the 10y central median by about ±2.2–2.3 points for DIY at 21 % vol, about ±1.25 for DIY at 12 % vol, ±1.27 for the ETF and ±0.38 for 70/30. €STR ±0.5 % moves DIY at 21 % by about ±0.40 point, DIY at 12 % by about ±0.45, the ETF by ±0.53, 70/30 by ±0.15 and cash by ±0.50.",
+    "confidence": "high",
+    "source": "cv_avant_impot/sensitivity_avant_impot.csv"
+   },
+   {
+    "topic": "time cost",
+    "fact": "Adding 80 h × EUR 25 (about USD 2,340/yr) on top of the USD 400 budget gives 10y central medians of 1.11 % at 100k/21 % (P below cash 56.5 %), -0.31 % at 100k/12 %, 3.98 % at 250k/21 %, 2.81 % at 250k/12 %, 5.37 % at 1M/21 % and 4.49 % at 1M/12 %. At 100k, DIY is then below cash.",
+    "confidence": "high",
+    "source": "cv_avant_impot/sensitivity_avant_impot.csv"
+   },
+   {
+    "topic": "MC noise",
+    "fact": "Across 6 fresh seeds (5,000 paths each), the standard deviation of the 10y central median is 0.06–0.15 point. The main seed sits above the 6-seed mean for DIY: +0.27 point (100k/21 %), +0.24 (250k/21 %), +0.09 (1M/21 %), +0.14 (100k/12 %), +0.15 (250k/12 %), +0.04 (1M/12 %). It is neutral for the ETF (-0.004) and 70/30 S&P (+0.035). The 6-seed mean DIY medians are 3.27 / 4.61 / 5.48 at 21 % and 2.07 / 3.52 / 4.65 at 12 % vol.",
+    "confidence": "high",
+    "source": "cv_avant_impot/mc_seed_noise_summary.csv"
+   },
+   {
+    "topic": "interpretation",
+    "fact": "Before tax, DIY at 250k and 21 % vol (4.85 %, or 4.61 % on the 6-seed mean) cannot be told apart from the UCITS trend ETF (4.76 %), with nearly twice the drawdown (-46 % vs -25 % median; worst decile -66 % vs -36 %). DIY beats the ETF clearly only at 1M (about +0.7–0.8 point at 21 % vol) and only if time is not counted. DIY at 100k is below the ETF in all three fixed-cost budgets, and the 12 % vol version at 100k is roughly cash-like (2.21 % vs 2.30 %, P below cash 51 %). The 70/30 mixes give the best ratio of median to risk.",
+    "confidence": "medium",
+    "source": "derived from final_summary_avant_impot.csv"
+   },
+   {
+    "topic": "conventions",
+    "fact": "In final_table_avant_impot.csv the at_* columns keep their old names for rapport_audit.py compatibility but are pre-tax (pre_* equals at_*). DIY rows add fixed_set (ibg150, ibg400, ibg1000, prev_500_625_1000) and fixed_usd. Case names were renamed to remove account and tax wording: 'd EUR cash (XEON-type MMF, acc.)', 'e 100% equities (sp|nq)', 'e 70/30 annual rebalance (sp|nq)'. Wealth is in USD-equivalent units (100k tier = USD 100k). The equities' 6 % central median at 10 years is a calibration target, not a result.",
+    "confidence": "high",
+    "source": "cv_avant_impot/04_final_avant_impot.py"
+   },
+   {
+    "topic": "report hygiene",
+    "fact": "sanity_check_pre_med.csv contains the old after-tax medians and a tax_drag_pt column for internal checking only; per the user's request these must not appear in the new PDF.",
+    "confidence": "high",
+    "source": "cv_avant_impot/sanity_check_pre_med.csv"
+   }
+  ],
+  "numbers": [
+   {
+    "name": "cash MMF pre-tax CAGR (central)",
+    "value": "2.30 %",
+    "note": "€STR 2.4 % - 0.10 % TER; 1.80 / 2.80 % at €STR ∓0.5"
+   },
+   {
+    "name": "DIY 100k 21 % vol 10y median ($400)",
+    "value": "3.55 %",
+    "note": "P10 -4.91, P90 12.44, P(loss) 29.9 %, P(<cash) 43.0 %, maxDD median -46.0 %, worst decile -65.3 %, P(touch 60 %) 26.0 %"
+   },
+   {
+    "name": "DIY 250k 21 % vol 10y median ($400)",
+    "value": "4.85 %",
+    "note": "P10 -4.28, P90 14.28, P(loss) 25.7 %, P(<cash) 37.0 %, DD -46.5 / -65.8, P60 24.4 %"
+   },
+   {
+    "name": "DIY 1M 21 % vol 10y median ($400)",
+    "value": "5.56 %",
+    "note": "P10 -3.92, P90 15.64, P(loss) 22.9 %, P(<cash) 33.1 %, DD -45.9 / -64.7, P60 22.7 %"
+   },
+   {
+    "name": "DIY 100k 12 % vol 10y median ($400)",
+    "value": "2.21 %",
+    "note": "P10 -2.52, P90 7.07, P(<cash) 51.1 %, DD -29.0 / -44.1, P60 6.3 %"
+   },
+   {
+    "name": "DIY 250k 12 % vol 10y median ($400)",
+    "value": "3.67 %",
+    "note": "P10 -1.09, P90 8.54, P(<cash) 36.1 %, DD -26.1 / -39.2, P60 2.7 %"
+   },
+   {
+    "name": "DIY 1M 12 % vol 10y median ($400)",
+    "value": "4.69 %",
+    "note": "P10 -0.56, P90 10.06, P(<cash) 28.0 %, DD -26.2 / -39.8, P60 2.8 %"
+   },
+   {
+    "name": "UCITS trend ETF 10y median",
+    "value": "4.76 %",
+    "note": "P10 0.13, P90 9.70, P(loss) 9.5 %, P(<cash) 25.8 %, DD -25.0 / -35.9; pess 2.89, opt 6.66"
+   },
+   {
+    "name": "100 % S&P-type 10y median",
+    "value": "6.00 %",
+    "note": "calibration target; P10 -1.74, P90 13.04, DD -39.6 / -58.5"
+   },
+   {
+    "name": "100 % Nasdaq-type 10y median",
+    "value": "6.00 %",
+    "note": "calibration target; P10 -5.10, P90 15.45, DD -51.4 / -75.0"
+   },
+   {
+    "name": "70/30 S&P/ETF 10y median",
+    "value": "6.08 %",
+    "note": "P10 1.10, P90 10.86, P(loss) 5.6 %, DD -26.4 / -37.2"
+   },
+   {
+    "name": "70/30 Nasdaq/ETF 10y median",
+    "value": "6.30 %",
+    "note": "P10 -0.68, P90 12.58, P(loss) 12.2 %, DD -33.8 / -52.7"
+   },
+   {
+    "name": "DIY 10y median at $150 / $1,000 (21 % vol)",
+    "value": "100k 3.78 / 2.97; 250k 4.93 / 4.63; 1M 5.59 / 5.51",
+    "note": "previous budgets: 3.45 / 4.76 / 5.51"
+   },
+   {
+    "name": "DIY 10y median with time cost (21 % vol)",
+    "value": "100k 1.11 %; 250k 3.98 %; 1M 5.37 %",
+    "note": "USD 400 + USD 2,340 (80 h × EUR 25)"
+   },
+   {
+    "name": "sanity check max |gap| vs previous pre_med",
+    "value": "1e-14 point",
+    "note": "bit-identical: same seed, same shocks"
+   },
+   {
+    "name": "MC seed SD of median (10y central)",
+    "value": "0.06–0.15 point",
+    "note": "main seed +0.24–0.27 point above the 6-seed mean for DIY 100k/250k at 21 % vol"
+   },
+   {
+    "name": "runtime",
+    "value": "262 s main + 68 s seed noise",
+    "note": "5000 paths × 2610 days"
+   }
+  ],
+  "files": [
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/final_table_avant_impot.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/final_summary_avant_impot.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/rendement_attendu_10ans_avant_impot.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/sensitivity_avant_impot.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/sanity_check_pre_med.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/mc_seed_noise_summary.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/mc_seed_noise_avant_impot.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/check_mix_direct.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/mc_engine.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/04_final_avant_impot.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/05_seed_noise.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/06_check_mix.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/07_summary.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/cv_avant_impot/run_log.txt"
+  ]
+ },
+ "verification": {
+  "summary": "**Verdict.** The pre-tax re-run is correct: no tax is left anywhere in the code path, and an independent re-implementation reproduces it. But the report should not use the main-seed DIY medians as they stand. That seed flatters DIY by about +0.25 point at 100k/250k and 21 % vol, which is enough to flip the \"DIY 250k vs ETF\" ordering. The generator also needs two code fixes before it can read the new table.\n\n**Re-implementation.** In /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_avant_impot/indep.py I rewrote the stationary bootstrap index construction (vectorised, not the audit's loop), the DIY simulator, the fund, the 70/30 annual-rebalance mix, the summary statistics and the equity calibration. The file has no tax parameter at all.\n- **Same shocks (run_same.py → compare_same_shocks.csv).** All 48 DIY cells checked match final_table_avant_impot.csv to under 1e-6 point. That covers median, P10, P90, P(loss), P(below cash), median and worst-decile drawdown, and P(touch 60 %). The UCITS ETF matches exactly. 100 % equities and the 70/30 mixes are within 0.0006 point; the gap is only that my bisection calibration hits exactly 6.000 % where theirs stops at 5.9998 %.\n- **Previous pre_med.** The prev_500_625_1000 DIY rows, the ETF and equities equal cv_rendement/final_table.csv pre_med. The old table had no pre-tax value for 70/30 or cash. Those figures are new and are confirmed by my code and by their engine-free check.\n\n**No tax left.** The two engine defects are real: the cash benchmark was always taxed at 31.4 %, and sim_mix had a hard-coded 31.4 % tax on rebalancing gains. Both are fixed in the copy. Every call passes pfu=0, tax=0, reb_tax=0 and cash_tax=0. The only exception is calib(), which keeps the default cash_tax but reads only pre_med, so it does not matter. P(below cash) matches my untaxed 2.30 % benchmark exactly.\n- **Report generator (rapport_audit.py).** It still contains about 41 tax mentions and reads the old after-tax cv_rendement/final_table.csv. Three of its four old case names were renamed in the new table: cash, 100 % equities and 70/30. Those lookups will fail loudly.\n- **Silent DIY trap.** row() and scen() have no fixed_set filter. Their .iloc[0] would silently return the ibg150 row: 3.78 % instead of 3.55 % at 100k. The generator must filter fixed_set=='ibg400', or read rendement_attendu_10ans_avant_impot.csv instead.\n- **Strings not to print.** Avoid the 'PRE-TAX;' text in the assumptions column, the pre_tax_* column names, sanity_check_pre_med.csv, PEA/CTO/PFU wording, and \"après/avant impôt\". Prefer \"rendements bruts\", or say nothing about it.\n\n**Seed robustness.** I ran 4 fresh seeds × 10,000 paths (run_fresh2.py, run_fresh3.py).\n- **10y central medians.** DIY at 21 % vol: 3.27 / 4.60 / 5.41 (100k / 250k / 1M). DIY at 12 % vol: 2.08 / 3.52 / 4.64. ETF 4.69. S&P 5.99 and Nasdaq 5.93, with mu held at the calibrated values. 70/30 S&P 6.03. 70/30 Nasdaq 6.36.\n- **Agreement with their seed-noise run.** Their 6-seed means for DIY are within 0.07 of mine. Pooling all 75k paths gives 3.29 / 4.62 / 5.45 at 21 % vol and 2.08 / 3.53 / 4.65 at 12 % vol, ETF 4.72, 70/30 S&P 6.04.\n- **What is robust.** The fixed-cost and time-cost deltas are identical across seeds. Risk metrics move by at most about 1.3 point; fresh-seed P(loss) and P(below cash) for DIY are 0.2–1.3 point higher.\n\n**Plausibility (Gaussian i.i.d. benchmark, same drift and vol).** DIY medians are within 0.03–0.16 point of the bootstrap. Median drawdowns agree within 1.3 points and P(touch 60 %) within 4 points. Analytically, 250k at 21 % vol gives log growth of 4.42 %, about 4.5 % CAGR, against a robust bootstrap median of 4.6 %. So 4.85 % is mostly seed luck.\n- **Equities and 70/30.** Bootstrap risk is lower than Gaussian. For S&P, P(loss) is 15.6 % vs 18.7 %; for 70/30 S&P it is 5.7 % vs 9.4 %. This reflects equity mean reversion in the 2000–26 sample (10y effective vol is below daily vol) and trend behaviour in crises. It is sample-dependent and probably flattering for 70/30.\n- **Calibration.** Holding the median at 6 % means the bootstrap's mean log growth is only about 5.5 % for S&P and 5.1 % for Nasdaq. That is acceptable but worth knowing.\n\n**Interpretation, corrected.**\n- At 250k and 21 % vol, DIY (about 4.6 %) is equal to or slightly below the ETF (about 4.7 %), with roughly twice its drawdown.\n- At 1M, DIY at 21 % vol beats the ETF by about +0.7 point, before any time cost.\n- At equal 12 % risk, DIY never beats the ETF in the central case (2.1 / 3.5 / 4.6 vs 4.7).\n- At 100k and 12 % vol, the median is slightly below cash (2.1 vs 2.3 %; P(below cash) 52 %), not merely \"cash-like\".\n\n**Out of my lens, for the costs job.**\n- **Fixed-cost slope.** Each extra USD 1,000/yr of fixed cost costs about −1.05 point at 100k, −0.36 at 250k and −0.09 at 1M. A real-time ICE subscription (about $1.7–1.9k/yr) would sit above the tested range.\n- **Execution lag.** It barely matters for the subsets: one extra day costs only 0.02–0.03 Sharpe (lag_check.csv). Automating through IB Gateway therefore needs no change to the Sharpe grid.",
+  "checked": [
+   {
+    "claim": "Sanity check: with previous fixed costs, new pre-tax DIY median/P10/P90 are bit-identical to cv_rendement/final_table.csv pre_med/pre_p10/pre_p90 (max gap ~1e-14); ETF and 100% equities also identical",
+    "verdict": "confirmed",
+    "evidence": "md5 of prev_final_table.csv equals cv_rendement/final_table.csv. My independent tax-free code on the same RNG draws reproduces every DIY cell to under 1e-6 pt and the ETF exactly. Equities are within 0.0006 pt, from calibration precision only (verif_avant_impot/compare_same_shocks.csv, column d_vs_old_pre_pt). The old table had no pre-tax value for 70/30 or cash."
+   },
+   {
+    "claim": "Engine defect (i): P_below_cash always compared against the cash fund after 31.4 % tax; fixed with cash_tax=0 (cash 2.30 %/yr)",
+    "verdict": "confirmed",
+    "evidence": "The original mc_engine.py calls cash_benchmark(estr, y), whose default is tax=PFU, in sim_diy, sim_etf and sim_mix. The new P_below_cash equals my untaxed benchmark (1.023^y) exactly: d_Pcash = 0 on all rows."
+   },
+   {
+    "claim": "Engine defect (ii): sim_mix taxed rebalancing gains at hard-coded 31.4 % even with tax_e=tax_t=0; fixed with reb_tax=0",
+    "verdict": "confirmed",
+    "evidence": "The original line reads 'taxv = PFU * (pos - use)'. My tax-free mix, with daily paths and annual rebalance, matches the patched engine within 0.0005 pt on all 24 mix rows."
+   },
+   {
+    "claim": "No tax remains anywhere in the numerical code path (04/05/06 scripts)",
+    "verdict": "confirmed",
+    "evidence": "Every sim call passes pfu=0, cash_tax=0, tax=0, tax_e=tax_t=0 or reb_tax=0. calib() leaves cash_tax at its default but reads only pre_med. My code has no tax parameter and reproduces all outputs. The 31.4/18.6 strings in final_summary_avant_impot.csv are coincidental numeric values."
+   },
+   {
+    "claim": "at_* columns keep old names so rapport_audit.py can read the new table",
+    "verdict": "corrected",
+    "correct_value": "Column names are compatible, but the generator cannot be repointed as-is. Three of its four old case names were renamed (cash 'd EUR cash (XEON-type MMF, acc., PFU at exit)', 'e 100% equities CTO (sp|nq)', 'e 70/30 CTO, annual rebalance (sp|nq)'), so those lookups fail with IndexError. row() and scen() do not filter on fixed_set and would silently pick the first row, fixed_set 'ibg150': 3.78 % instead of 3.55 % at 100k. Fix: filter fixed_set=='ibg400' or read rendement_attendu_10ans_avant_impot.csv. rapport_audit.py also still has about 41 tax mentions (lines 80, 190, 193, 230, 251, 271-276, 313, 456-484, 530, 548-550, 581, 611-662).",
+    "evidence": "/home/user/snt-2b-adam-cieniewicz/analyse-trend/audit/rapport_audit.py lines 79-123 (forward_table) read 'cv_rendement/final_table.csv' with the old case strings. The first central DIY row for 100k/21 % in the new table has fixed_set ibg150."
+   },
+   {
+    "claim": "Central 10y pre-tax medians (USD 400): DIY 21 % 3.55/4.85/5.56; DIY 12 % 2.21/3.67/4.69; ETF 4.76; S&P 6.00; Nasdaq 6.00; 70/30 S&P 6.08; 70/30 Nasdaq 6.30; cash 2.30",
+    "verdict": "corrected",
+    "correct_value": "Seed-robust values (4×10k fresh paths; pooled 75k in brackets where available): DIY 21 % 3.27 [3.29] / 4.60 [4.62] / 5.41 [5.45]; DIY 12 % 2.08 [2.08] / 3.52 [3.53] / 4.64 [4.65]; ETF 4.69 [4.72]; S&P 5.99; Nasdaq 5.93 (6.0 by calibration); 70/30 S&P 6.03 [6.04]; 70/30 Nasdaq 6.36; cash 2.30.",
+    "evidence": "The values are correctly computed for seed 20261005, but that seed is favourable to DIY by +0.25/+0.22/+0.11 (21 %) and +0.13/+0.14/+0.05 (12 %). Seed-to-seed SD at 10k paths is 0.01–0.05. Sources: verif_avant_impot/fresh_full_grid_summary.csv, fresh_seeds_summary.csv, cv_avant_impot/mc_seed_noise_summary.csv."
+   },
+   {
+    "claim": "P10/P90 at 10y: DIY 21 % 100k [-4.91;12.44], 250k [-4.28;14.28], 1M [-3.92;15.64]; 12 % [-2.52;7.07],[-1.09;8.54],[-0.56;10.06]; ETF [0.13;9.70]; S&P [-1.74;13.04]; NQ [-5.10;15.45]; 70/30 S&P [1.10;10.86]; 70/30 NQ [-0.68;12.58]",
+    "verdict": "confirmed",
+    "evidence": "Fresh seeds: DIY 21 % [-5.05;12.40], [-4.48;14.27], [-3.96;15.47]; 12 % [-2.62;7.01], [-1.13;8.51], [-0.59;9.90]; ETF [0.07;9.76]; S&P [-1.68;13.08]; NQ [-5.09;15.54]; 70/30 S&P [1.18;10.85]; 70/30 NQ [-0.60;12.59]. All within about 0.2 pt."
+   },
+   {
+    "claim": "Risk metrics 10y (P loss / P<cash / DD med / DD worst decile / P touch 60 %): DIY 21 % 100k 29.9/43.0/-46.0/-65.3/26.0, 250k 25.7/37.0/-46.5/-65.8/24.4, 1M 22.9/33.1/-45.9/-64.7/22.7; 12 % 27.8/51.1/-29.0/-44.1/6.3, 16.2/36.1/-26.1/-39.2/2.7, 12.3/28.0/-26.2/-39.8/2.8; ETF 9.5/25.8/-25.0/-35.9; S&P 15.7/26.4/-39.6/-58.5; NQ 24.6/33.6/-51.4/-75.0; 70/30 S&P 5.6/16.3/-26.4/-37.2; 70/30 NQ 12.2/23.3/-33.8/-52.7",
+    "verdict": "confirmed",
+    "evidence": "These match the table. Fresh seeds are within 1.3 pt: DIY 21 % 31.1/44.3/-46.3/-65.3/26.4, 25.9/37.3/-46.7/-66.2/24.9, 23.3/33.8/-46.0/-65.3/23.5; 12 % 28.7/52.3/-29.1/-44.0/6.4, 16.7/37.1/-26.2/-39.5/2.8, 12.8/28.3/-26.3/-40.3/2.9; ETF 9.7/25.9/-25.1/-35.8. The Gaussian benchmark gives similar DIY drawdowns (-46 to -48 %). Analytic check: ETF P(loss) ≈ Φ(-0.465/0.354) = 9.5 %."
+   },
+   {
+    "claim": "Real medians at 2 % inflation: cash 0.29; DIY 21 % 1.52/2.79/3.49; 12 % 0.21/1.63/2.64; ETF 2.71; S&P and NQ 3.92; 70/30 S&P 4.00; 70/30 NQ 4.21",
+    "verdict": "corrected",
+    "correct_value": "Formula (1+med)/1.02-1 confirmed. On seed-robust medians: cash 0.29; DIY 21 % 1.25/2.55/3.34; DIY 12 % 0.08/1.49/2.59; ETF 2.64; S&P 3.92 (calibrated); 70/30 S&P 3.95; 70/30 NQ 4.27.",
+    "evidence": "These are derived from the corrected medians above."
+   },
+   {
+    "claim": "Pess/opt 10y medians: DIY 21 % -0.93/8.18, 0.19/9.23, 0.69/10.19; 12 % -0.28/4.76, 1.18/6.21, 1.96/7.24; ETF 2.89/6.66; equities 3.50/8.00; 70/30 S&P 3.76/8.06; 70/30 NQ 3.97/8.28; cash 1.80/2.80",
+    "verdict": "corrected",
+    "correct_value": "Fresh seeds: DIY 21 % -1.19/7.90, -0.04/8.98, 0.55/10.03; DIY 12 % -0.42/4.62, 1.04/6.06, 1.90/7.18; ETF 2.82/6.59; S&P 3.49/7.99; NQ 3.43/7.93 (3.5/8.0 by calibration); 70/30 S&P 3.71/8.01; 70/30 NQ 4.03/8.34; cash 1.80/2.80.",
+    "evidence": "verif_avant_impot/fresh_full_grid_summary.csv. The main seed is again favourable to DIY by 0.15–0.26 pt."
+   },
+   {
+    "claim": "5y central: DIY 21 % 3.47/4.94/5.77 with P(loss) 35.7/31.3/28.8; DIY 12 % 2.15/3.63/4.91; ETF 4.68 (P loss 18.2); S&P 6.46; NQ 6.79; 70/30 S&P 6.23; 70/30 NQ 6.63; cash 2.30",
+    "verdict": "corrected",
+    "correct_value": "Fresh seeds: DIY 21 % 3.35/4.84/5.55 with P(loss) 36.1/31.7/30.1; DIY 12 % 2.10/3.56/4.72; ETF 4.68 (P loss 18.4); S&P 6.30; NQ 6.62; 70/30 S&P 6.09; 70/30 NQ 6.54; cash 2.30.",
+    "evidence": "The main seed is also favourable at 5y for equities, by about +0.16 pt (verif_avant_impot/fresh_full_grid_summary.csv)."
+   },
+   {
+    "claim": "Fixed costs USD 150/400/1,000: 21 % 100k 3.78/3.55/2.97, 250k 4.93/4.85/4.63, 1M 5.59/5.56/5.51; 12 % 2.45/2.21/1.60, 3.76/3.67/3.46, 4.71/4.69/4.64; budget matters only at 100k (~0.8 pt between 150 and 1,000)",
+    "verdict": "corrected",
+    "correct_value": "The deltas are confirmed and seed-invariant. Seed-robust levels: 21 % 100k 3.51/3.27/2.70; 250k 4.69/4.60/4.39; 1M 5.43/5.41/5.36; 12 % 100k 2.31/2.08/1.49; 250k 3.61/3.52/3.30; 1M 4.66/4.64/4.58. Slope per extra USD 1,000/yr: about -1.05 pt at 100k, -0.36 at 250k, -0.09 at 1M.",
+    "evidence": "verif_avant_impot/fresh_fixed_costs.csv. Main-seed delta 150→1000 at 100k/21 % is -0.81; fresh is -0.81."
+   },
+   {
+    "claim": "Forward Sharpe ±0.10 moves the 10y median ±2.2–2.3 pt (DIY 21 %), ±1.25 (DIY 12 %), ±1.27 (ETF), ±0.38 (70/30); €STR ±0.5 moves DIY 21 % ±0.40, DIY 12 % ±0.45, ETF ±0.53, 70/30 ±0.15, cash ±0.50",
+    "verdict": "confirmed",
+    "evidence": "sensitivity_avant_impot.csv. Sharpe deltas: -2.24 to -2.26 / +2.28 to +2.29; -1.25 / +1.26 to +1.27; ETF -1.25/+1.27; 70/30 -0.37 to -0.38 / +0.38. €STR deltas: DIY 21 % 0.39–0.43; DIY 12 % 0.42–0.47; ETF 0.52–0.53; 70/30 0.15–0.16."
+   },
+   {
+    "claim": "Time cost 80 h × EUR 25 (~USD 2,340) on top of USD 400: 1.11 % (100k/21 %, P<cash 56.5 %), -0.31 (100k/12 %), 3.98 (250k/21 %), 2.81 (250k/12 %), 5.37 (1M/21 %), 4.49 (1M/12 %)",
+    "verdict": "corrected",
+    "correct_value": "The deltas are confirmed (-2.44 pt at 100k/21 % on both seed sets) and 80×25×1.17 = 2,340 is correct. Seed-robust levels: 0.83 (P<cash 57.9 %), -0.41, 3.75, 2.65, 5.21, 4.43.",
+    "evidence": "verif_avant_impot/fresh_fixed_costs.csv, column fixed=2740."
+   },
+   {
+    "claim": "MC noise: seed SD 0.06–0.15 pt (5k paths); main seed +0.27/+0.24/+0.09 (21 %), +0.14/+0.15/+0.04 (12 %) above the 6-seed mean; neutral for ETF (-0.004) and 70/30 (+0.035)",
+    "verdict": "confirmed",
+    "evidence": "Independent fresh seeds (101–404, 10k paths each, separate code) give 3.27/4.60/5.41 and 2.08/3.52/4.64, against their 6-seed means of 3.27/4.61/5.48 and 2.07/3.52/4.65. For the ETF my mean is 4.69 vs their 4.77, so the main seed may be about +0.05–0.07 favourable for the ETF too."
+   },
+   {
+    "claim": "Engine-free 70/30 check matches engine within 0.003 pt (rounded-mu parsing); ETF exact",
+    "verdict": "confirmed",
+    "evidence": "check_mix_direct.csv: 70/30 NQ 10y 6.2943 vs 6.2966. A 0.00003 rounding of mu explains the gap. My own mix code (exact mu) is within 0.0002 pt of the engine."
+   },
+   {
+    "claim": "Interpretation: DIY 250k/21 % cannot be told apart from the ETF; DIY beats the ETF clearly only at 1M (+0.7–0.8 pt at 21 % vol, before time); DIY 100k below the ETF in all budgets; 12 % vol at 100k roughly cash-like (2.21 vs 2.30)",
+    "verdict": "corrected",
+    "correct_value": "Seed-robust: DIY 250k/21 % at 4.60 is equal to or slightly below the ETF at 4.69, with about twice the drawdown (-47 % vs -25 % median). DIY 1M/21 % beats the ETF by +0.7 pt (5.41 vs 4.69), before time cost. DIY 100k is below the ETF in all budgets (3.51 at $150). At equal 12 % risk, DIY never beats the ETF in the central case (2.08/3.52/4.64 vs 4.69). At 100k/12 % the median is slightly BELOW cash (2.08 vs 2.30, P<cash 52 %).",
+    "evidence": "verif_avant_impot/fresh_full_grid_summary.csv and fresh_fixed_costs.csv."
+   },
+   {
+    "claim": "Bootstrap probabilities and drawdowns are plausible",
+    "verdict": "confirmed",
+    "evidence": "Gaussian i.i.d. benchmark with the same drift and vol, 10k paths: DIY 21 % medians 3.11/4.48/5.38, median DD -48/-46/-45, P(touch 60 %) 30/25/22, all close to the bootstrap. Equities and 70/30 show lower risk in the bootstrap than Gaussian (S&P P(loss) 15.6 vs 18.7; 70/30 S&P 5.7 vs 9.4; 70/30 S&P worst-decile DD -37 vs -42), driven by 2000-26 sample features (equity mean reversion, trend crisis behaviour). This is plausible but likely optimistic for the 70/30 risk figures. Holding the median at 6 % implies a bootstrap mean log growth of 5.5 % (S&P) and 5.1 % (NQ)."
+   },
+   {
+    "claim": "(Implicit) SR grid built for manual execution remains valid for automated IB Gateway execution",
+    "verdict": "confirmed",
+    "evidence": "cv_rendement/lag_check.csv: one extra day of execution lag costs only 0.015–0.037 Sharpe on the 100k and 1M subsets, i.e. under about 0.1 pt of CAGR at 21 % vol. Automation does not require changing the Sharpe grid."
+   },
+   {
+    "claim": "Internal files with after-tax content (sanity_check_pre_med.csv: prev_after_tax_med, tax_drag_pt) must not reach the PDF",
+    "verdict": "confirmed",
+    "evidence": "These columns exist. Also keep out: the 'PRE-TAX;' prefix in the assumptions column of final_table_avant_impot.csv (192 rows), the pre_tax_* headers in final_summary_avant_impot.csv, and the 'median_fixe_ancien' column if old-budget wording is unwanted."
+   }
+  ],
+  "final_numbers": [
+   {
+    "name": "Cash EUR MMF (XEON-type), 10y",
+    "value": "2.30 %/yr (1.80 / 2.80 at €STR ∓0.5); real 0.29 %",
+    "note": "€STR 2.4 % minus 0.10 % TER; deterministic"
+   },
+   {
+    "name": "DIY v5 21 % vol, 100k, 10y central (USD 400/yr)",
+    "value": "median 3.3 % [P10 -5.0; P90 12.4]; real 1.3 %; P(loss) 31 %; P(<cash) 44 %; DD median -46 %, worst decile -65 %; P(touch 60 %) 26 %",
+    "note": "seed-robust (4×10k fresh paths, 3.27 %); main-seed table shows 3.55 %"
+   },
+   {
+    "name": "DIY v5 21 % vol, 250k, 10y central (USD 400/yr)",
+    "value": "median 4.6 % [-4.5; 14.3]; real 2.5 %; P(loss) 26 %; P(<cash) 37 %; DD -47 % / -66 %; P(touch 60 %) 25 %",
+    "note": "seed-robust 4.60 % (pooled 75k: 4.62); main seed 4.85 %"
+   },
+   {
+    "name": "DIY v5 21 % vol, 1M, 10y central (USD 400/yr)",
+    "value": "median 5.4 % [-4.0; 15.5]; real 3.3 %; P(loss) 23 %; P(<cash) 34 %; DD -46 % / -65 %; P(touch 60 %) 23 %",
+    "note": "seed-robust 5.41 % (pooled 5.45); main seed 5.56 %"
+   },
+   {
+    "name": "DIY v5 12 % vol, 100k / 250k / 1M, 10y central",
+    "value": "2.1 % / 3.5 % / 4.6 %; P(loss) 29 / 17 / 13 %; P(<cash) 52 / 37 / 28 %; DD median -29 / -26 / -26 %, worst decile -44 / -40 / -40 %",
+    "note": "seed-robust 2.08 / 3.52 / 4.64; at 100k the median is below cash"
+   },
+   {
+    "name": "UCITS trend ETF (iMGP DBi, EUR-hedged), 10y central",
+    "value": "median 4.7 % [0.1; 9.8]; real 2.6 %; P(loss) 9.7 %; P(<cash) 26 %; DD -25 % / -36 %",
+    "note": "seed-robust 4.69 % (pooled 4.72); main seed 4.76 %"
+   },
+   {
+    "name": "100 % S&P 500-type, 10y central",
+    "value": "median 6.0 % [-1.7; 13.1]; P(loss) 16 %; P(<cash) 26 %; DD -40 % / -58 %",
+    "note": "the median is a calibration target, not a result"
+   },
+   {
+    "name": "100 % Nasdaq-100-type (QQQ-like), 10y central",
+    "value": "median 6.0 % [-5.1; 15.5]; P(loss) 24 %; P(<cash) 33 %; DD -51 % / -75 %",
+    "note": "calibration target; fresh seeds give 5.93 with mu held fixed"
+   },
+   {
+    "name": "70 % S&P + 30 % trend ETF, annual rebalance, 10y central",
+    "value": "median 6.0 % [1.2; 10.9]; real 3.95 %; P(loss) 5.7 %; P(<cash) 16 %; DD -26 % / -37 %",
+    "note": "seed-robust 6.03 (main seed 6.08); bootstrap risk is lower than Gaussian (P(loss) 9.4 %)"
+   },
+   {
+    "name": "70 % Nasdaq + 30 % trend ETF, annual rebalance, 10y central",
+    "value": "median 6.35 % [-0.6; 12.6]; real 4.3 %; P(loss) 12 %; P(<cash) 22-23 %; DD -34 % / -53 %",
+    "note": "seed-robust 6.36 (main seed 6.30)"
+   },
+   {
+    "name": "Pess / opt 10y medians (seed-robust)",
+    "value": "DIY 21 %: 100k -1.2/7.9, 250k 0.0/9.0, 1M 0.55/10.0; DIY 12 %: -0.4/4.6, 1.0/6.1, 1.9/7.2; ETF 2.8/6.6; equities 3.5/8.0; 70/30 S&P 3.7/8.0; 70/30 NQ 4.0/8.3; cash 1.8/2.8",
+    "note": "main-seed values are 0.15–0.26 pt higher for DIY"
+   },
+   {
+    "name": "5y central medians (seed-robust)",
+    "value": "DIY 21 % 3.35 / 4.8 / 5.55 (P(loss) 36 / 32 / 30 %); DIY 12 % 2.1 / 3.6 / 4.7; ETF 4.7 (P(loss) 18 %); S&P 6.3; NQ 6.6; 70/30 S&P 6.1; 70/30 NQ 6.5; cash 2.3",
+    "note": "main seed: S&P 6.46, NQ 6.79, DIY 21 % 3.47/4.94/5.77"
+   },
+   {
+    "name": "IB Gateway fixed-cost budgets USD 150 / 400 / 1,000, DIY 10y central median (seed-robust)",
+    "value": "21 %: 100k 3.5/3.3/2.7; 250k 4.7/4.6/4.4; 1M 5.4/5.4/5.4. 12 %: 100k 2.3/2.1/1.5; 250k 3.6/3.5/3.3; 1M 4.7/4.6/4.6",
+    "note": "slope per extra USD 1,000/yr: about -1.05 pt at 100k, -0.36 at 250k, -0.09 at 1M"
+   },
+   {
+    "name": "With time valued at 80 h × EUR 25 (USD 2,340) on top of USD 400",
+    "value": "21 %: 100k 0.8 %, 250k 3.75 %, 1M 5.2 %; 12 %: -0.4 %, 2.65 %, 4.4 %",
+    "note": "optional sensitivity; deltas are seed-invariant (-2.44 pt at 100k)"
+   },
+   {
+    "name": "Sensitivity of 10y central median",
+    "value": "Sharpe ±0.10: DIY 21 % ±2.25 pt, DIY 12 % ±1.25, ETF ±1.26, 70/30 ±0.38. €STR ±0.5: DIY 21 % ±0.4, DIY 12 % ±0.45, ETF ±0.53, 70/30 ±0.15, cash ±0.5",
+    "note": "common random numbers; robust"
+   },
+   {
+    "name": "Independent replication accuracy (same shocks)",
+    "value": "DIY < 1e-6 pt; ETF exact; equities/70-30 ≤ 0.0006 pt; P(<cash), P(touch 60 %) exact",
+    "note": "verif_avant_impot/compare_same_shocks.csv"
+   },
+   {
+    "name": "Main-seed bias vs seed-robust (10y central)",
+    "value": "DIY 21 %: +0.28 / +0.25 / +0.15; DIY 12 %: +0.13 / +0.15 / +0.05; ETF +0.07; 70/30 S&P +0.05; 70/30 NQ -0.06",
+    "note": "enough to flip the DIY 250k vs ETF ordering; use the seed-robust values or re-run with ≥40k paths"
+   }
+  ]
+ }
+}

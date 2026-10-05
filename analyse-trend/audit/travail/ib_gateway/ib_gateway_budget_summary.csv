@@ -1,0 +1,4 @@
+tier,capital_usd,markets,orders_per_yr,roll_orders_per_yr,contract_sides_per_yr,ibkr_commissions_usd_per_month_est,us_bundle_waiver_met_on_average,variable_fee_plus_halfspread_pct,of_which_halfspread_pct,fixed_minimal_usd,fixed_standard_usd,fixed_comfortable_usd,fixed_minimal_pct,fixed_standard_pct,fixed_comfortable_pct,cash_shortfall_vs_estr_pct,total_standard_pct,not_in_simulated_sharpe_standard_pct
+100k,100000,14,750,62,1470,46-66,yes,3.3,1.72,134,412,841,0.134,0.412,0.841,0.79,4.5,1.2
+250k,250000,24,1470,106,3234,108-154,yes,3.65,2.17,124,402,4265,0.05,0.161,1.706,0.67,4.48,0.83
+1M,1000000,40,2904,169,10395,335-479,yes,2.87,1.72,124,402,6197,0.012,0.04,0.62,0.61,3.52,0.65

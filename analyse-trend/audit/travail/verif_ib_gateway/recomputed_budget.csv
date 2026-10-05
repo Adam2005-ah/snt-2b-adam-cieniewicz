@@ -1,0 +1,4 @@
+capital,minimal,standard_central,standard_robust_norgate,comfortable_lo,comfortable_hi,std_pct,std_robust_pct,total_std_pct,total_robust_pct,not_in_sharpe_std,not_in_sharpe_robust
+100000,134,412,412,841,841,0.412,0.412,4.5,4.5,1.2,1.2
+250000,124,402,672,3881,4265,0.161,0.269,4.48,4.59,0.83,0.94
+1000000,124,402,672,5813,6197,0.04,0.067,3.52,3.55,0.65,0.68

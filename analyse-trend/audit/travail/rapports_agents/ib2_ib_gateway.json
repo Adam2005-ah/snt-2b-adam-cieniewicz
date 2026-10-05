@@ -1,0 +1,580 @@
+{
+ "key": "ib_gateway",
+ "work": {
+  "summary": "How to run variant 5 yourself through IBKR with IB Gateway, and what it costs. Everything is before tax; there is no tax content. Folder: /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/. build_ib_gateway.py writes 4 CSVs: 56 sourced facts, the budget line items, a per-tier summary and the time estimates. Nothing under /home/user was modified.\n\n1. IB GATEWAY SETUP\n- IB Gateway is TWS without the charts. It has the same login and the same API, uses about 40% fewer resources, and is the version pysystemtrade recommends.\n- The API is free; you pay only for market data. API orders are charged the normal IBKR Pro commissions. I found no surcharge for using the API, but also no explicit IBKR statement that rates are identical.\n- You need an IBKR Pro account. IBKR Lite has no API access at all (error \"API support is not available for accounts that support commission free trading\"). Lite is also not offered to EEA clients of IBKR Ireland.\n- Account fees and access:\n  - No inactivity fee since 2021.\n  - Extra usernames are free. Create one username only for the Gateway: there is one session per username, so logging in on mobile or TWS would otherwise kick the Gateway off.\n  - Market data is billed per username, so subscribe on the API username only.\n  - Real-time data requires USD 500 of equity.\n- Paper account:\n  - Free, same API. Ports: Gateway 4002 paper / 4001 live (TWS 7497/7496).\n  - Live subscriptions can be shared with the paper account; otherwise it gets delayed data.\n- Hardware: about 4 GB RAM (8 GB recommended). Java is bundled. One loaded instance uses about 1 GB.\n- Restarts and 2FA:\n  - Use daily Auto Restart (not Auto Log Off). The Gateway then restarts each day without logging in again.\n  - Once a week, after 01:00 ET on Sunday, a full login with second factor is required. 2FA is mandatory and is approved with a push on IBKR Mobile.\n  - IBC (free) automates start, login, the daily restart and 2FA retries (the alert times out after about 3 minutes). It cannot approve the 2FA for you.\n  - IBKR server resets: 00:15–01:45 ET and 06:25–07:45 CET. Schedule jobs outside these windows.\n- Docker: the usual image is gnzsnz/ib-gateway-docker (IB Gateway stable 10.50.1e / latest 10.51.1b, IBC 3.24.2, TRADING_MODE paper/live/both, VNC optional). Alternative: QuantConnect IBAutomater.\n- Limits:\n  - 50 API messages per second (100 default market-data lines ÷ 2).\n  - Historical requests: no identical request within 15 s, at most 60 per 10 minutes. Strict limits are now documented only for bars of 30 s or less.\n  - None of this binds a 14–40 market daily system.\n- Orders: market, limit and IB Adaptive. Adaptive works for US futures via `algoStrategy='Adaptive'` (Urgent/Normal/Patient) and is DAY only. pysystemtrade's default algo (passive limit, then aggressive) needs live streaming data. Use `algoSnapMkt` (market orders) for markets on delayed data.\n\n2. DATA THROUGH THE API\n- Free delayed data needs no subscription: `reqMarketDataType(3)`, or 4 for delayed-frozen. Delays: CME/CBOT/NYMEX/COMEX 10 min, ICE US and ICE Europe 10 min, Eurex and Euronext 15 min, OSE 20 min.\n- Historical bars are the uncertain point. IBKR's API docs say historical bars always need a Level-1 real-time subscription. pysystemtrade's maintainers write that this stopped being enforced in early 2023, without announcement, \"so things may change\". Test it on your own username before relying on it.\n- Expired futures: bars are available up to 2 years after expiry (`includeExpired`). That is enough to warm up the signals, not to rebuild a long history. To seed history:\n  - Carver's free CSVs stop on 2024-03-28 (checked).\n  - A community set (bug-or-feature/pst-csv-data) covers 40 instruments to 2025-09-23.\n  - Norgate: USD 270/yr; its updater runs only on Windows.\n  - Databento: from USD 0.50/GB with a USD 125 free credit. Good for CME; Eurex starts only in 2025.\n- Subscriptions (non-professional):\n\n| Subscription | Cost | Note |\n|---|---|---|\n| US Securities Snapshot & Futures Value Bundle (CME/CBOT/NYMEX/COMEX) | USD 10/month | Waived in any month with ≥ USD 30 commissions |\n| Eurex | EUR 2–12/month | Carver pays EUR 8.75 (Eurex Core) + EUR 2 (Eurex Retail Europe); low confidence |\n| Euronext Bundle | EUR 3/month | |\n| Osaka (OSE) | about JPY 200/month | Possibly not offered to non-professionals; low confidence |\n| ICE Futures US | USD 148/month | Exchange's 2026 non-professional rate; exact IBKR price not found |\n| ICE Europe commodities | USD 161/month | Same |\n| ICE Europe financials | USD 139/month | Same |\n\n- Estimated IBKR commissions are USD 46–66/month at 100k, so the US bundle is free on average (borderline in quiet months). They are USD 108–154 at 250k and USD 335–479 at 1M.\n- What can be skipped: all ICE real-time data, and OSE. A daily system can use delayed data plus market or Adaptive orders. The audit's cost model already pays the half-spread, so this is consistent with the simulated costs.\n- Exchanges needed by tier:\n  - 100k (14 markets): CME group, Eurex, Euronext and OSE.\n  - 250k (24) adds ICE US (canola, sugar No. 11) and ICE Europe financials (Euribor, SONIA).\n  - 1M (40) adds cotton (ICE US) and white sugar (ICE Europe commodities).\n\n3. PYSYSTEMTRADE\n- Repo moved to pst-group in January 2026. It needs Python ≥ 3.10 and MongoDB + Parquet, and switched from ib_insync to ib_async (≥ 2, < 3) in April 2026. ib_async is the maintained fork of ib_insync; its original author died in 2024.\n- It connects to the Gateway on 127.0.0.1:4001 with a client id.\n- What runs daily:\n  - `run_daily_price_updates`: FX, sampled contracts, IB historical bars and back-adjusted prices; it can download by region.\n  - `run_capital_update`.\n  - `run_systems`: recomputes the backtest to get optimal positions.\n  - `run_strategy_order_generator`.\n  - `run_stack_handler`: sends orders, records fills and reconciles positions.\n  - Reports, backups and cleaners.\n- Still needs a human:\n  - the weekly 2FA approval;\n  - price spikes, which block the data write and send an email asking for a manual check;\n  - rolls through `interactive_update_roll_status` (manual, semi-automatic or automatic; passive rolling recommended);\n  - broken or missing data, and Gateway upgrades.\n- Variant 5's rules (EWMAC, strategy 13 volatility regime, portfolio vol targeting; trend.py is about 200 lines) must be ported as custom rules, or into a lean ib_async script.\n\n4. BUDGET (USD/yr, fixed costs; % of capital)\n\n| Budget | 100k | 250k | 1M |\n|---|---|---|---|\n| Minimal | 134 (0.13%) | 124 (0.05%) | 124 (0.01%) |\n| Standard | 412 (0.41%) | 402 (0.16%) | 402 (0.04%) |\n| Comfortable | 841 (0.84%) | 4,265 (1.71%) | 6,197 (0.62%) |\n\n- Minimal: Hetzner CX23 (USD 99/yr incl. 20% VAT) or a home PC (about USD 25/yr of electricity), US bundle waived, everything else delayed, free history, FX conversions USD 25. Its weakness: it relies on IB still serving historical bars without a subscription, which is undocumented.\n- Standard, recommended as the central case:\n\n| Line | USD/yr |\n|---|---|\n| Hetzner CX33, 8 GB | 148 |\n| US bundle (one missed waiver month at 100k) | 0–10 |\n| Eurex | 148 |\n| Euronext | 41 |\n| OSE | 15 |\n| ICE | 0 (delayed data + market orders) |\n| FX conversions | 50 |\n\n- Comfortable: a second VPS for paper trading or backup, Norgate at USD 270, FX USD 100, and ICE real-time where markets are held (USD 3,444 at 250k, USD 5,376 at 1M). ICE real-time is not worth it at any tier up to 1M.\n- Full running cost per tier, standard budget:\n\n| Cost (% of capital per year) | 100k | 250k | 1M |\n|---|---|---|---|\n| Variable: fees + half-spread (audit, verified; ER4 spread corrected; already inside the simulated Sharpes) | 3.30 | 3.65 | 2.87 |\n| Fixed | 0.41 | 0.16 | 0.04 |\n| Cash interest lost vs €STR (audit) | 0.79 | 0.67 | 0.61 |\n| Total | 4.50 | 4.48 | 3.52 |\n| Not already inside the simulated Sharpes | 1.20 | 0.83 | 0.65 |\n\n- Keep \"Excess Funds Sweep → securities\" on, so that only the required margin sits in the futures segment, which earns no interest.\n- Note: the sibling before-tax simulations assume USD 150/yr of fixed costs. The standard budget adds about 0.26% per year at 100k and is negligible at 1M.\n\n5. TIME AND STEP-BY-STEP PLAN\n- Setup: about 80–200 h for 14–40 markets if you are fluent in Python (the audit's 200–500 h was for all 84).\n  - Account: 3–8 h.\n  - VPS and Docker: 4–12 h.\n  - pysystemtrade configuration: 15–40 h.\n  - Porting the rules: 30–100 h.\n  - Seeding history and reconciling: 15–40 h.\n  - Then 8–12 weeks of paper trading at 1–2 h/week.\n- Recurring: about 1–2 h/week on average.\n  - The 2FA tap: about 2 min/week, but you must be reachable.\n  - The daily report: 5–10 min.\n  - Rolls: 62 / 106 / 169 roll orders a year, i.e. 5–15 h/yr.\n  - Monthly checks: 1–2 h.\n  - Yearly review and upgrades: 10–20 h.\n- Plan:\n  1. Open IBKR Pro (Ireland), request futures permissions, and check that every contract is tradeable (it needs a KID). Create the API username and the paper account; share data with the paper account.\n  2. On a Hetzner CX33: Ubuntu, Docker, ib-gateway-docker with IBC in paper mode. Ports bound to localhost, VNC only through an SSH tunnel, AutoRestart, relogin after a 2FA timeout.\n  3. Install pysystemtrade and MongoDB, configure the subset, seed history, port variant 5, and reconcile positions against the backtest.\n  4. Paper-trade 2–3 months, covering rolls, restarts, the Sunday 2FA and a Gateway upgrade.\n  5. Go live with part of the capital (e.g. CME markets or about 1/3), then scale up.\n\nMain uncertainties:\n- Whether historical bars keep working without a subscription.\n- Exact IBKR prices for Eurex, OSE and ICE.\n- Whether the commission waiver is met every month at 100k.\n\nIn time.csv, the 30–100 h for porting the rules and the 80–200 h total are my own estimates, not sourced.",
+  "facts": [
+   {
+    "topic": "IB Gateway",
+    "fact": "IB Gateway is headless-friendly TWS: same login and same API, no charts, about 40% fewer resources; pysystemtrade recommends it as more stable",
+    "confidence": "high",
+    "source": "https://newyorkcityservers.com/blog/interactive-brokers-vps-tws-ib-gateway ; https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/IB.md"
+   },
+   {
+    "topic": "API cost",
+    "fact": "The TWS/Gateway API has no access fee; only market data subscriptions are paid",
+    "confidence": "high",
+    "source": "https://mylinedchart.com/resources/articles/ibkr-market-data-license-costs-for-developers"
+   },
+   {
+    "topic": "Commissions",
+    "fact": "IBKR commission schedules are set per product and exchange, not per channel; no source charges API orders differently from TWS orders",
+    "confidence": "medium",
+    "source": "https://www.interactivebrokers.com/en/pricing/commissions-home.php"
+   },
+   {
+    "topic": "Account type",
+    "fact": "API requires IBKR Pro; IBKR Lite has no API ('API support is not available for accounts that support commission free trading'); Lite is not offered to EEA clients of IBKR Ireland",
+    "confidence": "high",
+    "source": "https://www.quantconnect.com/docs/v2/cloud-platform/live-trading/brokerages/interactive-brokers ; https://brokerchooser.com/broker-reviews/interactive-brokers-review/interactive-brokers-ireland"
+   },
+   {
+    "topic": "Usernames",
+    "fact": "Only one brokerage session per username; extra usernames are free, so use a dedicated API username. Market data is billed per username and cannot be shared",
+    "confidence": "high",
+    "source": "https://www.interactivebrokers.com/docs/web-api/authentication/multiple-sessions ; https://www.interactivebrokers.com/en/pricing/market-data-pricing.php"
+   },
+   {
+    "topic": "Paper trading",
+    "fact": "Free paper account with the same API (Gateway port 4002 paper, 4001 live); live data subscriptions can be shared with it, otherwise US futures are 10 min delayed",
+    "confidence": "high",
+    "source": "https://www.interactivebrokers.com/campus/trading-lessons/installing-configuring-tws-for-the-api/ ; https://www.ibkrguides.com/kb/article-1719.htm"
+   },
+   {
+    "topic": "Restarts and 2FA",
+    "fact": "Daily Auto Restart without re-login (Mon-Sat); a full 2FA login is required once a week, the first run after 01:00 ET Sunday; 2FA is mandatory (IBKR Mobile push); IBC re-sends missed alerts (about 3-min timeout) but cannot approve them",
+    "confidence": "high",
+    "source": "https://raw.githubusercontent.com/IbcAlpha/IBC/master/userguide.md ; https://www.interactivebrokers.com/docs/tws-api/doc/tws-settings/daily-weekly-reauthentication"
+   },
+   {
+    "topic": "Docker",
+    "fact": "gnzsnz/ib-gateway-docker bundles IB Gateway + IBC + Xvfb + VNC + socat; on 5 Oct 2026: stable 10.50.1e, latest 10.51.1b, IBC 3.24.2; TRADING_MODE live/paper/both",
+    "confidence": "high",
+    "source": "https://raw.githubusercontent.com/gnzsnz/ib-gateway-docker/master/README.md"
+   },
+   {
+    "topic": "Pacing",
+    "fact": "50 API messages/s (100 default market-data lines / 2); historical: 60 requests per 10 min, no identical request within 15 s; strict limits now documented only for bars of 30 s or less",
+    "confidence": "medium",
+    "source": "https://www.interactivebrokers.com/docs/tws-api/doc/pacing-limitations/introduction ; https://interactivebrokers.github.io/tws-api/historical_limitations.html"
+   },
+   {
+    "topic": "Order types",
+    "fact": "IB Adaptive algo is available via the API for US futures (adaptivePriority Urgent/Normal/Patient, DAY only); pysystemtrade's default algoOriginalBest needs live streaming, while algoSnapMkt and algoLimit can be set per instrument",
+    "confidence": "high",
+    "source": "https://interactivebrokers.github.io/tws-api/ibalgos.html ; https://raw.githubusercontent.com/pst-group/pysystemtrade/master/sysdata/config/defaults.yaml"
+   },
+   {
+    "topic": "Delayed data",
+    "fact": "Free delayed data via reqMarketDataType(3)/(4): CME/CBOT/NYMEX/COMEX 10 min, ICE US and ICE Europe 10 min, Eurex 15 min, Euronext 15 min, OSE 20 min",
+    "confidence": "medium",
+    "source": "https://www.interactivebrokers.com/en/pricing/market-data-pricing.php ; https://interactivebrokers.github.io/tws-api/delayed_data.html"
+   },
+   {
+    "topic": "Historical data",
+    "fact": "IBKR API docs say historical bars always require a Level-1 real-time subscription; pysystemtrade docs say this stopped being enforced in early 2023, without announcement, and may change",
+    "confidence": "medium",
+    "source": "https://interactivebrokers.github.io/tws-api/historical_data.html ; https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/production.md"
+   },
+   {
+    "topic": "Expired contracts",
+    "fact": "Historical bars for expired futures are available up to 2 years after expiry with includeExpired=True",
+    "confidence": "high",
+    "source": "https://www.interactivebrokers.com/campus/ibkr-quant-news/historical-options-futures-data-using-tws-api/"
+   },
+   {
+    "topic": "Back history",
+    "fact": "Carver's pysystemtrade CSVs end on 2024-03-28; community set bug-or-feature/pst-csv-data has 40 instruments to 2025-09-23; Norgate USD 270/yr with a Windows-only updater; Databento from USD 0.50/GB with USD 125 free credit, Eurex only from 2025-03",
+    "confidence": "high",
+    "source": "https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/data.md ; https://raw.githubusercontent.com/bug-or-feature/pst-csv-data/main/README.md ; https://pypi.org/project/norgatedata/ ; https://databento.com/futures"
+   },
+   {
+    "topic": "US data bundle",
+    "fact": "US Securities Snapshot & Futures Value Bundle (CME/CBOT/NYMEX/COMEX L1): USD 10/month, waived in months with at least USD 30 commissions; estimated IBKR commissions are USD 46-66/month at 100k, 108-154 at 250k, 335-479 at 1M",
+    "confidence": "medium",
+    "source": "https://ibkb.interactivebrokers.com/fr/node/2840 ; own estimate from simulation/results.csv"
+   },
+   {
+    "topic": "European/Asian data",
+    "fact": "Carver's IBKR lines: Eurex Core EUR 8.75 + Eurex Retail Europe EUR 2, Euronext Bundle EUR 3, Osaka JPY 200 per month; IBKR pages show Eurex EUR 2-12, and the Japan site shows OSE non-pro as N/A",
+    "confidence": "low",
+    "source": "https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/production.md ; https://www.interactivebrokers.com/en/pricing/market-data-pricing.php ; https://www.interactivebrokers.co.jp/en/pricing/market-data-pricing.php"
+   },
+   {
+    "topic": "ICE data",
+    "fact": "ICE non-professional real-time 2026: ICE Futures US USD 148, ICE Europe commodities USD 161, ICE Europe financials USD 139 per month (exact IBKR price not found)",
+    "confidence": "medium",
+    "source": "https://www.ampfutures.com/trading-info/exchange-data-fees ; https://www.ice.com/publicdocs/data/Market_Data_Subscriber_Fees_2026.pdf"
+   },
+   {
+    "topic": "pysystemtrade",
+    "fact": "Repo moved to pst-group in Jan 2026; Python >= 3.10, MongoDB + Parquet, ib_async>=2,<3 (switched from ib_insync in April 2026); daily processes: price updates, capital update, run_systems, order generator, stack handler, reports, backups",
+    "confidence": "high",
+    "source": "https://raw.githubusercontent.com/pst-group/pysystemtrade/master/README.md ; https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/IB.md ; https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/production.md"
+   },
+   {
+    "topic": "Human tasks",
+    "fact": "Still manual: the weekly 2FA, price-spike checks (the write is blocked and an email sent), roll decisions via interactive_update_roll_status (auto modes exist, passive roll recommended), broken data, Gateway upgrades",
+    "confidence": "high",
+    "source": "https://raw.githubusercontent.com/pst-group/pysystemtrade/master/docs/production.md"
+   },
+   {
+    "topic": "Infrastructure",
+    "fact": "Hetzner from 15 Jun 2026: CX23 (4 GB) EUR 5.49 and CX33 (8 GB) EUR 8.49 per month + EUR 0.50 IPv4, excl. VAT; IB Gateway needs 4-8 GB RAM",
+    "confidence": "high",
+    "source": "https://northflank.com/blog/hetzner-cloud-server-price-increases ; https://blog.traderspost.io/article/what-is-ib-gateway"
+   },
+   {
+    "topic": "Cash",
+    "fact": "No interest is paid on cash in the commodities segment; set Excess Funds Sweep to securities so only the required margin stays there",
+    "confidence": "high",
+    "source": "https://www.interactivebrokers.com/en/trading/margin-calculation-details.php ; https://www.ibkrguides.com/orgportal/excessfundssweep.htm"
+   },
+   {
+    "topic": "FX",
+    "fact": "IBKR Pro FX conversion: 0.20 bp, minimum USD 2 per order",
+    "confidence": "medium",
+    "source": "https://www.interactivebrokers.com/download/newMark/PDFs/commissionsForex.pdf"
+   },
+   {
+    "topic": "Recommendation",
+    "fact": "Standard fixed budget (about USD 400-410/yr) as the central case: CME real-time free via the waiver, cheap Eurex/Euronext/OSE lines, ICE on delayed data + market orders; ICE real-time (USD 3.4-5.4k/yr) is not worth it at any tier up to 1M",
+    "confidence": "medium",
+    "source": "ib_gateway_budget.csv"
+   }
+  ],
+  "numbers": [
+   {
+    "name": "Fixed budget 100k minimal/standard/comfortable",
+    "value": "134 / 412 / 841 USD/yr (0.13 / 0.41 / 0.84 %)",
+    "note": "standard recommended"
+   },
+   {
+    "name": "Fixed budget 250k minimal/standard/comfortable",
+    "value": "124 / 402 / 4265 USD/yr (0.05 / 0.16 / 1.71 %)",
+    "note": "comfortable includes ICE US + ICE Europe financials real-time at USD 3,444"
+   },
+   {
+    "name": "Fixed budget 1M minimal/standard/comfortable",
+    "value": "124 / 402 / 6197 USD/yr (0.01 / 0.04 / 0.62 %)",
+    "note": "comfortable includes three ICE feeds at USD 5,376"
+   },
+   {
+    "name": "Variable fee + half-spread (in simulated Sharpe)",
+    "value": "3.30 / 3.65 / 2.87 % of capital/yr",
+    "note": "100k / 250k / 1M; ER4 spread corrected"
+   },
+   {
+    "name": "Cash shortfall vs ESTR",
+    "value": "0.79 / 0.67 / 0.61 %/yr",
+    "note": "from the audit"
+   },
+   {
+    "name": "Total running cost, standard budget",
+    "value": "4.50 / 4.48 / 3.52 % of capital/yr",
+    "note": "of which not already in simulated Sharpe: 1.20 / 0.83 / 0.65 %"
+   },
+   {
+    "name": "Orders per year (roll orders)",
+    "value": "750 (62) / 1470 (106) / 2904 (169)",
+    "note": "14 / 24 / 40 markets, simulation 2010-26, today notionals"
+   },
+   {
+    "name": "Estimated IBKR commissions",
+    "value": "46-66 / 108-154 / 335-479 USD/month",
+    "note": "35-50% of all-in fees; US bundle waiver needs at least USD 30/month"
+   },
+   {
+    "name": "US futures value bundle",
+    "value": "10 USD/month",
+    "note": "waived at >= USD 30 commissions"
+   },
+   {
+    "name": "Eurex / Euronext / OSE data",
+    "value": "EUR 10.75 / EUR 3 / JPY 200 per month",
+    "note": "low confidence on Eurex and OSE"
+   },
+   {
+    "name": "ICE real-time non-pro",
+    "value": "148 / 161 / 139 USD/month",
+    "note": "US / Europe commodities / Europe financials"
+   },
+   {
+    "name": "Hetzner CX23 / CX33 incl. 20% VAT",
+    "value": "99 / 148 USD/yr",
+    "note": "EUR 5.99 / 8.99 per month excl. VAT"
+   },
+   {
+    "name": "API pacing",
+    "value": "50 msg/s; 100 market-data lines; 60 historical requests/10 min",
+    "note": ""
+   },
+   {
+    "name": "Expired futures history via API",
+    "value": "2 years",
+    "note": "includeExpired"
+   },
+   {
+    "name": "Carver CSV end / community CSV end",
+    "value": "2024-03-28 / 2025-09-23",
+    "note": "40 instruments in the community set"
+   },
+   {
+    "name": "Setup time",
+    "value": "80-200 h + 8-12 weeks paper trading",
+    "note": "author estimate, not sourced; 200-500 h for all 84 markets"
+   },
+   {
+    "name": "Recurring time",
+    "value": "about 1-2 h/week; 2FA about 2 min/week; rolls 5-15 h/yr",
+    "note": "author estimate, not sourced"
+   }
+  ],
+  "files": [
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/build_ib_gateway.py",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ib_gateway_facts.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ib_gateway_budget.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ib_gateway_budget_summary.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ib_gateway_time.csv",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ext/pst_production.md",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ext/pst_IB.md",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ext/ibc_userguide.md",
+   "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/ib_gateway/ext/gnzsnz_README.md"
+  ]
+ },
+ "verification": {
+  "summary": "I checked the ib_gateway job's claims against sources I fetched myself (raw GitHub re-downloaded on 5 Oct 2026), new web searches and a recomputation from the simulation CSVs. Most of the job holds. Every budget total reproduces exactly, and so do the variable costs (3.30/3.65/2.87 %) and the cash shortfall (0.79/0.67/0.61 %). Corrections the report must make:\n\n(1) Hetzner CX servers. Since about 2–7 Sep 2026, every Hetzner CX/CAX plan (the cheap tier) is marked unavailable, and stock comes and goes. The fallback CPX plans cost 3–4 times more: CPX32 is about $593/yr. Write the server line as \"any 8 GB VPS at about €7–11/month incl. VAT, so $99–148/yr\" (OVH VPS-1 and netcup are examples), not as a guaranteed CX33.\n\n(2) ICE real-time prices. USD 148/161/139 are AMP's non-professional rates from 1 Jun 2026. ICE's own 2026 schedule lists $132 (ICE US) and $123 (ICE Europe financials). Use a range of 123–161 per feed. I could not find the exact IBKR price.\n\n(3) IBKR commission estimate. Mapping each market to its IBKR rate gives an IBKR share of only about 25–36 % of the simulated all-in fee, because most contracts are micros where exchange fees dominate. Monthly commissions are therefore about $33–66 at 100k (central ~$42). The $30 waiver for the US bundle is met on average but is borderline at 100k, so budget $10–60/yr for that line at 100k.\n\n(4) Historical data without a subscription. The newer IBKR TWS API docs say delayed data can be used with reqHistoricalData. Together with pysystemtrade's note that a subscription stopped being required in early 2023, this means the minimal and standard budgets are less fragile than the job says. It still needs testing. Also, pysystemtrade's IB updater fetches only about 1 year of daily prices. Carver's CSVs (end 2024-03-28) cannot be bridged from IB. The community set (end 2025-09-23, 40 instruments, no Schatz/Euribor/SONIA/canola/sugar/cotton) is now just past that window. The plan should seed history from the user's own backtest data.\n\n(5) Eurex. Eurex Retail Europe covers only equity-index micro/mini futures. Schatz and Bobl need Eurex L1/Core, about EUR 8–8.75/month. So the Eurex line is $110–148/yr; keep 148 as the upper bound.\n\n(6) OSE. An IBKR Japan fee guideline lists Osaka L1 as fee-waived for non-professionals (it may not apply to IBKR Ireland clients); Carver (a UK client) pays JPY 200. The line is $0–15/yr.\n\n(7) IB Adaptive. It works on futures on US and non-US exchanges, single-leg orders only, DAY only — not only US futures.\n\n(8) Before-tax simulations. They do not \"assume USD 150/yr\". cv_avant_impot runs $150, $400 and $1,000, and the report-ready table uses $400 as the central case. That matches the standard budget (402–412). The comfortable budgets at 250k and 1M ($3.9–6.2k) exceed even the $1,000 sensitivity.\n\n(9) Optional robust standard budget. Adding Norgate ($270) at 250k and 1M as a fallback for ICE daily closes gives $672 (0.27 % / 0.07 %). The total running cost then becomes 4.59 % and 3.55 %.\n\n(10) Home PC. The $25/yr electricity figure assumes a 12 W mini-PC. A desktop costs about $60–120/yr.\n\nAlso confirmed: 2FA is per username and IB Key can hold several usernames on one phone; paper logins need no 2FA (secondary source); there is also a Saturday reset (00:00–02:00 ET); gnzsnz maps container ports 4003/4004 to host 4001/4002.\n\nTime estimates are the author's own and unverifiable. No tax content is used anywhere.\n\nFiles:\n- /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_ib_gateway/recompute_budget.py\n- /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_ib_gateway/recomputed_budget.csv\n- re-downloaded sources in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_ib_gateway/ext/\n\nNothing under /home/user was modified.",
+  "checked": [
+   {
+    "claim": "IB Gateway = TWS without charts, same login/API, ~40% fewer resources; pysystemtrade recommends it",
+    "verdict": "confirmed",
+    "evidence": "pst IB.md (raw, re-downloaded): 'I recommend using the Gateway as it is much more stable and lightweight, and does not regularly reboot itself'. The 40% figure comes only from a vendor blog (newyorkcityservers.com), so treat it as approximate."
+   },
+   {
+    "claim": "API free; only market data paid; API orders at normal IBKR Pro commissions",
+    "verdict": "confirmed",
+    "evidence": "No API access fee in any source; commissions are set per product/exchange (interactivebrokers.com/en/pricing/commissions-futures.php). No explicit IBKR statement that API rates are identical, so keep the existing hedge."
+   },
+   {
+    "claim": "IBKR Lite has no API; Lite not offered to EEA (IBKR Ireland) clients",
+    "verdict": "confirmed",
+    "evidence": "IBKR third-party FAQ and QuantConnect docs quote 'API support is not available for accounts that support commission free trading'. BrokerChooser: Lite is for US and Singapore residents only."
+   },
+   {
+    "claim": "No inactivity fee since 2021",
+    "verdict": "confirmed",
+    "evidence": "Eliminated 1 July 2021 (investmentmoats.com, daytrading.com, IBKR 2021-Q3 communique)."
+   },
+   {
+    "claim": "Extra usernames free; one session per username; dedicated API username",
+    "verdict": "confirmed",
+    "evidence": "IBKR Web API 'Managing Multiple Sessions': only one brokerage session per username; logging in on mobile logs out other sessions. ibkrguides: up to two usernames per primary account holder; no fee found. IB Key can hold a second user on the same phone (ibkrguides 'Adding Another User to an Active IB Key'), so the weekly 2FA push for the API username goes to the same phone."
+   },
+   {
+    "claim": "Market data billed per username, not shareable",
+    "verdict": "confirmed",
+    "evidence": "IBKR market-data pricing page and third-party FAQ: 'Subscriptions are charged on a per username basis and cannot be shared between usernames'. Billed per full calendar month, not pro-rated."
+   },
+   {
+    "claim": "Real-time data requires USD 500 equity",
+    "verdict": "confirmed",
+    "evidence": "IBKR 'Market Data Subscription Minimum Equity Balance Requirements': USD 500 plus the subscription cost for individual accounts."
+   },
+   {
+    "claim": "Free paper account, ports 4002 paper / 4001 live (TWS 7497/7496); live data can be shared with paper, otherwise delayed",
+    "verdict": "confirmed",
+    "evidence": "IBKR Campus 'Installing & Configuring TWS for the API'; ibkrguides article-1719; papertrader-delayed-data page (US futures delayed 10 min). gnzsnz runs socat on container ports 4003/4004 and maps them to host 4001/4002 on 127.0.0.1. A secondary source says paper logins need no 2FA."
+   },
+   {
+    "claim": "Hardware ~4 GB RAM (8 GB recommended), Java bundled, ~1 GB per loaded instance",
+    "verdict": "confirmed",
+    "evidence": "Secondary sources only (blog.traderspost.io, IBKR tws-requirements via search). Medium confidence."
+   },
+   {
+    "claim": "Daily Auto Restart without re-login; full 2FA login weekly after 01:00 ET Sunday; IBC automates start/login/restart and 2FA retries (about 3-min timeout) but cannot approve",
+    "verdict": "confirmed",
+    "evidence": "IBC userguide (raw, re-downloaded): 'authentication is only required the first time during the week that TWS or Gateway run after 01:00 ET on Sunday'; 'if you fail to respond to the alert within a fixed period (currently 3 minutes)... ReloginAfterSecondFactorAuthenticationTimeout=yes'; 'IBC cannot itself assist'. IBKR 'Weekly Reauthentication' doc agrees."
+   },
+   {
+    "claim": "2FA mandatory, approved by IBKR Mobile push",
+    "verdict": "confirmed",
+    "evidence": "IBKR Secure Login System page; quietalphalab.com: the Secure Login System cannot be disabled for trading platforms."
+   },
+   {
+    "claim": "IBKR server resets 00:15-01:45 ET and 06:25-07:45 CET",
+    "verdict": "confirmed",
+    "evidence": "IBKR Web API 'Regular Server Maintenance': Sun-Fri NA 00:15-01:45 ET, Europe 06:25-07:45 CET, APAC 04:45-06:05 and 20:15-21:15 HKT; Saturday 00:00-02:00 ET. Add the Saturday window."
+   },
+   {
+    "claim": "gnzsnz/ib-gateway-docker: stable 10.50.1e, latest 10.51.1b, IBC 3.24.2, TRADING_MODE paper/live/both, VNC optional; IBAutomater as alternative",
+    "verdict": "confirmed",
+    "evidence": "README re-downloaded 5 Oct 2026, lines 42-45 and 184. Sample compose binds 127.0.0.1:4001/4002/5900. QuantConnect/IBAutomater exists (Apache 2.0, IB Gateway v978+)."
+   },
+   {
+    "claim": "50 API messages/s (100 market-data lines / 2)",
+    "verdict": "confirmed",
+    "evidence": "IBKR TWS API 'Pacing Limitations': max requests per second = market-data lines / 2; default 100 lines gives 50/s."
+   },
+   {
+    "claim": "Historical pacing: no identical request within 15 s, max 60 per 10 min; strict limits now documented only for bars <=30 s",
+    "verdict": "confirmed",
+    "evidence": "IBKR doc 'Pacing Violations for Small Bars (30 secs or less)': identical request within 15 s, 6+ requests for the same contract within 2 s, >60 requests in 10 min. BID_ASK requests count twice."
+   },
+   {
+    "claim": "IB Adaptive works for US futures via algoStrategy='Adaptive' (Urgent/Normal/Patient), DAY only",
+    "verdict": "corrected",
+    "correct_value": "Adaptive is available for stocks, ETFs, options and futures on US and non-US products; single-leg only (no spreads); DAY only (no GTC).",
+    "evidence": "IBKR order-types page / Campus 'Adaptive': 'available for Stocks, ETFs, Options, and Futures... US and Non-US Products'; 'GTC orders are not allowed'."
+   },
+   {
+    "claim": "pysystemtrade default algoOriginalBest needs live streaming; algoSnapMkt for markets on delayed data",
+    "verdict": "confirmed",
+    "evidence": "pst defaults.yaml lines 96-100 (default_algo algoOriginalBest, market_algo algoSnapMkt, limit_order_algo algoLimit). production.md: 'If you don't have live streaming data for an instrument, you will need to change your trade execution algo'."
+   },
+   {
+    "claim": "Free delayed data via reqMarketDataType(3/4); delays CME group 10 min, ICE US 10, ICE Europe 10, Eurex 15, Euronext 15, OSE 20",
+    "verdict": "confirmed",
+    "evidence": "IBKR delayed_data docs; IBKR delayed-timing tables via search snippets (kb.clientam.com/article/2966): ICE US (NYBOT) 10, OSE.JPN 20, Eurex 15, Euronext 15, CME 10, ICE Futures Europe 10. Medium confidence because the pages themselves were blocked."
+   },
+   {
+    "claim": "IBKR API docs say historical bars always need an L1 real-time subscription; pysystemtrade says this stopped being enforced in early 2023 ('so things may change')",
+    "verdict": "corrected",
+    "correct_value": "The legacy docs (interactivebrokers.github.io/tws-api/historical_data.html) still say an L1 subscription is required. The newer IBKR TWS API docs (docs/tws-api/doc/market-data-delayed/introduction) state 'Delayed market data can only be used with EClient.reqMktData and EClient.reqHistoricalData', i.e. delayed historical bars are an official option. Together with pysystemtrade's early-2023 note, the no-subscription route is documented, not merely tolerated. A 2022 pysystemtrade discussion (#735) reported no history without a live subscription, from before that change. Still test it on the API username.",
+    "evidence": "pst production.md line 1611 (raw); web search of the new IBKR docs page (exact quote returned); github.com/robcarver17/pysystemtrade/discussions/735 (Aug 2022)."
+   },
+   {
+    "claim": "Expired futures bars available up to 2 years after expiry (includeExpired)",
+    "verdict": "confirmed",
+    "evidence": "IBKR Campus 'Historical Options & Futures Data using TWS API' and Web API 'Unavailable Historical Data': expired futures older than 2 years after expiration are unavailable."
+   },
+   {
+    "claim": "Carver CSVs end 2024-03-28; community set bug-or-feature/pst-csv-data has 40 instruments to 2025-09-23",
+    "verdict": "confirmed",
+    "evidence": "Last rows of SP500/CORN/BUND/GOLD (pst-group, raw) are 2024-03-28; CORN/BUND/SOFR (community) are 2025-09-23; README lists 40 instruments. New caveat: pst data.md line 492 says 'IB will give you only a year of daily prices'. Carver's set cannot be bridged from IB. The community set is 12.4 months stale on 5 Oct 2026 and lacks Schatz, Euribor, SONIA, canola, sugar, cotton, TOPIX, CAD and DAX. Seed from the user's own backtest data."
+   },
+   {
+    "claim": "Norgate USD 270/yr; updater Windows-only",
+    "verdict": "confirmed",
+    "evidence": "norgatedata.com/futurespackage.php: 12 months USD 270, about 100 markets on 11 exchanges, including canola, sugar No.11 and cotton. NDU FAQ: Windows 10/11 or Server only; Linux/Mac only via VM or WSL2 (mirrored networking)."
+   },
+   {
+    "claim": "Databento from USD 0.50/GB with USD 125 free credit; Eurex only from 2025",
+    "verdict": "confirmed",
+    "evidence": "databento.com/futures: CME historical from $0.50/GB; $125 sign-up credit; Eurex historical from 10 Mar 2025. Other datasets (Eurex) may be priced higher per GB."
+   },
+   {
+    "claim": "US Securities Snapshot & Futures Value Bundle USD 10/month, waived at >= USD 30 commissions; covers CME/CBOT/NYMEX/COMEX L1",
+    "verdict": "confirmed",
+    "evidence": "IBKR market-data pricing (via search) and ibkrguides FAQ: USD 10, waived in months with at least USD 30 commissions; top of book for CBOT, CME, COMEX, NYMEX; needs US futures permissions."
+   },
+   {
+    "claim": "Estimated IBKR commissions USD 46-66/month at 100k, 108-154 at 250k, 335-479 at 1M (35-50% of all-in fees); US bundle free on average",
+    "verdict": "corrected",
+    "correct_value": "100k: about USD 33-66/month (central ~42); 250k: 85-154; 1M: 275-479. IBKR share is about 25-36% of the simulated all-in fee. The waiver is met on average at every tier but borderline at 100k; budget USD 10-60/yr for the bundle at 100k.",
+    "evidence": "Per-market IBKR rates (micro US 0.25, E-micro FX ~0.15, std US 0.85, Eurex EUR 0.90 = $1.03) against fee_spec in simulation/contracts_small.csv. Fee base = (fee+half-spread − half-spread) × capital = $1,582 / $3,710 / $11,460 per yr; 1,470 / 3,234 / 10,395 contract sides per yr."
+   },
+   {
+    "claim": "Eurex EUR 2-12/month; Carver pays Eurex Core 8.75 + Retail Europe 2",
+    "verdict": "corrected",
+    "correct_value": "Eurex Retail Europe covers equity-index micro/mini futures only, not fixed income. Schatz (100k tier) and Bobl (1M) need Eurex L1/Core, about EUR 8-8.75/month, plus 0-2 for Retail Europe: EUR 8-10.75/month = USD 110-148/yr. Keep 148 as the upper bound.",
+    "evidence": "pst production.md table (raw): Eurex Core EUR 8.75, Retail Europe EUR 2 (2021 prices). IBKR via search: Eurex L1 non-pro EUR 8, L2 EUR 12. Deutsche Boerse Eurex Retail Europe product sheet: micro ESTX50/DAX/SMI, Mini-DAX, STOXX 600, sector, options, vol, FX; no fixed income listed."
+   },
+   {
+    "claim": "Euronext Bundle EUR 3/month",
+    "verdict": "confirmed",
+    "evidence": "IBKR market-data pricing (search snippet): Euronext Bundle L1 non-pro EUR 3.00. Some sources show EUR 2-5. Medium confidence."
+   },
+   {
+    "claim": "Osaka (OSE) about JPY 200/month, possibly not offered to non-professionals",
+    "verdict": "corrected",
+    "correct_value": "JPY 0-200/month (USD 0-15/yr). IBKR Japan's fee guideline lists Osaka Top of Book as fee-waived for non-professionals; Carver (UK client) lists JPY 200. Whether it is offered to IBKR Ireland clients is unconfirmed.",
+    "evidence": "interactivebrokers.com/download/ibsj/EN-Fees_Disclosures.pdf (via search); pst production.md."
+   },
+   {
+    "claim": "ICE non-pro real-time 2026: ICE US USD 148, ICE Europe commodities 161, ICE Europe financials 139 per month",
+    "verdict": "corrected",
+    "correct_value": "These are AMP's pass-through rates (effective 1 Jun 2026). ICE's own 2026 schedule: ICE US Ags & Financials USD 132, ICE Europe Financials USD 123 per ID per month (ICE US rises to 140 in 2027). Use a range of 123-161 per feed; the exact IBKR price is unverifiable.",
+    "evidence": "ampfutures.com/trading-info/exchange-data-fees and ice.com/publicdocs/data/Market_Data_Subscriber_Fees.pdf (both via search snippets; direct fetch blocked)."
+   },
+   {
+    "claim": "pysystemtrade moved to pst-group Jan 2026; Python >= 3.10; MongoDB + Parquet; ib_async>=2,<3, switched from ib_insync in April 2026; connects on 127.0.0.1:4001 with a client id",
+    "verdict": "confirmed",
+    "evidence": "Raw README line 20, pyproject.toml lines 20 and 29, IB.md lines 3, 79 and 88, data.md line 183."
+   },
+   {
+    "claim": "ib_async is the maintained fork; ib_insync author died in 2024",
+    "verdict": "confirmed",
+    "evidence": "github.com/mattsta/ib_insync: upstream moved to ib-api-reloaded/ib_async; Ewald de Wit died 11 March 2024."
+   },
+   {
+    "claim": "Daily processes and remaining manual tasks (spikes block the write and send an email; rolls via interactive_update_roll_status with manual, semi-auto or auto modes; passive roll)",
+    "verdict": "confirmed",
+    "evidence": "pst production.md lines 1523-1531, 1605 and 127-129 (raw)."
+   },
+   {
+    "claim": "Hetzner CX23 EUR 5.49 / CX33 EUR 8.49 + EUR 0.50 IPv4 excl. VAT from 15 Jun 2026; recommend CX33",
+    "verdict": "corrected",
+    "correct_value": "Prices confirmed, but since about 2-7 Sep 2026 every Hetzner CX/CAX cost-optimised plan is flagged unavailable and stock comes and goes. The like-for-like CPX22/CPX32 cost EUR 19.49/35.49 (USD 321/593 per yr incl. VAT). Write the server line as 'any 8 GB VPS at EUR ~7-11/month incl. VAT = USD 99-148/yr' (e.g. OVH VPS-1 ~USD 6.5/month, netcup 8 GB ~EUR 9.7/month).",
+    "evidence": "Hetzner price-adjustment doc and northflank (via search); vincentschmalbach.com, bex.co (24-25 Sep 2026) and stackvaluelab.com on CX/CAX unavailability."
+   },
+   {
+    "claim": "No interest on cash in the commodities segment; Excess Funds Sweep to securities",
+    "verdict": "confirmed",
+    "evidence": "IBKR 'Margin Interest Calculations' and ibkrguides 'Excess Funds Sweep': no interest is paid on excess funds in the commodities segment."
+   },
+   {
+    "claim": "IBKR Pro FX conversion 0.20 bp, min USD 2; FX budget USD 25/50/100",
+    "verdict": "confirmed",
+    "evidence": "IBKR spot-currency commissions: 0.20 bp × value, min USD 2.00. 12 × 2 = 24 and 24 × 2 = 48 reproduce."
+   },
+   {
+    "claim": "Budget totals: minimal 134/124/124, standard 412/402/402, comfortable 841/4,265/6,197 USD/yr",
+    "verdict": "confirmed",
+    "evidence": "Recomputed in verif_ib_gateway/recompute_budget.py: CX23 98.7, CX33 148.2, Eurex 147.7, Euronext 41.2, OSE 14.9, ICE 3,444/5,376. Every total matches."
+   },
+   {
+    "claim": "Variable fee + half-spread 3.30 / 3.65 / 2.87 % (ER4 corrected)",
+    "verdict": "confirmed",
+    "evidence": "simulation/results.csv 100k: 3.303/1.721. verif_capital/er4_spread_sensitivity.csv (2010-2026, ER4 hs=0.0025): 250k 3.650/2.166, 1M 2.870/1.724."
+   },
+   {
+    "claim": "Cash interest lost vs €STR 0.79 / 0.67 / 0.61 %",
+    "verdict": "confirmed",
+    "evidence": "Matches the audit report (rapport_audit.py: about 0.8/0.7/0.6). Recomputed under the audit rule (40% NAV cash at IBKR, 17% margin unpaid, rest at €STR−0.5 with first 10k unpaid, 60% MMF at €STR−0.12, €STR 2.4%): 0.785 / 0.671 / 0.614."
+   },
+   {
+    "claim": "Total running cost (standard) 4.50 / 4.48 / 3.52 %; not already in simulated Sharpe 1.20 / 0.83 / 0.65 %",
+    "verdict": "confirmed",
+    "evidence": "Arithmetic reproduces. If Norgate (USD 270) is added at 250k/1M as an ICE/history fallback: totals 4.50 / 4.59 / 3.55 and not-in-Sharpe 1.20 / 0.94 / 0.68."
+   },
+   {
+    "claim": "Sibling before-tax simulations assume USD 150/yr fixed costs; standard budget adds ~0.26%/yr at 100k",
+    "verdict": "refuted",
+    "correct_value": "cv_avant_impot runs USD 150, 400 and 1,000. The report-ready table (rendement_attendu_10ans_avant_impot.csv) uses USD 400 as the central 'median' column, with 150 and 1,000 as alternatives. The standard budget (402-412) therefore matches the central simulation, so there is no extra 0.26%. The comfortable budgets at 250k/1M (USD 3.9-6.2k) exceed even the 1,000 sensitivity.",
+    "evidence": "scratchpad/audit/cv_avant_impot/04_final_avant_impot.py line 8 and FIXED_SETS; rendement_attendu_10ans_avant_impot.csv header (median, median_fixe150, median_fixe1000)."
+   },
+   {
+    "claim": "Home PC about USD 25/yr electricity",
+    "verdict": "corrected",
+    "correct_value": "USD 25/yr only for a ~12 W mini-PC (105 kWh × EUR 0.20). A desktop at 30-60 W is about USD 60-120/yr.",
+    "evidence": "Arithmetic: 12 W × 8,760 h × EUR 0.2001/kWh = EUR 21 ≈ USD 24."
+   },
+   {
+    "claim": "ICE real-time not worth it at any tier up to 1M",
+    "verdict": "confirmed",
+    "evidence": "Judgment: ICE real-time costs USD 3.1-3.4k at 250k (1.2-1.4% of capital), more than half the whole portfolio's half-spread (2.17%) — far more than limit orders could plausibly save on the few ICE markets — and USD 5.0-5.4k (0.5%) at 1M."
+   },
+   {
+    "claim": "Orders 750/1,470/2,904 per yr, roll orders 62/106/169, contract sides 1,470/3,234/10,395",
+    "verdict": "confirmed",
+    "evidence": "simulation/results.csv, b_strict_subset_ge1c, today notionals, 2010-2026, daily."
+   },
+   {
+    "claim": "Setup 80-200 h (porting 30-100 h); recurring 1-2 h/week; rolls 5-15 h/yr",
+    "verdict": "unverifiable",
+    "evidence": "Author estimates with no source. The roll-order counts behind them are confirmed."
+   }
+  ],
+  "final_numbers": [
+   {
+    "name": "Fixed budget, minimal (USD/yr)",
+    "value": "134 / 124 / 124 (0.13 / 0.05 / 0.01 %)",
+    "note": "100k / 250k / 1M; up to ~184 at 100k if the US-bundle waiver is missed in several months"
+   },
+   {
+    "name": "Fixed budget, standard central (USD/yr)",
+    "value": "412 / 402 / 402 (0.41 / 0.16 / 0.04 %)",
+    "note": "Matches the USD 400 central case of the before-tax simulations; 100k range 412-462 depending on missed waiver months"
+   },
+   {
+    "name": "Fixed budget, standard robust with Norgate fallback for ICE (USD/yr)",
+    "value": "412 / 672 / 672 (0.41 / 0.27 / 0.07 %)",
+    "note": "Optional safety net in case IB stops serving historical bars without a subscription"
+   },
+   {
+    "name": "Fixed budget, comfortable (USD/yr)",
+    "value": "841 / 3,881-4,265 / 5,813-6,197",
+    "note": "Range from ICE direct (132/123) vs AMP (148/139/161) rates; exact IBKR ICE price unknown"
+   },
+   {
+    "name": "Server line",
+    "value": "USD 99-148/yr (any 4-8 GB VPS at EUR ~7-11/month incl. 20% VAT)",
+    "note": "Hetzner CX stock unreliable since Sep 2026; CPX32 fallback would be ~USD 593/yr; OVH/netcup 8 GB are alternatives"
+   },
+   {
+    "name": "Market data lines",
+    "value": "US bundle USD 10/month (waived at >= USD 30 commissions); Eurex EUR 8-10.75/month; Euronext EUR 3/month; OSE JPY 0-200/month; ICE USD 123-161/month per feed",
+    "note": "Real-time needs USD 500 equity; billed per username, full calendar month"
+   },
+   {
+    "name": "Estimated IBKR commissions",
+    "value": "USD 33-66 / 85-154 / 275-479 per month",
+    "note": "Central ~42 at 100k; waiver borderline at 100k, met at 250k and 1M"
+   },
+   {
+    "name": "Variable fee + half-spread (in simulated Sharpe)",
+    "value": "3.30 / 3.65 / 2.87 % of capital/yr",
+    "note": "ER4 spread corrected; verified"
+   },
+   {
+    "name": "Cash interest lost vs €STR",
+    "value": "0.79 / 0.67 / 0.61 %/yr",
+    "note": "Recomputed from the audit rule: 0.785 / 0.671 / 0.614"
+   },
+   {
+    "name": "Total running cost, standard central",
+    "value": "4.50 / 4.48 / 3.52 % of capital/yr",
+    "note": "Robust variant 4.50 / 4.59 / 3.55"
+   },
+   {
+    "name": "Not already in simulated Sharpe, standard central",
+    "value": "1.20 / 0.83 / 0.65 %/yr",
+    "note": "Robust variant 1.20 / 0.94 / 0.68"
+   },
+   {
+    "name": "Orders per year (roll orders)",
+    "value": "750 (62) / 1,470 (106) / 2,904 (169)",
+    "note": "Contract sides 1,470 / 3,234 / 10,395"
+   },
+   {
+    "name": "API pacing",
+    "value": "50 msg/s; 100 market-data lines; historical: 60 requests/10 min, no identical request within 15 s, max 6 per contract per 2 s (strict for bars <= 30 s)",
+    "note": "Does not bind a 14-40 market daily system"
+   },
+   {
+    "name": "Weekly 2FA",
+    "value": "1 full login per week after 01:00 ET Sunday (about 07:00 Paris); alert times out after ~3 min, IBC re-sends",
+    "note": "Daily auto-restart needs no 2FA; paper logins need no 2FA (secondary source)"
+   },
+   {
+    "name": "IBKR reset windows",
+    "value": "Sun-Fri 00:15-01:45 ET and 06:25-07:45 CET; Saturday 00:00-02:00 ET",
+    "note": "Schedule jobs outside these windows"
+   },
+   {
+    "name": "Delayed data",
+    "value": "CME group 10 min, ICE US/Europe 10, Eurex 15, Euronext 15, OSE 20",
+    "note": "Free via reqMarketDataType(3/4); newer IBKR docs say it can also be used with reqHistoricalData"
+   },
+   {
+    "name": "Expired futures via API",
+    "value": "2 years after expiry",
+    "note": "pysystemtrade's IB updater fetches only ~1 year of daily prices; seed from own backtest data"
+   },
+   {
+    "name": "Free CSV end dates",
+    "value": "Carver 2024-03-28; community set (40 instruments) 2025-09-23",
+    "note": "Community set lacks Schatz, Euribor, SONIA, canola, sugar, cotton, TOPIX"
+   },
+   {
+    "name": "Docker versions (5 Oct 2026)",
+    "value": "IB Gateway stable 10.50.1e / latest 10.51.1b; IBC 3.24.2",
+    "note": "gnzsnz/ib-gateway-docker; container ports 4003/4004 map to host 4001/4002"
+   },
+   {
+    "name": "Setup / recurring time",
+    "value": "80-200 h + 8-12 weeks paper; about 1-2 h/week",
+    "note": "Author estimate, unverifiable"
+   }
+  ]
+ }
+}

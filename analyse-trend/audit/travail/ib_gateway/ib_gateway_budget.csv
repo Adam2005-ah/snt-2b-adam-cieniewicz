@@ -1,0 +1,82 @@
+budget,capital_usd,tier,item,usd_per_year,basis,confidence,pct_of_capital
+minimal,100000,100k,Server,99,"Hetzner CX23 4 GB, EUR 5.99/month + 20% VAT (alt.: always-on home PC ~USD 25/yr electricity)",high,0.099
+minimal,100000,100k,US futures data (CME/CBOT/NYMEX/COMEX L1),10,"Value Bundle USD 10/month, waived when commissions >= USD 30 that month",medium,0.01
+minimal,100000,100k,Eurex / Euronext / OSE / ICE data,0,free delayed data (10-20 min) + historical bars if IB keeps serving them without subscription (undocumented since 2023),low,0.0
+minimal,100000,100k,Back history,0,Carver CSV to 2024-03 + community CSV to 2025-09 + IB 2 years of expired contracts + own backtest data,medium,0.0
+minimal,100000,100k,FX conversions,25,about 12 conversions x USD 2 minimum,medium,0.025
+minimal,100000,100k,Software,0,"IB Gateway, IBC, Docker image, pysystemtrade/ib_async, MongoDB: free",high,0.0
+minimal,100000,100k,TOTAL fixed,134,sum of the lines above,,0.134
+standard,100000,100k,Server,148,"Hetzner CX33 8 GB (Gateway + MongoDB + pysystemtrade), EUR 8.99/month + 20% VAT",high,0.148
+standard,100000,100k,US futures data (CME/CBOT/NYMEX/COMEX L1),10,"Value Bundle, waived in months with >= USD 30 commissions",medium,0.01
+standard,100000,100k,Eurex data,148,Eurex Core EUR 8.75 + Retail Europe EUR 2 per month (Carver's lines; IBKR may quote EUR 2-12),low,0.148
+standard,100000,100k,Euronext data,41,Euronext Bundle L1 EUR 3/month,medium,0.041
+standard,100000,100k,OSE data,15,"JPY 200/month if offered to non-pros, else delayed 20 min (USD 0)",low,0.015
+standard,100000,100k,ICE data,0,no ICE market held at this tier,medium,0.0
+standard,100000,100k,Back history,0,free CSVs + IB 2 years of expired contracts,medium,0.0
+standard,100000,100k,FX conversions,50,about 2 conversions per month x USD 2,medium,0.05
+standard,100000,100k,Software,0,free,high,0.0
+standard,100000,100k,TOTAL fixed,412,sum of the lines above,,0.412
+comfortable,100000,100k,Server,247,CX33 live + CX23 second instance (paper/backup),high,0.247
+comfortable,100000,100k,US futures data (CME/CBOT/NYMEX/COMEX L1),20,"Value Bundle, waiver missed a few months",medium,0.02
+comfortable,100000,100k,Eurex data,148,Eurex Core + Retail Europe,low,0.148
+comfortable,100000,100k,Euronext data,41,Euronext Bundle,medium,0.041
+comfortable,100000,100k,OSE data,15,JPY 200/month,low,0.015
+comfortable,100000,100k,ICE data,0,no ICE market held at this tier,medium,0.0
+comfortable,100000,100k,Back history / cross-check,270,Norgate futures (Windows-only updater),high,0.27
+comfortable,100000,100k,FX conversions,100,"monthly sweeps in USD, GBP, JPY, CAD",medium,0.1
+comfortable,100000,100k,Software,0,free,high,0.0
+comfortable,100000,100k,TOTAL fixed,841,sum of the lines above,,0.841
+minimal,250000,250k,Server,99,"Hetzner CX23 4 GB, EUR 5.99/month + 20% VAT (alt.: always-on home PC ~USD 25/yr electricity)",high,0.04
+minimal,250000,250k,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle USD 10/month, waived when commissions >= USD 30 that month",medium,0.0
+minimal,250000,250k,Eurex / Euronext / OSE / ICE data,0,free delayed data (10-20 min) + historical bars if IB keeps serving them without subscription (undocumented since 2023),low,0.0
+minimal,250000,250k,Back history,0,Carver CSV to 2024-03 + community CSV to 2025-09 + IB 2 years of expired contracts + own backtest data,medium,0.0
+minimal,250000,250k,FX conversions,25,about 12 conversions x USD 2 minimum,medium,0.01
+minimal,250000,250k,Software,0,"IB Gateway, IBC, Docker image, pysystemtrade/ib_async, MongoDB: free",high,0.0
+minimal,250000,250k,TOTAL fixed,124,sum of the lines above,,0.05
+standard,250000,250k,Server,148,"Hetzner CX33 8 GB (Gateway + MongoDB + pysystemtrade), EUR 8.99/month + 20% VAT",high,0.059
+standard,250000,250k,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle, waived in months with >= USD 30 commissions",medium,0.0
+standard,250000,250k,Eurex data,148,Eurex Core EUR 8.75 + Retail Europe EUR 2 per month (Carver's lines; IBKR may quote EUR 2-12),low,0.059
+standard,250000,250k,Euronext data,41,Euronext Bundle L1 EUR 3/month,medium,0.016
+standard,250000,250k,OSE data,15,"JPY 200/month if offered to non-pros, else delayed 20 min (USD 0)",low,0.006
+standard,250000,250k,ICE data,0,delayed 10 min + market or Adaptive orders (the cost model already pays the half-spread),medium,0.0
+standard,250000,250k,Back history,0,free CSVs + IB 2 years of expired contracts,medium,0.0
+standard,250000,250k,FX conversions,50,about 2 conversions per month x USD 2,medium,0.02
+standard,250000,250k,Software,0,free,high,0.0
+standard,250000,250k,TOTAL fixed,402,sum of the lines above,,0.161
+comfortable,250000,250k,Server,247,CX33 live + CX23 second instance (paper/backup),high,0.099
+comfortable,250000,250k,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle, waiver missed a few months",medium,0.0
+comfortable,250000,250k,Eurex data,148,Eurex Core + Retail Europe,low,0.059
+comfortable,250000,250k,Euronext data,41,Euronext Bundle,medium,0.016
+comfortable,250000,250k,OSE data,15,JPY 200/month,low,0.006
+comfortable,250000,250k,ICE data,3444,real-time ICE US + ICE Europe financials,medium,1.378
+comfortable,250000,250k,Back history / cross-check,270,Norgate futures (Windows-only updater),high,0.108
+comfortable,250000,250k,FX conversions,100,"monthly sweeps in USD, GBP, JPY, CAD",medium,0.04
+comfortable,250000,250k,Software,0,free,high,0.0
+comfortable,250000,250k,TOTAL fixed,4265,sum of the lines above,,1.706
+minimal,1000000,1M,Server,99,"Hetzner CX23 4 GB, EUR 5.99/month + 20% VAT (alt.: always-on home PC ~USD 25/yr electricity)",high,0.01
+minimal,1000000,1M,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle USD 10/month, waived when commissions >= USD 30 that month",medium,0.0
+minimal,1000000,1M,Eurex / Euronext / OSE / ICE data,0,free delayed data (10-20 min) + historical bars if IB keeps serving them without subscription (undocumented since 2023),low,0.0
+minimal,1000000,1M,Back history,0,Carver CSV to 2024-03 + community CSV to 2025-09 + IB 2 years of expired contracts + own backtest data,medium,0.0
+minimal,1000000,1M,FX conversions,25,about 12 conversions x USD 2 minimum,medium,0.002
+minimal,1000000,1M,Software,0,"IB Gateway, IBC, Docker image, pysystemtrade/ib_async, MongoDB: free",high,0.0
+minimal,1000000,1M,TOTAL fixed,124,sum of the lines above,,0.012
+standard,1000000,1M,Server,148,"Hetzner CX33 8 GB (Gateway + MongoDB + pysystemtrade), EUR 8.99/month + 20% VAT",high,0.015
+standard,1000000,1M,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle, waived in months with >= USD 30 commissions",medium,0.0
+standard,1000000,1M,Eurex data,148,Eurex Core EUR 8.75 + Retail Europe EUR 2 per month (Carver's lines; IBKR may quote EUR 2-12),low,0.015
+standard,1000000,1M,Euronext data,41,Euronext Bundle L1 EUR 3/month,medium,0.004
+standard,1000000,1M,OSE data,15,"JPY 200/month if offered to non-pros, else delayed 20 min (USD 0)",low,0.002
+standard,1000000,1M,ICE data,0,delayed 10 min + market or Adaptive orders (the cost model already pays the half-spread),medium,0.0
+standard,1000000,1M,Back history,0,free CSVs + IB 2 years of expired contracts,medium,0.0
+standard,1000000,1M,FX conversions,50,about 2 conversions per month x USD 2,medium,0.005
+standard,1000000,1M,Software,0,free,high,0.0
+standard,1000000,1M,TOTAL fixed,402,sum of the lines above,,0.04
+comfortable,1000000,1M,Server,247,CX33 live + CX23 second instance (paper/backup),high,0.025
+comfortable,1000000,1M,US futures data (CME/CBOT/NYMEX/COMEX L1),0,"Value Bundle, waiver missed a few months",medium,0.0
+comfortable,1000000,1M,Eurex data,148,Eurex Core + Retail Europe,low,0.015
+comfortable,1000000,1M,Euronext data,41,Euronext Bundle,medium,0.004
+comfortable,1000000,1M,OSE data,15,JPY 200/month,low,0.002
+comfortable,1000000,1M,ICE data,5376,real-time ICE US + ICE Europe financials + ICE Europe commodities,medium,0.538
+comfortable,1000000,1M,Back history / cross-check,270,Norgate futures (Windows-only updater),high,0.027
+comfortable,1000000,1M,FX conversions,100,"monthly sweeps in USD, GBP, JPY, CAD",medium,0.01
+comfortable,1000000,1M,Software,0,free,high,0.0
+comfortable,1000000,1M,TOTAL fixed,6197,sum of the lines above,,0.62

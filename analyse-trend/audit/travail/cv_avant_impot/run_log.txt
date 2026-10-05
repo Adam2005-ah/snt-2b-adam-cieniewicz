@@ -1,0 +1,13 @@
+indices 4.3 J00 rows 6858 D90 rows 9530
+DIY ibg150 31.8
+DIY ibg400 63.4
+DIY ibg1000 95.6
+DIY prev_500_625_1000 131.9
+equity calibration (arith mu): {('sp', 'pess'): np.float64(0.0499), ('sp', 'central'): np.float64(0.07377), ('sp', 'opt'): np.float64(0.09246), ('nq', 'pess'): np.float64(0.05796), ('nq', 'central'): np.float64(0.08183), ('nq', 'opt'): np.float64(0.10052)}
+mix done 181.3
+table saved (192, 28) 181.3
+sanity: max |diff| pt (median) = 9.71445146547012e-15  p10 9.020562075079397e-15  p90 8.326672684688674e-15
+sens 100k 204.5
+sens 250k 226.3
+sens 1M 248.9
+sensitivity done 262.0
