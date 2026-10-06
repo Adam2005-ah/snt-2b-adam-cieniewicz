@@ -1,9 +1,8 @@
-# Mémoire du projet (à lire au début de chaque conversation)
+# Profil et conventions (chargé seulement avec /reprendre)
 
 Ce dépôt est le dossier de travail d'un investisseur particulier. Ce fichier et memoire/journal.md servent de
 mémoire entre les conversations : ils résument ce qui a déjà été fait, décidé et demandé.
 
-@memoire/journal.md
 
 ## Qui est l'utilisateur et comment lui répondre
 - Francophone : répondre en français, de façon pédagogique, avec des chiffres vérifiés.
@@ -36,7 +35,7 @@ mémoire entre les conversations : ils résument ce qui a déjà été fait, dé
 - Exclure l'éthanol (CUA1, artefact de données) et le minerai de fer SGX (SCO1, inaccessible) dès qu'on parle
   de résultats réalistes.
 
-## Règle de mémoire
-À la fin de chaque séance où un travail important est fait ou une décision prise, ajouter un paragraphe daté
+## Mise à jour de la mémoire
+Seulement quand l'utilisateur lance /memoriser : ajouter un paragraphe daté
 dans memoire/journal.md (ce qui a été fait, les chiffres clés, où sont les fichiers, ce qui reste à faire),
 puis committer et pousser.

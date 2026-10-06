@@ -1,7 +1,7 @@
 # Journal des conversations (mémoire du projet)
 
-Résumé de ce qui a été fait et décidé avec l'utilisateur, du plus ancien au plus récent. À compléter à la fin
-de chaque séance de travail importante (voir la règle dans CLAUDE.md).
+Résumé de ce qui a été fait et décidé avec l'utilisateur, du plus ancien au plus récent. Complété seulement
+quand l'utilisateur lance /memoriser.
 
 ## Séance d'octobre 2026 (session cloud, branche claude/quirky-dijkstra-hphu32)
 
