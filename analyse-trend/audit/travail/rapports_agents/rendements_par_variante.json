@@ -1,0 +1,738 @@
+[
+ {
+  "key": "passe_global",
+  "work": {
+   "summary": "Historical returns of the 5 variants at three \"net\" levels, computed in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/. No tax is included anywhere. No project files were modified.\n\n**Validation**\n- The engine (engine.py) reproduces trend.run_portfolio / run_vol_targeted exactly for all 5 variants: max abs difference 0 on net, gross, costs and positions.\n- On the 82-market universe with a half-day lag and bp costs, v5 reproduces cv_donnees restatement_grid: Sharpe 1.0742 / 0.7235 / 0.3752 vs 1.074 / 0.724 / 0.375.\n- L1 reproduces the published figures, all from 1990:\n\n| Variant | CAGR (%) | Sharpe | Vol (%) | Max drawdown (%) | Costs (%/yr) |\n|---|---|---|---|---|---|\n| v1 | 13.03 | 0.50 | 24.59 | −66.85 | 1.29 |\n| v2 | 19.34 | 0.92 | 17.63 | −40.23 | 1.41 |\n| v3 | 22.28 | 1.03 | 18.27 | −41.38 | 1.70 |\n| v4 | 28.08 | 1.13 | 21.18 | −48.43 | 2.15 |\n| v5 | 29.60 | 1.17 | 21.43 | −47.79 | 2.46 |\n\n- L1 calendar years 2010–2025 match resultats/rapport_annees.csv with zero difference.\n\n**Definitions**\n- **L0:** published 'gross' series plus the full US T-bill.\n- **L1:** published 'net' series plus the full US T-bill.\n- **L2:**\n  - Universe: 82 markets (CUA1 and SCO1 dropped; weights and IDM recomputed).\n  - Execution: half-day lag 1.5, held = 0.5·pos(t−1) + 0.5·pos(t−2), with trades booked when executed; the vol-targeting scale is measured on the lagged real-cost P&L.\n  - Costs: real IBKR cost of the standard contract, real_bp/1e4 per unit of notional traded. ER4 half-spread corrected to 0.0025, giving 0.339 bp instead of 0.823. Rolls = 2 × cost × rolls/yr.\n  - Cash: margin share m_t = min(0.17 × G_t / 8.7837, 1) earns 0 (G_t = gross exposure held that day). The rest earns max(T-bill − 0.5 %, 0).\n- **Excess return** = total − T-bill at every level. At L2 it therefore includes the cash shortfall; 'cagr_futures_excess' gives it before the shortfall.\n- **Conventions** (as rapport_pdf.py):\n  - Cash = previous day's DTB3 × calendar days / 365, from 1990-01-01.\n  - CAGR years = days/365.25 + 1/261.\n  - Vol = std of daily total × 16; Sharpe = mean/std of daily excess × 16.\n  - Costs per year = sum / years.\n  - The 2023-07→2026-07 window runs from 2023-07-11 to 2026-07-10 (exactly 3 years).\n\n**CAGR of total return, % (L0 / L1 / L2)**\n\n| Variant | 1990–2026 | 2000–2026 | 2010–2026 | 2015–2026 | 2023-07→2026-07 |\n|---|---|---|---|---|---|\n| v1 | 14.50 / 13.03 / 11.32 | 8.92 / 7.51 / 5.55 | 2.02 / 0.75 / −1.77 | 0.63 / −0.64 / −3.21 | −2.70 / −3.95 / −3.43 |\n| v2 | 21.03 / 19.34 / 17.31 | 14.74 / 13.13 / 10.85 | 8.83 / 7.30 / 4.50 | 7.34 / 5.80 / 2.93 | 1.00 / −0.26 / 0.64 |\n| v3 | 24.38 / 22.28 / 20.05 | 17.31 / 15.30 / 12.82 | 10.54 / 8.57 / 5.72 | 9.00 / 7.04 / 4.20 | −0.24 / −1.64 / −0.69 |\n| v4 | 30.86 / 28.08 / 25.06 | 21.20 / 18.65 / 15.33 | 13.93 / 11.39 / 7.09 | 10.69 / 8.15 / 4.14 | −3.08 / −5.17 / −3.51 |\n| v5 | 32.84 / 29.60 / 26.53 | 22.78 / 19.79 / 16.45 | 14.60 / 11.58 / 7.51 | 11.50 / 8.52 / 4.59 | −3.64 / −5.92 / −4.31 |\n\n**Sharpe, ×16 (L0 / L1 / L2)**\n\n| Variant | 1990 | 2000 | 2010 | 2015 | 2023-07 |\n|---|---|---|---|---|---|\n| v1 | .56 / .50 / .44 | .38 / .33 / .26 | .13 / .07 / −.04 | .04 / −.01 / −.12 | −.33 / −.41 / −.33 |\n| v2 | 1.00 / .92 / .81 | .73 / .65 / .53 | .50 / .42 / .26 | .38 / .30 / .13 | −.19 / −.28 / −.19 |\n| v3 | 1.12 / 1.03 / .91 | .83 / .74 / .61 | .56 / .46 / .31 | .46 / .36 / .20 | −.27 / −.38 / −.28 |\n| v4 | 1.23 / 1.13 / 1.01 | .91 / .81 / .67 | .65 / .54 / .35 | .48 / .37 / .20 | −.26 / −.36 / −.27 |\n| v5 | 1.28 / 1.17 / 1.05 | .96 / .85 / .71 | .66 / .54 / .37 | .51 / .39 / .22 | −.28 / −.40 / −.31 |\n\n**CAGR of excess return at L2, % (1990 / 2000 / 2010 / 2015 / 2023-07)**\n\n| Variant | 1990 | 2000 | 2010 | 2015 | 2023-07 |\n|---|---|---|---|---|---|\n| v1 | 8.33 | 3.54 | −3.19 | −5.18 | −7.66 |\n| v2 | 14.16 | 8.74 | 2.99 | 0.83 | −3.78 |\n| v3 | 16.82 | 10.67 | 4.19 | 2.08 | −5.05 |\n| v4 | 21.70 | 13.13 | 5.54 | 2.02 | −7.74 |\n| v5 | 23.13 | 14.23 | 5.95 | 2.46 | −8.51 |\n\n**Vol, drawdown, costs and cash shortfall from 1990 (v1 / v2 / v3 / v4 / v5)**\n- Vol at L2: 24.9 / 17.9 / 18.6 / 21.4 / 21.6 %.\n- Max drawdown at L2: −74.1 / −42.0 / −43.3 / −49.9 / −50.4 %.\n- Trading + roll costs: L1 1.29 / 1.41 / 1.70 / 2.15 / 2.46 %/yr; L2 1.17 / 1.22 / 1.47 / 1.85 / 2.11 %/yr.\n- Real costs come out below the bp model because standard equity, bond and STIR contracts cost much less than 1 bp; ER4 is the largest single cost item for v5.\n- IBKR cash shortfall at L2: 0.63 / 0.63 / 0.67 / 0.73 / 0.75 %/yr since 1990; 0.92 / 0.86 / 0.88 / 1.07 / 1.07 %/yr over 2023-07→2026-07.\n\n**Bridge from L1 to L2 for v5 (decomposition.csv)**\n\n| Step | CAGR from 1990 (%) | Sharpe from 1990 | CAGR from 2010 (%) | Sharpe from 2010 |\n|---|---|---|---|---|\n| L1 published | 29.60 | 1.17 | 11.58 | 0.54 |\n| Drop CUA1 and SCO1 | 27.79 | 1.10 | 8.36 | 0.41 |\n| + half-day lag | 27.10 | 1.07 | 7.64 | 0.38 |\n| + real IBKR costs | 27.49 | 1.09 | 8.02 | 0.39 |\n| + IBKR cash rule (= L2) | 26.53 | 1.05 | 7.51 | 0.37 |\n\n- Biggest step: dropping the ethanol artefact CUA1 and SCO1, especially since 2010 (−3.2 pts).\n- Second: the cash rule (about −0.5 to −1.0 pt/yr). Third: the lag (about −0.7 pt).\n- Real costs slightly help, because they are below the bp model.\n\n**L2 sensitivities for v5 (CAGR from 1990 / from 2010, %; base 26.53 / 7.51)**\n- Cost fixed in USD per contract, at historical price levels: 24.15 / 7.02. Costs in the 1990s were about twice today's in bp: 4.0 %/yr average over 1990–2026, vs 2.1.\n- Real costs ×2: 23.89 / 5.15.\n- Margin 23 % instead of 17 %: 26.37 / 7.43.\n- Full-day lag: 25.78 / 6.76.\n\n**Calendar-year total returns 2010–2025 (annees.csv)**\n- v5 L1: 39.4, −4.2, −11.1, 10.1, 82.3, 10.2, −18.1, −13.5, 2.3, 22.7, 86.4, 36.4, 35.2, −10.6, −14.4, 1.8; 2026 to 10/07: −2.2.\n- v5 L2: 28.3, −4.1, −8.3, 1.3, 72.2, 13.7, −20.8, −11.8, 2.9, 14.5, 49.3, 16.2, 33.8, −18.4, −12.0, 6.5; 2026 to 10/07: 0.9.\n- The L1 gap in 2020–2021 (86 → 49 and 36 → 16) mostly comes from CUA1.\n\n**Reading**\n- Net of all fees and realistic execution, the past still looks good from 1990: L2 CAGR 11–27 %, Sharpe 0.44–1.05.\n- From 2010 it is much weaker: L2 CAGR −1.8 to 7.5 %, Sharpe ≤ 0.37.\n- From 2015, L2 Sharpe is ≤ 0.22 and CAGR −3.2 to 4.6 %.\n- The last 3 years are negative for every variant except v2: −4.3 % to +0.6 %/yr.\n- The ranking v5 ≥ v4 > v3 > v2 >> v1 holds at every level over the long periods. It reverses over the last 3 years, when v2 is best.\n- Fixed IB Gateway costs (about USD 400/yr) are ignored, as specified. They are negligible at the multi-million scale the L2 full universe implies: ≤ 0.01 %/yr above about USD 4M, but about 0.4 %/yr at USD 100k.\n\n**Scripts:** engine.py, 01_check_engine.py, 02_main.py, 03_decomposition.py, 04_resume.py. Cached series are in series.pkl and runs_published.pkl.",
+   "tables": [
+    {
+     "name": "var_passe_global",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/var_passe_global.csv",
+     "description": "Long format (variant, level, period, metric, value). Levels: 'L0 brut', 'L1 backtest', 'L2 réaliste'. Periods: 1990-2026, 2000-2026, 2010-2026, 2015-2026, 2023-07->2026-07. Metrics as fractions: cagr_excess (total − T-bill), cagr_total, vol (×16), sharpe (×16), maxdd_total, cost_pa, trading_cost_pa, roll_cost_pa, cash_shortfall_pa, tbill_pa, cagr_futures_excess, sharpe_futures_excess, maxdd_excess, gross_exposure_mean, margin_share_mean, years."
+    },
+    {
+     "name": "annees",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/annees.csv",
+     "description": "Calendar-year total returns 2010–2025 plus '2026 (au 10/07)', rows (variant, level) for L0, L1 and L2, plus reference rows for the US T-bill and the IBKR cash leg (v5)."
+    },
+    {
+     "name": "decomposition",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/decomposition.csv",
+     "description": "Bridge L1 → L2 per variant (S0 published, S1 82-market universe, S2 + half-day lag, S3 + real IBKR costs, S4 + IBKR cash = L2) and L2 sensitivities (X1 costs fixed in USD per contract at historical price levels, X2 real costs ×2, X3 margin 23 %, X4 full-day lag). Metrics sharpe, cagr_total, cost_pa for periods 1990/2000/2010/2015/2023-07."
+    },
+    {
+     "name": "resume_large",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/resume_large.csv",
+     "description": "Wide version of the main metrics: rows variant × level, columns 'metric | period'."
+    },
+    {
+     "name": "cost_vectors",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_global/cost_vectors.csv",
+     "description": "Per market: bp-model cost vs real IBKR cost (bp per unit notional traded, ER4 corrected), annual roll cost under both models, and the tradable flag."
+    }
+   ],
+   "key_numbers": [
+    {
+     "name": "L1 CAGR total 1990-2026, v1..v5",
+     "value": "13.03 / 19.34 / 22.28 / 28.08 / 29.60 %",
+     "note": "Exactly reproduces the published figures; Sharpe 0.50/0.92/1.03/1.13/1.17, vol 24.6/17.6/18.3/21.2/21.4"
+    },
+    {
+     "name": "L0 CAGR total 1990-2026, v1..v5",
+     "value": "14.50 / 21.03 / 24.38 / 30.86 / 32.84 %",
+     "note": "Gross of all trading and roll costs; Sharpe 0.56/1.00/1.12/1.23/1.28"
+    },
+    {
+     "name": "L2 CAGR total 1990-2026, v1..v5",
+     "value": "11.32 / 17.31 / 20.05 / 25.06 / 26.53 %",
+     "note": "Sharpe 0.44/0.81/0.91/1.01/1.05; max drawdown −74.1/−42.0/−43.3/−49.9/−50.4 %"
+    },
+    {
+     "name": "L2 CAGR total 2000-2026, v1..v5",
+     "value": "5.55 / 10.85 / 12.82 / 15.33 / 16.45 %",
+     "note": "Sharpe 0.26/0.53/0.61/0.67/0.71"
+    },
+    {
+     "name": "L2 CAGR total 2010-2026, v1..v5",
+     "value": "−1.77 / 4.50 / 5.72 / 7.09 / 7.51 %",
+     "note": "Sharpe −0.04/0.26/0.31/0.35/0.37 (L1: 0.07/0.42/0.46/0.54/0.54)"
+    },
+    {
+     "name": "L2 CAGR total 2015-2026, v1..v5",
+     "value": "−3.21 / 2.93 / 4.20 / 4.14 / 4.59 %",
+     "note": "Sharpe −0.12/0.13/0.20/0.20/0.22"
+    },
+    {
+     "name": "L2 CAGR total 2023-07→2026-07, v1..v5",
+     "value": "−3.43 / 0.64 / −0.69 / −3.51 / −4.31 %",
+     "note": "L1: −3.95/−0.26/−1.64/−5.17/−5.92; L2 is above L1 here because CUA1/SCO1 lost money in this window"
+    },
+    {
+     "name": "Trading + roll costs 1990-2026, L1 vs L2, v1..v5",
+     "value": "L1 1.29/1.41/1.70/2.15/2.46; L2 1.17/1.22/1.47/1.85/2.11 %/yr",
+     "note": "L2 uses 2026 real costs of the standard contract; costs fixed in USD per contract at historical prices give 2.08/2.35/2.79/3.56/4.01 %/yr"
+    },
+    {
+     "name": "IBKR cash shortfall at L2, 1990-2026 (2023-07→2026-07), v1..v5",
+     "value": "0.63/0.63/0.67/0.73/0.75 (0.92/0.86/0.88/1.07/1.07) %/yr",
+     "note": "Margin share 0.17×G_t/8.78 earns 0; the rest earns max(T-bill − 0.5 %, 0)"
+    },
+    {
+     "name": "v5 bridge L1→L2, CAGR from 1990",
+     "value": "29.60 → 27.79 (82 markets) → 27.10 (+lag) → 27.49 (+real costs) → 26.53 (+cash)",
+     "note": "From 2010: 11.58 → 8.36 → 7.64 → 8.02 → 7.51"
+    },
+    {
+     "name": "v5 L2 sensitivities, CAGR 1990 / 2010",
+     "value": "USD-fixed costs 24.15/7.02; costs ×2 23.89/5.15; margin 23 % 26.37/7.43; full-day lag 25.78/6.76 %",
+     "note": "Base L2 26.53/7.51"
+    },
+    {
+     "name": "v5 calendar years 2010-2025, L2 total",
+     "value": "28.3, −4.1, −8.3, 1.3, 72.2, 13.7, −20.8, −11.8, 2.9, 14.5, 49.3, 16.2, 33.8, −18.4, −12.0, 6.5 %",
+     "note": "L1: 39.4, −4.2, −11.1, 10.1, 82.3, 10.2, −18.1, −13.5, 2.3, 22.7, 86.4, 36.4, 35.2, −10.6, −14.4, 1.8; 2026 to 10/07: L1 −2.2, L2 +0.9"
+    },
+    {
+     "name": "Average US T-bill accrual 1990-2026",
+     "value": "≈2.8 %/yr",
+     "note": "Project cash convention: previous day's DTB3 × calendar days / 365"
+    }
+   ],
+   "caveats": [
+    "L2 assumes fractional positions in all 82 markets, as if capital were unlimited. Holding at least 1 standard contract at the median position is only reached in 63 markets at USD 5M, and the strictly retail-accessible universe is only 66 markets (simulation/subsets.csv). L2 is therefore an upper bound for a large account. Smaller accounts (14 / 24 / 40 markets at 100k / 250k / 1M) trade fewer markets and pay micro-contract costs, so they do worse.",
+    "L2 applies today's (2026) real costs in bp to the whole history. When prices were lower, costs in bp were higher: with a constant USD cost per contract, v5 costs average 4.0 %/yr over 1990–2026 instead of 2.1 %, and CAGR from 1990 falls from 26.5 % to 24.2 %. Even that is optimistic for the 1990s pit era (higher commissions, wider tick spreads), so L2 figures before about 2005 are flattering.",
+    "Real IBKR costs come out below the bp backtest model (v5 2.11 vs 2.46 %/yr) because standard equity, bond and STIR contracts cost well under 1 bp. This does not hold for micro contracts or small accounts. ER4 Euribor is the biggest single cost item (mean |position| about 1.2× capital in v5), so its half-spread correction (0.0072 → 0.0025) matters.",
+    "The margin share is approximated as 0.17 × gross exposure / 8.78, proportional to gross notional whatever the asset mix. The exchange initial-margin estimate (23 % for v5) changes CAGR by only about −0.1 to −0.2 pt/yr.",
+    "The cash rule uses US T-bill − 0.5 %, floored at 0, as the project uses USD T-bills. The real IBKR USD benchmark is Fed Funds, and a EUR-based investor would earn on €STR. The 'no interest on the first 10k' and pro-rata-below-100k rules are ignored (irrelevant at multi-million scale), as are the IB Gateway fixed costs of about USD 400/yr: ≤ 0.01 %/yr above USD 4M, but about 0.4 %/yr at USD 100k.",
+    "Not modelled: market impact or slippage beyond the half-spread, whole-contract rounding, and data errors other than CUA1/SCO1. No tax anywhere.",
+    "At L2, 'excess' means total − T-bill, so it includes the cash shortfall; 'cagr_futures_excess' gives the futures excess before the shortfall. Vol is std of daily TOTAL return × 16, as in the project.",
+    "The 2023-07→2026-07 window uses returns from 2023-07-11 to 2026-07-10 (exactly 3 years); cv_donnees starts on 2023-07-10, a one-day difference. In this window L2 is above L1 because the dropped CUA1/SCO1 lost money and the lag helped slightly; this is not evidence that live trading beats the backtest.",
+    "L0 for the vol-targeted variants (4, 5) uses the published scale, which is computed on net P&L; L0 is the same positions without costs.",
+    "These are past backtest results, and variants 3–5 were chosen after seeing the data. The decay is clear: v5 L2 Sharpe is 1.05 from 1990, 0.71 from 2000, 0.37 from 2010, 0.22 from 2015 and negative over the last 3 years. Forward expectations (forward Monte Carlo: v5 central Sharpe 0.20–0.27) are far below the 1990–2026 history and must not be read off these tables."
+   ]
+  },
+  "verification": {
+   "summary": "The var_passe_global tables are correct: every number reproduces independently. Seven narrative statements in the summary and caveats are wrong or overstated and need rewording. No table needed correcting, and no project file was modified. All verification work is in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_global/.\n\n**How I checked**\n- I wrote my own code (01_runs.py, 02_metrics.py, 03_bridge.py, 04_claims.py, 05_sens.py) without importing engine.py or reading its caches.\n- L1 positions come straight from the project's trend.run_portfolio and trend.run_vol_targeted. For L2, I ran trend.run_portfolio on the 82-market subset and rebuilt the vol-targeting scale myself from the lagged, real-cost P&L.\n- I re-implemented the half-day lag, the real costs (from the raw fee, half-spread, multiplier, price and FX columns, with the ER4 half-spread set to 0.0025, giving 0.339 bp) and the cash leg (from the raw FRED DTB3 file).\n\n**What matches**\n- I ran all 5 variants, not just v2 and v5, at L0, L1 and L2. They match var_passe_global.csv to at most 5e-7 on every metric and period (the file is rounded to 6 decimals). Comparison: compare_var_passe_global.csv.\n- annees.csv matches for every (variant, level) to 5e-5. resume_large.csv matches the long file.\n- L1 equals the published resultats/rapport_indicateurs.csv for CAGR, Sharpe, vol, max drawdown, costs and exposure. It also equals rapport_cagr_periodes.csv for 2000 and 2010, and rapport_annees.csv for every year from 1990 to 2025.\n- The L1→L2 bridge for v2 and v5 (S0 to S4) matches decomposition.csv to 5e-7. The sensitivities for costs ×2, margin 23 % and full-day lag match exactly for v2 and v5.\n- S2 for v5 reproduces the cv_donnees restatement grid: Sharpe 1.074 / 0.723 / 0.375.\n\n**Definitions confirmed**\n- L2 drops CUA1 and SCO1, with weights and IDM recomputed.\n- The half-day lag is applied to both the P&L and the vol-targeting scale.\n- Costs are the real per-contract cost of the standard contract at 2026 prices. Rolls are 2 × cost × rolls per year.\n- The cash rule is: margin share = min(0.17 × gross exposure ÷ 8.7837, 1) earns 0, and the rest earns max(T-bill − 0.5 %, 0). The 8.7837 is v5's published mean exposure, which I recomputed.\n- The cash convention is the previous day's DTB3 × calendar days ÷ 365.\n- CAGR is in calendar time, with years = days ÷ 365.25 + 1/261, as in rapport_pdf.py. Vol is the std of daily total return × 16, and Sharpe is mean ÷ std of daily excess × 16.\n- The last window runs from 2023-07-11 to 2026-07-10, which is exactly 3 years.\n- The IBKR rules on the first 10k and on pro-rata below 100k NAV are ignored, and so are the IB Gateway fixed costs. Both omissions are stated, and they only hold for a large account.\n\n**Narrative statements that need fixing**\n1. \"ER4 is the largest single cost item for v5\" is wrong after the ER4 correction.\n   - At L2 from 1990, ER4 costs 0.080 %/yr and ranks 5th.\n   - The largest is IR4 (the ASX 90-day bank bill) at 0.134 %/yr, followed by PA1 0.099, NO1 Curncy 0.093 and NG1 0.086.\n   - From 2010, IR4 is 0.141 and ER4 0.120.\n   - The ER4 correction itself is worth about 0.11 pt/yr of cost.\n2. \"The 2020–21 L1 gap mostly comes from CUA1\" is only half right. In 2020 the gap comes mostly from SCO1 (iron ore); in 2021 mostly from CUA1.\n   - 2020: dropping SCO1 alone takes v5 from 86.4 % to 59.6 %. Dropping CUA1 alone gives 79.2 %.\n   - 2021: dropping CUA1 alone takes v5 from 36.4 % to 20.7 %. Dropping SCO1 alone gives 29.0 %.\n3. \"In 2023-07→2026-07, L2 beats L1 partly because the lag helped\" is wrong for v5.\n   - The lag effect is +0.17 / +0.09 / 0.00 / +0.03 / −0.23 pt for v1 to v5, so essentially nil, and negative for v5.\n   - The gap comes from dropping CUA1 and SCO1 (+1.1 to +2.6 pt) and from real costs (+0.1 to +0.2 pt). The cash rule takes back 0.9 to 1.0 pt.\n4. \"The ranking v5 ≥ v4 > v3 > v2 >> v1 holds at every level over the long periods\" fails at L2 from 2015.\n   - There v3 is at or above v4: CAGR 4.20 % vs 4.14 %, Sharpe 0.203 vs 0.199.\n   - At L1 from 2010, v4 and v5 are tied on Sharpe (0.5412 vs 0.5411).\n5. The sensitivity with costs fixed in USD per contract (X1) is mis-described.\n   - \"1990s costs about twice today's\" actually describes the 1990–2026 average: 4.01 vs 2.11 %/yr.\n   - By decade, X1 costs are about 3× L2 in the 1990s (6.7 vs 2.2 %/yr), 1.9× in the 2000s (3.5 vs 1.8) and 1.2× from 2010 (2.67 vs 2.21).\n   - X1 also uses today's contract sizes, so it is only an order of magnitude.\n6. \"Standard equity, bond and STIR contracts cost much less than 1 bp\" is overstated.\n   - Median real cost: equities 0.77 bp, bonds 0.73 bp and FX 0.80 bp, against 1 bp in the model. STIR is 0.37 bp against 0.5 bp.\n   - That is about 20–30 % below the model, not \"much less\".\n7. \"Average T-bill accrual ≈ 2.8 %/yr\" should read 2.72 %/yr (the published money-market CAGR is 2.76 %).\n\n**Remaining approximations, none of which changes the tables**\n- The margin share scales with gross exposure, so it falls to 14.4 % for v5 over the last 3 years. The asset-mix margin model in couts/margin_estimate.csv says recent margin is no lower than the long-run average, so the last-3-year cash shortfall may be understated by about 0.1 pt/yr. The 23 % margin sensitivity covers this.\n- The cash leg is in USD (T-bill rather than Fed Funds). A EUR-based investor would earn less, especially from 2015 to 2022. That is already listed as a caveat but is not quantified.\n\nSupporting files are claims_check.csv, v5_L2_cost_by_market.csv, v5_drop_one_by_one.csv, compare_bridge.csv and compare_sensitivities.csv.",
+   "checked": [
+    {
+     "claim": "Engine and L1 reproduce published CAGR 13.0/19.3/22.3/28.1/29.6 %, Sharpe 0.50/0.92/1.03/1.13/1.17, vol 24.6/17.6/18.3/21.2/21.4 %, exposure 5.26/5.60/6.77/7.78/8.78",
+     "verdict": "confirmed",
+     "evidence": "Independent run with project trend.run_* gives CAGR 0.1303/0.1934/0.2228/0.2808/0.2960, Sharpe 0.5041/0.9209/1.0262/1.1270/1.1707, max drawdown −0.6685/−0.4023/−0.4138/−0.4843/−0.4779, costs 1.29/1.41/1.70/2.15/2.46 %/yr. All are identical to resultats/rapport_indicateurs.csv. The 2000 and 2010 CAGRs equal rapport_cagr_periodes.csv."
+    },
+    {
+     "claim": "All L0/L1/L2 metrics in var_passe_global.csv (5 variants × 5 periods)",
+     "verdict": "confirmed",
+     "evidence": "Independent implementation (01_runs.py, 02_metrics.py) gives max |diff| ≤ 5e-7 on every metric: CAGR total and excess, Sharpe, vol, max drawdown, costs, cash shortfall, margin share, exposure, years. See compare_var_passe_global.csv."
+    },
+    {
+     "claim": "L2 drops CUA1 and SCO1, applies the half-day lag 1.5 (P&L and vol-targeting scale), uses real per-contract costs with ER4 corrected, and applies the IBKR cash rule",
+     "verdict": "confirmed",
+     "evidence": "Re-implemented from raw inputs: ER4 comes to 0.3393 bp (0.823 before correction), and the other markets match real_bp to 1e-15. Margin share is min(0.17·G_t/8.7837, 1), with 8.7837 recomputed as v5's published mean exposure. Non-margin cash earns max(DTB3 − 0.5 %, 0). The first-10k and pro-rata-below-100k rules and the USD 400/yr fixed costs are omitted, as stated, which is valid only for a large account."
+    },
+    {
+     "claim": "Periods and annualisation follow the project conventions",
+     "verdict": "confirmed",
+     "evidence": "Years = days/365.25 + 1/261, vol = std(daily total)×16 and Sharpe = mean/std(daily excess)×16, as in rapport_pdf.py. Cash = previous day's DTB3 × calendar days/365, and the T-bill annual returns equal the published 'Monétaire' column exactly. The last window runs from 2023-07-11 to 2026-07-10, 3.0018 years."
+    },
+    {
+     "claim": "L2 CAGR total from 1990 is 11.32/17.31/20.05/25.06/26.53 % with Sharpe 0.44/0.81/0.91/1.01/1.05; from 2010, −1.77/4.50/5.72/7.09/7.51 %; from 2015, −3.21/2.93/4.20/4.14/4.59 %; 2023-07→2026-07, −3.43/0.64/−0.69/−3.51/−4.31 %",
+     "verdict": "confirmed",
+     "evidence": "Independent re-run gives identical values to 4 decimals."
+    },
+    {
+     "claim": "v5 bridge from 1990: 29.60 → 27.79 → 27.10 → 27.49 → 26.53; from 2010: 11.58 → 8.36 → 7.64 → 8.02 → 7.51",
+     "verdict": "confirmed",
+     "evidence": "compare_bridge.csv, max |diff| 5e-7 for v2 and v5. S2 for v5 gives Sharpe 1.074/0.723/0.375, matching cv_donnees restatement_grid."
+    },
+    {
+     "claim": "v5 L2 sensitivities: costs ×2 23.89/5.15, margin 23 % 26.37/7.43, full-day lag 25.78/6.76 (CAGR from 1990 / from 2010)",
+     "verdict": "confirmed",
+     "evidence": "Independent re-run for v2 and v5 matches to 1e-5 (compare_sensitivities.csv). X1 (costs fixed in USD per contract) was not recomputed."
+    },
+    {
+     "claim": "Calendar-year returns in annees.csv; L1 matches rapport_annees.csv",
+     "verdict": "confirmed",
+     "evidence": "Max |diff| 5e-5 (rounding) for all 15 variant×level rows. L1 matches rapport_annees.csv for every year 1990–2025."
+    },
+    {
+     "claim": "ER4 Euribor is the largest single cost item for v5",
+     "verdict": "refuted",
+     "correct_value": "At L2 from 1990, IR4 (ASX 90-day bank bill) is largest at 0.134 %/yr; ER4 is 0.080 %/yr (5th, after PA1 0.099, NO1 Curncy 0.093, NG1 0.086). From 2010: IR4 0.141, ER4 0.120. The ER4 correction saves about 0.11 pt/yr.",
+     "evidence": "v5_L2_cost_by_market.csv: per-market trading plus roll cost from L2 v5 positions with real costs."
+    },
+    {
+     "claim": "The L1 gap in 2020–2021 (86→49, 36→16) mostly comes from CUA1",
+     "verdict": "corrected",
+     "correct_value": "2020 gap mostly from SCO1 (iron ore); 2021 gap mostly from CUA1",
+     "evidence": "v5_drop_one_by_one.csv (v5, lag 1, bp costs). 2020: 84 markets 86.4 %, without CUA1 79.2 %, without SCO1 59.6 %, without both 53.5 %. 2021: 36.4 / 20.7 / 29.0 / 14.5 %. From 2010 each one alone is worth about 0.07 Sharpe and 1.6 pt of CAGR."
+    },
+    {
+     "claim": "In 2023-07→2026-07, L2 > L1 because CUA1/SCO1 lost money and the lag helped slightly",
+     "verdict": "corrected",
+     "correct_value": "Lag effect +0.17/+0.09/0.00/+0.03/−0.23 pt (v1..v5), essentially nil; the gap comes from dropping CUA1/SCO1 (+1.1/+1.5/+1.7/+2.4/+2.6 pt) plus real costs (+0.1–0.2), offset by the cash rule (−0.9 to −1.0)",
+     "evidence": "decomposition.csv S1→S2 steps at 2023-07, confirmed for v2 and v5 by compare_bridge.csv."
+    },
+    {
+     "claim": "Ranking v5 ≥ v4 > v3 > v2 >> v1 holds at every level over the long periods",
+     "verdict": "corrected",
+     "correct_value": "Holds from 1990, 2000 and 2010; at L2 from 2015, v3 ≥ v4 (CAGR 4.20 vs 4.14 %, Sharpe 0.2025 vs 0.1992); at L1 from 2010, v4 and v5 are tied on Sharpe (0.5412 vs 0.5411)",
+     "evidence": "compare_var_passe_global.csv"
+    },
+    {
+     "claim": "Costs in the 1990s were about twice today's in bp: 4.0 %/yr average over 1990–2026 vs 2.1",
+     "verdict": "corrected",
+     "correct_value": "About 1.9× is the 1990–2026 average (4.01 vs 2.11 %/yr); by decade under X1: 1990s 6.7 vs 2.2 (about 3×), 2000s 3.5 vs 1.8, 2010+ 2.67 vs 2.21",
+     "evidence": "Derived from decomposition.csv X1 and S4 cost_pa with exact period lengths. X1 keeps today's multipliers, which overstates 1990s equity-index bp costs and ignores the higher commissions of that era, so it is only an order of magnitude."
+    },
+    {
+     "claim": "Real costs are below the bp model because standard equity, bond and STIR contracts cost much less than 1 bp",
+     "verdict": "corrected",
+     "correct_value": "Median real cost per side: equities 0.77, bonds 0.73, FX 0.80 bp vs 1.0; STIR 0.37 vs 0.5; metals 0.91 vs 2.0; energy 1.54 vs 2.0; agriculture 4.08 vs 4.0. About 20–30 % below the model, not 'much less'.",
+     "evidence": "cost_vectors.csv over the 82 tradable markets"
+    },
+    {
+     "claim": "Average US T-bill accrual 1990–2026 is about 2.8 %/yr",
+     "verdict": "corrected",
+     "correct_value": "2.72 %/yr arithmetic accrual (published money-market CAGR 2.76 %)",
+     "evidence": "tbill_pa in var_passe_global.csv"
+    },
+    {
+     "claim": "Retail feasibility: ≥1 standard contract at median position in 63 markets at USD 5M; strict retail universe 66; 14/24/40 markets at 100k/250k/1M",
+     "verdict": "confirmed",
+     "evidence": "simulation/subsets.csv rows for 5M (n=63), 20M (n=66), 100k (14), 250k (24) and 1M (40)."
+    },
+    {
+     "claim": "IBKR cash shortfall at L2: 0.63/0.63/0.67/0.73/0.75 %/yr since 1990; 0.92/0.86/0.88/1.07/1.07 over 2023-07→2026-07",
+     "verdict": "confirmed",
+     "evidence": "Independent cash leg gives identical values. Caveat: the gross-exposure proxy gives v5 a margin share of only 14.4 % over the last 3 years, while couts/margin_estimate.csv shows recent margin no lower than the long-run average. The shortfall there may be understated by about 0.1 pt/yr; the 23 % margin sensitivity covers this."
+    }
+   ],
+   "corrected_tables": [
+    {
+     "name": "claims_check (narrative corrections with evidence; numeric tables unchanged)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_global/claims_check.csv"
+    },
+    {
+     "name": "v5_L2_cost_by_market (supports the ER4 correction)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_global/v5_L2_cost_by_market.csv"
+    },
+    {
+     "name": "v5_drop_one_by_one (supports the CUA1/SCO1 2020-21 correction)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_global/v5_drop_one_by_one.csv"
+    },
+    {
+     "name": "compare_var_passe_global (independent re-run vs previous, all metrics)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_global/compare_var_passe_global.csv"
+    }
+   ],
+   "final_numbers": [
+    {
+     "name": "L1 CAGR total 1990-2026, v1..v5",
+     "value": "13.03 / 19.34 / 22.28 / 28.08 / 29.60 %",
+     "note": "Equals the published figures; Sharpe 0.50/0.92/1.03/1.13/1.17"
+    },
+    {
+     "name": "L2 CAGR total 1990-2026, v1..v5",
+     "value": "11.32 / 17.31 / 20.05 / 25.06 / 26.53 %",
+     "note": "Sharpe 0.44/0.81/0.91/1.01/1.05; vol 24.9/17.9/18.6/21.4/21.6 %; max drawdown −74.1/−42.0/−43.3/−49.9/−50.4 %"
+    },
+    {
+     "name": "L2 CAGR total 2000-2026, v1..v5",
+     "value": "5.55 / 10.85 / 12.82 / 15.33 / 16.45 %",
+     "note": "Sharpe 0.26/0.53/0.61/0.67/0.71"
+    },
+    {
+     "name": "L2 CAGR total 2010-2026, v1..v5",
+     "value": "−1.77 / 4.50 / 5.72 / 7.09 / 7.51 %",
+     "note": "Sharpe −0.04/0.26/0.31/0.35/0.37"
+    },
+    {
+     "name": "L2 CAGR total 2015-2026, v1..v5",
+     "value": "−3.21 / 2.93 / 4.20 / 4.14 / 4.59 %",
+     "note": "Sharpe −0.12/0.13/0.20/0.20/0.22 (v3 ≥ v4 here)"
+    },
+    {
+     "name": "L2 CAGR total 2023-07-11→2026-07-10, v1..v5",
+     "value": "−3.43 / 0.64 / −0.69 / −3.51 / −4.31 %",
+     "note": "L2 > L1 here because CUA1/SCO1 are dropped (+1.1 to +2.6 pt); the lag effect is nil (−0.23 to +0.17)"
+    },
+    {
+     "name": "Costs 1990-2026, L1 vs L2, v1..v5",
+     "value": "L1 1.29/1.41/1.70/2.15/2.46; L2 1.17/1.22/1.47/1.85/2.11 %/yr",
+     "note": "Largest single L2 cost item for v5 is IR4 (0.13 %/yr), not ER4 (0.08 %/yr)"
+    },
+    {
+     "name": "IBKR cash shortfall at L2, 1990-2026 (2023-07→2026-07), v1..v5",
+     "value": "0.63/0.63/0.67/0.73/0.75 (0.92/0.86/0.88/1.07/1.07) %/yr",
+     "note": "Large-account rule; ignores the first-10k and pro-rata-below-100k rules and fixed costs"
+    },
+    {
+     "name": "v5 bridge L1→L2, CAGR from 1990 / from 2010",
+     "value": "29.60→27.79→27.10→27.49→26.53 / 11.58→8.36→7.64→8.02→7.51 %",
+     "note": "Steps: drop CUA1/SCO1, half-day lag, real costs, IBKR cash"
+    },
+    {
+     "name": "v5 drop one market (lag 1, bp costs): 2020 / 2021 / Sharpe from 2010",
+     "value": "84 markets 86.4/36.4/0.541; without CUA1 79.2/20.7/0.473; without SCO1 59.6/29.0/0.473; without both 53.5/14.5/0.407",
+     "note": "2020 gap mainly SCO1, 2021 gap mainly CUA1"
+    },
+    {
+     "name": "X1 (costs fixed in USD per contract) v5 costs by decade vs L2",
+     "value": "1990s 6.7 vs 2.2; 2000s 3.5 vs 1.8; 2010+ 2.67 vs 2.21 %/yr",
+     "note": "1990–2026 average 4.01 vs 2.11 (1.9×); X1 uses today's multipliers, so only an order of magnitude"
+    }
+   ]
+  }
+ },
+ {
+  "key": "passe_retail",
+  "work": {
+   "summary": "I simulated all 5 variants the way a retail investor could actually have run them at IBKR, at USD 100k, 250k and 1M. All scripts and outputs are in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/. No project file was modified.\n\n**Engine check.** veng.py reproduces trend.run_portfolio and trend.run_vol_targeted bit for bit for all 5 variants (max position difference 0, max net difference 0). On the full 84 markets the published Sharpe since 1990 comes out at 0.504 / 0.921 / 1.026 / 1.127 / 1.171, with vol 24.6 / 17.6 / 18.3 / 21.2 / 21.4 % and gross exposure 5.26 / 5.60 / 6.77 / 7.78 / 8.78.\n\n**Market subsets (01_subsets.py, saved in subsets_variantes.csv).** Same rule as the audit: capital/tiers.py greedy round-robin on the strict 66-market retail universe (no CUA1, no SCO1), smallest liquid contract, each variant's own median |position| over 2023-07-10 to 2026-07-10, then the run_all.verified_subset re-run-and-drop loop.\n- For variant 5 the greedy and verified subsets are identical to the audit's (14 / 24 / 40 markets).\n- Number of markets per variant at 100k / 250k / 1M:\n  - v1: 13 / 21 / 36\n  - v2: 13 / 21 / 36\n  - v3: 14 / 22 / 37\n  - v4: 13 / 23 / 38 (3 / 2 / 4 markets dropped after the re-run)\n  - v5: 14 / 24 / 40\n- Variant 2's median positions are 0.575 times variant 5's (1/1.74), so it fits about 1 to 4 fewer markets per tier.\n- The subsets overlap heavily. v3 is a subset of v5 at every tier. v2 differs from v5 by at most 1 to 4 markets; for example v2 at 100k has ER4 in place of CF1 and SFR5.\n- Every market holds at least 1.00 contract at its median position. The rule still holds under the half-day-lag system.\n\n**Simulation (02_run.py).**\n- Whole contracts with Carver buffering (sim.integer_positions) and today's notional and spreads.\n- Real IBKR costs per contract: fee plus half-spread on trades and on rolls, with the ER4 half-spread at 0.0025.\n- Capital held fixed; 1999-01-04 to 2026-07-10.\n- Headline execution is a half-day lag: P&L = 0.5·pos(t-1)·r + 0.5·pos(t-2)·r, trade costs split half on t and half on t+1. For v4 and v5 the vol-target scale is measured on the lagged P&L.\n- IBKR cash leg: margin (audit's flat-k model, 0.25 × σ × |exposure|, computed on each variant × tier's actual contract positions) earns 0. The rest earns max(T-bill − 0.5 %, 0), nothing on the first USD 10k, pro-rata below 100k NAV. IB Gateway fixed cost is USD 400 a year.\n\n**Reconciliation with the audit.** At same-close execution, v5's Sharpe since 2010 is exactly 0.406 / 0.421 / 0.389 (100k / 250k / 1M), and since 2000 it is 0.566 / 0.694 / 0.700. The half-day lag costs v5 between −0.005 and −0.019 of Sharpe and v3 −0.005 to −0.018. For v1, v2 and v4 the effect is −0.02 to +0.02, which is path noise in whole contracts.\n\n**Headline: half-day lag, CAGR net of all fees** (real trading costs, IBKR cash, fixed costs; calendar time; given as 100k / 250k / 1M).\n\n| Variant | 2000–2026 | 2010–2026 | 2015–2026 | 2023-07 → 2026-07 |\n|---|---|---|---|---|\n| v1 | 0.5 / 3.0 / 4.4 % | −2.8 / −4.2 / −2.5 % | −5.2 / −4.6 / −4.6 % | −13.6 / −16.9 / −11.6 % |\n| v2 | 7.7 / 10.6 / 11.1 % | 3.6 / 4.6 / 4.3 % | 1.9 / 4.4 / 3.8 % | 2.7 / −2.8 / −3.5 % |\n| v3 | 9.0 / 12.6 / 13.1 % | 4.4 / 6.4 / 5.6 % | 2.9 / 5.9 / 5.8 % | 3.2 / −3.4 / −1.7 % |\n| v4 | 10.6 / 13.6 / 13.3 % | 6.9 / 7.2 / 6.9 % | 3.4 / 5.7 / 4.4 % | 6.8 / −6.6 / −2.9 % |\n| v5 | 11.2 / 14.7 / 15.1 % | 7.2 / 7.9 / 7.1 % | 5.3 / 5.7 / 6.0 % | 8.9 / −6.2 / −1.9 % |\n\nFor comparison, average T-bill was 1.92 / 1.46 / 2.06 / 4.50 % over the four periods. The published 84-market backtests (CAGR total with T-bill) gave since 2000 7.5 / 13.1 / 15.3 / 18.6 / 19.8 % and since 2010 0.8 / 7.3 / 8.6 / 11.4 / 11.6 % for v1 to v5.\n\n**Sharpe (×16) of excess return after real trading costs, half-day lag** (100k / 250k / 1M; same-close values are in the resume file).\n\n| Variant | 2000–2026 | 2010–2026 | Published 84 since 2000 | Published 84 since 2010 |\n|---|---|---|---|---|\n| v1 | 0.19 / 0.24 / 0.26 | 0.07 / −0.01 / 0.02 | 0.33 | 0.07 |\n| v2 | 0.42 / 0.55 / 0.54 | 0.26 / 0.29 / 0.26 | 0.65 | 0.42 |\n| v3 | 0.45 / 0.61 / 0.61 | 0.28 / 0.37 / 0.32 | 0.74 | 0.46 |\n| v4 | 0.53 / 0.64 / 0.62 | 0.39 / 0.39 / 0.37 | 0.81 | 0.54 |\n| v5 | 0.56 / 0.68 / 0.69 | 0.40 / 0.42 / 0.38 | 0.85 | 0.54 |\n\nThe all-in Sharpe, which also subtracts cash shortfall and fixed costs, is about 0.02 to 0.05 lower, for example v5 since 2010: 0.36 / 0.39 / 0.35.\n\n**Vol and drawdown.**\n- v4 and v5 realise about 21.5 % vol. v2 and v3 realise 19 to 22 %.\n- v1 realises 35 to 39 %, because fixed sizing does not control risk. Its max drawdown is −83 to −88 %.\n- Max drawdown of excess return: v2 −39 to −48 %, v3 −45 to −51 %, v4 −49 to −57 %, v5 −48 to −54 %.\n\n**Costs since 2010, % of capital per year.**\n- Fees plus half-spread: v2 1.8 to 2.2; v3 2.3 to 2.8; v4 2.4 to 3.1; v5 2.9 to 3.6.\n- Fixed costs: 0.40 / 0.16 / 0.04 at 100k / 250k / 1M.\n- Cash shortfall: 0.43 to 0.63, rising to 1.0 to 1.7 in 2023 to 2026.\n- Total drag: v5 4.3 / 4.3 / 3.4; v2 3.2 / 2.5 / 2.2.\n\n**Orders per year** (trades plus rolls): about 520 to 750 at 100k, 980 to 1,500 at 250k, and 2,160 to 2,900 at 1M.\n\n**Average margin.** Mean margin is 10 to 12 % of capital for v2, 12 to 13 % for v3, 12 to 14 % for v4, 12 to 15 % for v5, and 15 to 18 % for v1.\n\n**The last three years vary a lot by tier.** At 100k, v4 and v5 are positive over 2023 to 2026 while 250k and 1M are negative. That is because the 100k subset's only metal is gold, which contributed +12.9 % a year of gross P&L to v5 at 100k (contrib_par_marche.csv).\n\n**Forward Monte Carlo series.**\n- series_variantes.pkl is a DataFrame of 7,180 days × 15 columns (v1_100k … v5_1M) of daily net excess return after real costs and before cash, half-day lag, from 1999-01-04 to 2026-07-10.\n- The DataFrame's attrs carry 'description' and 'stats'; the same stats are in series_variantes_stats.csv: realised vol, Sharpe, mean gross exposure (total and excluding short-rate futures), mean margin and number of markets.\n- series_variantes_extra.pkl holds the same-close series, cash leg, fixed cost, margin, gross exposure and total-net series for each column.",
+   "tables": [
+    {
+     "name": "var_passe_retail (long format)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/var_passe_retail.csv",
+     "description": "One row per key (variant × tier) × execution (half_day_lag | same_close) × period (2000-2026, 2010-2026, 2015-2026, 2023-07_2026-07) × metric. Metrics: cagr_excess, cagr_total_tbill, cagr_total_net_all_fees, vol, sharpe, sharpe_all_in, maxdd, cost split (fee, half-spread, rolls, fixed, cash shortfall, total), orders, margin, gross exposure, and the published-84 and own-subset fractional references."
+    },
+    {
+     "name": "var_passe_retail_wide",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/var_passe_retail_wide.csv",
+     "description": "The same results, one row per key × execution × period."
+    },
+    {
+     "name": "var_passe_retail_resume",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/var_passe_retail_resume.csv",
+     "description": "Compact headline table (half-day lag) with sharpe_same_close and the published-84 references side by side."
+    },
+    {
+     "name": "subsets_variantes",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/subsets_variantes.csv",
+     "description": "Feasible market subset per variant × tier: markets, classes, median contracts per market, markets dropped after the re-run, size of the greedy subset, and the variant's median positions relative to v5."
+    },
+    {
+     "name": "series_variantes_stats",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/series_variantes_stats.csv",
+     "description": "For each series in series_variantes.pkl: realised vol (1999+, 2000+, 2010+), Sharpe (2000+, 2010+, 2015+), mean gross exposure (total and excluding short-rate futures), mean margin and number of markets."
+    },
+    {
+     "name": "contrib_par_marche",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_passe_retail/contrib_par_marche.csv",
+     "description": "Gross P&L per year by risk class, plus the 3 best and 3 worst markets, for v5 and v2 at each tier over 2010-2026 and 2023-07 to 2026-07; explains the dispersion between tiers."
+    }
+   ],
+   "key_numbers": [
+    {
+     "name": "v5 Sharpe since 2010, same close (audit check)",
+     "value": "0.406 / 0.421 / 0.389",
+     "note": "100k / 250k / 1M, with ER4 0.0025; exactly the audit's numbers"
+    },
+    {
+     "name": "v5 Sharpe since 2010, half-day lag",
+     "value": "0.401 / 0.416 / 0.377",
+     "note": "excess after real trading costs, ×16"
+    },
+    {
+     "name": "v1 CAGR net all fees 2000-2026 / 2010-2026",
+     "value": "0.5/3.0/4.4 % ; -2.8/-4.2/-2.5 %",
+     "note": "vol 35-39 %, max drawdown -83 to -88 %"
+    },
+    {
+     "name": "v2 CAGR net all fees 2000-2026 / 2010-2026",
+     "value": "7.7/10.6/11.1 % ; 3.6/4.6/4.3 %",
+     "note": "Sharpe 2010+: 0.26/0.29/0.26"
+    },
+    {
+     "name": "v3 CAGR net all fees 2000-2026 / 2010-2026",
+     "value": "9.0/12.6/13.1 % ; 4.4/6.4/5.6 %",
+     "note": "Sharpe 2010+: 0.28/0.37/0.32"
+    },
+    {
+     "name": "v4 CAGR net all fees 2000-2026 / 2010-2026",
+     "value": "10.6/13.6/13.3 % ; 6.9/7.2/6.9 %",
+     "note": "Sharpe 2010+: 0.39/0.39/0.37"
+    },
+    {
+     "name": "v5 CAGR net all fees 2000-2026 / 2010-2026",
+     "value": "11.2/14.7/15.1 % ; 7.2/7.9/7.1 %",
+     "note": "Sharpe 2010+: 0.40/0.42/0.38"
+    },
+    {
+     "name": "CAGR net all fees 2015-2026 (v1..v5, 100k/250k/1M)",
+     "value": "v1 -5.2/-4.6/-4.6; v2 1.9/4.4/3.8; v3 2.9/5.9/5.8; v4 3.4/5.7/4.4; v5 5.3/5.7/6.0 %"
+    },
+    {
+     "name": "CAGR net all fees 2023-07 to 2026-07",
+     "value": "v1 -13.6/-16.9/-11.6; v2 2.7/-2.8/-3.5; v3 3.2/-3.4/-1.7; v4 6.8/-6.6/-2.9; v5 8.9/-6.2/-1.9 %",
+     "note": "the 100k subset's result is driven by gold (+12.9 %/yr of gross P&L for v5)"
+    },
+    {
+     "name": "Published 84-market CAGR total (T-bill) since 2000, v1..v5",
+     "value": "7.5 / 13.1 / 15.3 / 18.6 / 19.8 %",
+     "note": "since 2010: 0.8 / 7.3 / 8.6 / 11.4 / 11.6 %"
+    },
+    {
+     "name": "Average T-bill by period",
+     "value": "1.92 / 1.46 / 2.06 / 4.50 %",
+     "note": "2000+, 2010+, 2015+, 2023-07+"
+    },
+    {
+     "name": "Number of markets (100k/250k/1M)",
+     "value": "v1 13/21/36; v2 13/21/36; v3 14/22/37; v4 13/23/38; v5 14/24/40"
+    },
+    {
+     "name": "Fees + half-spread since 2010 (% of capital per year)",
+     "value": "v2 2.2/1.9/1.8; v3 2.8/2.7/2.3; v4 3.1/2.8/2.4; v5 3.3/3.6/2.9"
+    },
+    {
+     "name": "Fixed costs (% of capital per year)",
+     "value": "0.40 / 0.16 / 0.04",
+     "note": "USD 400/yr"
+    },
+    {
+     "name": "Cash shortfall vs T-bill since 2010 (% of capital per year)",
+     "value": "0.43-0.63",
+     "note": "1.0-1.7 over 2023-07 to 2026-07, when T-bill was about 4.5 %"
+    },
+    {
+     "name": "Total cost drag since 2010 (% of capital per year)",
+     "value": "v5 4.3/4.3/3.4; v4 4.0/3.5/2.9; v3 3.7/3.4/2.7; v2 3.2/2.5/2.2; v1 3.9/3.1/2.6"
+    },
+    {
+     "name": "Orders per year (trades + rolls)",
+     "value": "about 520-750 / 980-1,500 / 2,160-2,900",
+     "note": "100k / 250k / 1M"
+    },
+    {
+     "name": "Mean margin, % of capital",
+     "value": "v1 15-18, v2 10-12, v3 12-13, v4 12-14, v5 12-15"
+    },
+    {
+     "name": "Realised vol of the series (2000+)",
+     "value": "v1 35-39 %, v2 19-21 %, v3 21-22 %, v4 21.3-21.5 %, v5 21.5 %"
+    },
+    {
+     "name": "Half-day lag effect on Sharpe vs same close",
+     "value": "v5 -0.005 to -0.019; v3 -0.005 to -0.018; v1/v2/v4 -0.02 to +0.02"
+    }
+   ],
+   "caveats": [
+    "Today's notional mode applies today's contract sizes and spreads (2026-07-10) to the whole history. Micro contracts are assumed to have existed throughout, though most date from 2019 to 2024. Spreads were wider before about 2010, so trading costs for 2000-2010 are probably understated.",
+    "Market selection uses positions from 2023-07 to 2026-07 and today's notionals. This is look-ahead in the choice of markets (though not selection on performance), as in the audit.",
+    "Capital is held fixed: P&L is a % of C and CAGR compounds those daily returns. A real account would also have to resize contracts as its value changed. At the 100k tier the cash pro-rata below 100k NAV is ignored after drawdowns, which slightly understates the cash shortfall there.",
+    "The cash leg uses US T-bill (DTB3) as a proxy for IBKR's USD benchmark, with the rate floored at 0. Margin uses the audit's flat k = 0.25 × max(EWM32, 1-year vol) × |exposure|, computed on each variant × tier's actual contract positions rather than by scaling 17 % by gross exposure. The two methods agree within about 1 point of margin, which is negligible for the shortfall.",
+    "The half-day lag is approximated by a 50/50 mix of close-to-close returns. For v4 and v5 the vol-target scale uses the lagged fractional P&L of the system (bp-model costs), not the realised whole-contract P&L.",
+    "v1 (fixed amount) does not control risk. On retail subsets it realises 35-39 % vol with drawdowns of -83 to -88 %, so its compounded CAGR is dominated by volatility drag. Its Sharpe since 2010 is about 0 even in the published 84-market backtest (0.07).",
+    "With only 13 to 40 markets, short windows depend heavily on which markets are in the subset. For example, over 2023 to 2026 v5 returns +6.0 % excess at 100k but -9.0 % at 250k, mainly because gold is the only metal in the 100k subset. Gold is also an asset the investor already holds, so the 100k result over recent years partly duplicates his existing exposure.",
+    "Sharpe and vol use ×16 (project convention); the data have about 261 weekdays a year, so √261 would raise values by about 1 %. CAGR is in calendar time. 'sharpe' is excess return after real trading costs; 'sharpe_all_in' also deducts cash shortfall and fixed costs, measured against the T-bill.",
+    "Each series in series_variantes.pkl starts 1999-01-04 and its first day includes the initial trade-in cost. The DataFrame attrs (description, stats) survive pickling; the same stats are also in series_variantes_stats.csv. Gross exposure is inflated by short-rate and Schatz notionals (for example 19.4× for v5 at 250k), so the forward MC should use mean_margin rather than gross exposure to model the cash leg."
+   ]
+  },
+  "verification": {
+   "summary": "I rebuilt the retail simulation from scratch and it holds up. The numbers in var_passe_retail are right. A few sentences in its summary are wrong or loose, and no data file needs correcting.\n\nMy code (verif_var_passe_retail/indep.py plus scripts 00 to 10) uses only the project's trend.py, the raw data, specs.csv and the cost-audit file. It does not import veng.py, sim.py or engine.py. Nothing under /home/user/snt-2b-adam-cieniewicz was modified; git status is clean.\n\n**What I checked and confirmed**\n- **Strategy engine:** my positions and net returns are identical to trend.run_portfolio / run_vol_targeted, both on all 84 markets and on the v2 and v5 250k subsets (difference 0). The published 1990+ figures come out exactly: CAGR 13.0 / 19.3 / 22.3 / 28.1 / 29.6 %, Sharpe 0.504 / 0.921 / 1.026 / 1.127 / 1.171.\n- **Market subsets:** I re-derived all 15 variant × tier subsets independently (greedy pass, then the re-run-and-drop loop). Every set matches. v5 matches the audit's 14 / 24 / 40 markets, in the same order.\n- **At least 1 contract per market:** every subset passes with its own variant's positions. The lowest median is 1.002 contracts (v2 at 1M); with the half-day lag it is 1.006. The median number of whole contracts actually held over 2023-07 to 2026-07 is at least 1 in every market.\n- **Contract table:** notional per contract agrees to within 4e-6, cost per side agrees exactly, and Euribor ER4 uses the 0.0025 half-spread. 9 of the 66 markets use the assumed micro-contract costs (USD 1 fee, 1.5 × the standard half-spread).\n- **Full simulation:** I re-ran v2 and v5 at 250k, and in fact all 15 keys, both with the half-day lag and with same-close execution. This covers whole contracts, Carver buffering, fees, half-spread, rolls, the IBKR cash rule and USD 400 a year of fixed costs. All metrics agree within 0.0007 percentage points. The daily series agree to within 1e-7, apart from rare single days (at most 2.4e-4) where a rounding exactly at 0.5 flips because specs.csv stores notionals rounded to whole dollars.\n- **Same-close v5 Sharpe** equals the audit's ER4-corrected values: 0.566 / 0.694 / 0.700 since 2000 and 0.406 / 0.421 / 0.389 since 2010.\n- **No look-ahead in the strategy itself:** I recomputed everything on data cut off at 2008-09-30, 2015-06-30 and 2022-12-30 for v2 250k, v5 250k, v1 100k and v4 1M. Contracts, positions and net returns up to each cut-off are unchanged (difference 0). The only look-ahead is the one already declared: markets are chosen using 2023–2026 positions and today's contract sizes.\n- **No tax anywhere:** no tax term appears in the scripts or output columns.\n\n**Corrections to the summary text** (the files themselves are fine)\n1. Half-day lag effect on Sharpe: for v1 it is consistently positive, +0.007 to +0.025, so it is not \"path noise\". For v4 the range is −0.041 to +0.020 (−0.024 to +0.020 over the long windows), not −0.02 to +0.02.\n2. The claim that the two margin methods \"agree within about 1 point\" is wrong. v1's computed margin is 16.6 to 18.4 %, against 9.8 % from scaling 17 % by gross exposure. v5's subsets give 12.4 / 14.2 / 14.7 %, not 17 %; 16.8 % only holds on all 84 markets. The effect on the cash leg is at most about 0.14 %/yr, and the computed margins are the better estimate.\n3. Two rounding slips: v3 at 250k, 2000–2026 is 12.65 %, so 12.7 % not 12.6 %. v4's published-84 CAGR since 2000 is 18.65 %, so 18.7 % not 18.6 %.\n\n**Comparing with the published backtest (added reference, not a correction)**\nComparing the retail results with the published 84-market figures mixes two effects. Most of the drop comes from removing the ethanol and iron-ore markets (CUA1 / SCO1) and the half-day lag, not from the small subsets or the real costs. On the 82 tradable markets with the half-day lag, the Sharpe since 2000 / since 2010 is:\n\n| Variant | Since 2000 | Since 2010 |\n|---|---|---|\n| v1 | 0.28 | −0.02 |\n| v2 | 0.55 | 0.27 |\n| v3 | 0.63 | 0.32 |\n| v4 | 0.69 | 0.36 |\n| v5 | 0.72 | 0.375 |\n\nThe retail v5 since 2010 is 0.40 / 0.42 / 0.38 at 100k / 250k / 1M, about the same as that reference. These figures are in reference_84_vs_82lag.csv. For v5 they match the audit's restatement exactly (1.074 / 0.723 / 0.375).\n\n**series_variantes.pkl and the forward step**\n- It contains what the forward Monte Carlo needs: 7,180 days × 15 columns, with no NaN or inf values, on the same dates as cv_avant_impot/series.pkl from 1999-01-04. The stats give volatility, Sharpe and mean margin as a fraction. A 500-path smoke test through mc_engine.sim_diy runs for all 15 columns.\n- One trap: the series start in 1999. If it is joined onto the 1990-start window that 04_final uses (D90), you get 2,350 NaN rows and the shocks come out entirely NaN. Use the 1999+ sample.\n- The stats compute Sharpe and vol ×16, while mc_engine uses 261 days a year, a difference of about 1 %.\n\n**Extreme days are real, not data errors**\n- v1's −30 to −35 % days in Oct–Dec 2008 are broad losses caused by its fixed sizing.\n- v5's big rate-driven days are real events: 3 Dec 2015 (Euribor ER4 and the German Schatz DU1, held at about 24× and 14× capital) and 13 Mar 2023 (SOFR, SFR5).\n\n**Caveat to state in the report**\nAll past figures are for a USD account: US T-bill cash, USD returns. The forward step is in EUR (€STR). For a EUR-based investor, excess return and Sharpe are essentially unchanged. But IBKR's EUR benchmark minus 0.5 % was zero or below from about 2012 to mid-2022, so cash interest would have been about zero. That probably lowers the all-fee CAGR since 2010 by roughly 0.5 point a year. I could not compute this: there is no euro short-rate series in the data and the ECB data site is blocked by the network proxy.",
+   "checked": [
+    {
+     "claim": "veng.py reproduces trend.run_portfolio / run_vol_targeted bit for bit; published Sharpe 0.504/0.921/1.026/1.127/1.171",
+     "verdict": "confirmed",
+     "evidence": "01_engine.py: my independent engine = trend on all 84 and on v2/v5 250k subsets, max|dpos|=0, max|dnet|=0; published 1990+ CAGR total (T-bill) 13.0/19.3/22.3/28.1/29.6 reproduced"
+    },
+    {
+     "claim": "Subsets per variant at 100k/250k/1M: v1 13/21/36, v2 13/21/36, v3 14/22/37, v4 13/23/38, v5 14/24/40; v5 identical to audit",
+     "verdict": "confirmed",
+     "evidence": "02_subsets.py (own greedy + re-run/drop loop): all 15 sets identical; v5 identical to simulation/subsets.csv in order; dropped markets for v4/v5 identical; subsets_check.csv"
+    },
+    {
+     "claim": "Every market holds >=1 contract at its median position with the variant's own positions, also under half-day lag",
+     "verdict": "confirmed",
+     "evidence": "min median contracts 1.002 (v2_1M) to 1.233; half-day lag min 1.006; median whole contracts held >=1 in every market of every subset (2023-07-10..2026-07-10)"
+    },
+    {
+     "claim": "v3 is a subset of v5 at every tier; v2 at 100k has ER4 instead of CF1 and SFR5; v2 median positions 0.575 x v5",
+     "verdict": "confirmed",
+     "evidence": "02_subsets.py output"
+    },
+    {
+     "claim": "Whole-contract simulation, real IBKR costs (ER4 0.0025), cash leg (margin unpaid, T-bill-0.5%, 10k, pro-rata), USD 400 fixed: v2_250k and v5_250k (and all 15 keys)",
+     "verdict": "confirmed",
+     "evidence": "03_sim.py: all metrics within 0.0007 pct-pt of var_passe_retail_wide.csv (Sharpe within 8e-5); daily series agree to 1e-7 except rare 0.5-rounding flips (max 2.4e-4 on single days) from integer-rounded notionals in specs.csv; contract table identical (00_tables.py)"
+    },
+    {
+     "claim": "Headline CAGR net of all fees table (half-day lag)",
+     "verdict": "corrected",
+     "correct_value": "All cells confirmed except v3_250k 2000-2026 = 12.65 % (12.7 %, not 12.6 %)",
+     "evidence": "var_passe_retail_wide.csv and my rerun"
+    },
+    {
+     "claim": "Same-close v5 Sharpe 0.406/0.421/0.389 since 2010 and 0.566/0.694/0.700 since 2000 = audit numbers",
+     "verdict": "confirmed",
+     "evidence": "verif_capital/er4_spread_sensitivity.csv ER4 hs=0.0025 rows: 250k 0.694/0.421, 1M 0.700/0.389; summary_today_notional 100k 0.566/0.406"
+    },
+    {
+     "claim": "Half-day lag effect: v5 -0.005..-0.019, v3 -0.005..-0.018, v1/v2/v4 -0.02..+0.02 (path noise)",
+     "verdict": "corrected",
+     "correct_value": "v1 +0.007..+0.025 (systematically positive); v2 -0.003..+0.012; v3 -0.017..-0.004; v4 -0.041..+0.020 (long windows -0.024..+0.020); v5 -0.020..-0.005",
+     "evidence": "corrections_claims.csv from var_passe_retail_wide.csv"
+    },
+    {
+     "claim": "Margin: flat-k on actual contracts and 17 % x gross exposure agree within about 1 point",
+     "verdict": "refuted",
+     "correct_value": "v5-84 flat-k 16.8 % but v5 subsets 12.4/14.2/14.7 %; v1 shortcut 9.8 % vs computed 16.6-18.4 %; v4 14.8 % vs 11.8-14.1 %; impact on cash leg <= ~0.14 %/yr",
+     "evidence": "08_margin.py"
+    },
+    {
+     "claim": "Published-84 CAGR total (T-bill) since 2000 7.5/13.1/15.3/18.6/19.8 %, since 2010 0.8/7.3/8.6/11.4/11.6 %",
+     "verdict": "corrected",
+     "correct_value": "v4 since 2000 = 18.65 % (18.7 %); others confirmed",
+     "evidence": "06_claims.py with my engine"
+    },
+    {
+     "claim": "No look-ahead",
+     "verdict": "confirmed",
+     "evidence": "04_lookahead.py: truncating data at 2008-09-30/2015-06-30/2022-12-30 and recomputing vol, forecasts, regime rank, fixed vol, weights, IDM, vol-target scale, contracts and margin sigma gives identical history (diff 0) for v2_250k, v5_250k, v1_100k, v4_1M; only the declared market-selection look-ahead (2023-26 positions, today's notional)"
+    },
+    {
+     "claim": "No tax anywhere",
+     "verdict": "confirmed",
+     "evidence": "grep tax/impot/PFU/fisc in var_passe_retail scripts and columns: none"
+    },
+    {
+     "claim": "Costs since 2010 (fee+half-spread v2 1.8-2.2 ... v5 2.9-3.6 %), fixed 0.40/0.16/0.04, cash shortfall 0.43-0.63 (1.0-1.7 in 2023-26), total drag v5 4.3/4.3/3.4, v2 3.2/2.5/2.2; orders/yr; vol; max drawdowns; mean margins; T-bill averages 1.92/1.46/2.06/4.50",
+     "verdict": "confirmed",
+     "evidence": "recomputed in 03_sim.py and read from var_passe_retail_wide.csv"
+    },
+    {
+     "claim": "v5_100k 2023-07..2026-07 driven by gold +12.9 %/yr gross P&L",
+     "verdict": "confirmed",
+     "evidence": "06_claims.py: GC1 +12.94 %/yr, total gross +10.8 %/yr"
+    },
+    {
+     "claim": "series_variantes.pkl contains what the forward step needs",
+     "verdict": "confirmed",
+     "evidence": "7180 x 15, no NaN/inf, attrs description+stats, same dates as cv_avant_impot/series.pkl from 1999-01-04; mc_engine smoke test OK for all 15 keys (07_forward_ready.py). Trap: joining it to the 1990-start D90 window gives 2350 NaN rows and all-NaN shocks; stats use x16 while mc_engine uses AN=261 (~1 %)"
+    },
+    {
+     "claim": "Large daily moves are genuine, not data artefacts",
+     "verdict": "confirmed",
+     "evidence": "05_outliers.py: v1 -30..-35 % days in Oct-Dec 2008 are broad losses under fixed sizing; v5 2015-12-03 (ER4 24x, DU1 14x capital) and 2023-03-13 (SOFR) are real events"
+    },
+    {
+     "claim": "Comparison retail vs published-84 isolates the retail penalty",
+     "verdict": "corrected",
+     "correct_value": "Most of the gap is CUA1/SCO1 removal + half-day lag: tradable-82 half-day-lag Sharpe since 2000/2010 v1 0.28/-0.02, v2 0.55/0.27, v3 0.63/0.32, v4 0.69/0.36, v5 0.72/0.375 (v5 = audit restatement 0.723/0.375)",
+     "evidence": "09_ref82.py -> reference_84_vs_82lag.csv"
+    },
+    {
+     "claim": "CAGR 'net of all fees' is the investor's past return",
+     "verdict": "unverifiable",
+     "correct_value": "Valid for a USD account (T-bill cash); for a EUR investor the IBKR EUR cash leg was ~0 in 2012-2022, likely lowering all-fee CAGR since 2010 by roughly 0.5 pt/yr (not computed)",
+     "evidence": "No EUR short-rate series in the data set; ECB API blocked by proxy (403)"
+    }
+   ],
+   "corrected_tables": [
+    {
+     "name": "Corrected summary statements (lag effect, margin claim, rounding, fairer reference)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_retail/corrections_claims.csv"
+    },
+    {
+     "name": "Added reference (not a correction): each variant on 82 tradable markets, half-day lag vs published 84 same close",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_retail/reference_84_vs_82lag.csv"
+    },
+    {
+     "name": "Metric-by-metric comparison, my rerun vs var_passe_retail_wide (all 15 keys, both executions, 4 periods)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_retail/metrics_compare.csv"
+    },
+    {
+     "name": "Independent subset check (all 15 keys)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/verif_var_passe_retail/subsets_check.csv"
+    }
+   ],
+   "final_numbers": [
+    {
+     "name": "v2_250k CAGR net all fees 2000-26 / 2010-26 / 2015-26 / 2023-07..26-07",
+     "value": "10.6 / 4.6 / 4.4 / -2.8 %",
+     "note": "independently reproduced; Sharpe x16 0.546 / 0.294 / 0.255 / -0.289"
+    },
+    {
+     "name": "v5_250k CAGR net all fees 2000-26 / 2010-26 / 2015-26 / 2023-07..26-07",
+     "value": "14.7 / 7.9 / 5.7 / -6.2 %",
+     "note": "independently reproduced; Sharpe x16 0.681 / 0.416 / 0.306 / -0.333"
+    },
+    {
+     "name": "CAGR net all fees 2000-2026 (100k/250k/1M)",
+     "value": "v1 0.5/3.0/4.4; v2 7.7/10.6/11.1; v3 9.0/12.7/13.1; v4 10.6/13.6/13.3; v5 11.2/14.7/15.1 %",
+     "note": "v3_250k corrected 12.6 -> 12.7"
+    },
+    {
+     "name": "CAGR net all fees 2010-2026 (100k/250k/1M)",
+     "value": "v1 -2.8/-4.2/-2.5; v2 3.6/4.6/4.3; v3 4.4/6.4/5.6; v4 6.9/7.2/6.9; v5 7.2/7.9/7.1 %"
+    },
+    {
+     "name": "Half-day lag effect on Sharpe (all windows)",
+     "value": "v1 +0.007..+0.025; v2 -0.003..+0.012; v3 -0.017..-0.004; v4 -0.041..+0.020; v5 -0.020..-0.005"
+    },
+    {
+     "name": "Tradable-82 half-day-lag Sharpe since 2000 / 2010",
+     "value": "v1 0.28/-0.02; v2 0.55/0.27; v3 0.63/0.32; v4 0.69/0.36; v5 0.72/0.375",
+     "note": "fairer reference than published 84 (0.33/0.07, 0.65/0.42, 0.74/0.46, 0.81/0.54, 0.85/0.54)"
+    },
+    {
+     "name": "Tradable-82 half-day-lag CAGR total (T-bill, bp costs) since 2000 / 2010",
+     "value": "v1 6.0/-1.5; v2 11.2/4.7; v3 13.2/5.9; v4 15.7/7.3; v5 16.8/7.6 %"
+    },
+    {
+     "name": "Mean margin 2000-2026, computed on contracts (100k/250k/1M)",
+     "value": "v1 18.4/17.1/16.6; v2 10.6/11.1/12.0; v3 12.3/12.6/13.4; v4 11.8/13.4/14.1; v5 12.4/14.2/14.7 %",
+     "note": "17 % applies only to v5 on 84 markets (16.8 %)"
+    },
+    {
+     "name": "Max series discrepancy, my rerun vs var_passe_retail",
+     "value": "metrics <= 0.0007 pct-pt; Sharpe <= 8e-5",
+     "note": "rare whole-contract 0.5-rounding flips from integer-rounded notionals"
+    },
+    {
+     "name": "Look-ahead test",
+     "value": "0 difference",
+     "note": "3 cut-off dates x 4 keys"
+    }
+   ]
+  },
+  "futur": {
+   "summary": "I ran the forward Monte Carlo for all 5 variants at USD 100k, 250k and 1M, net of all fees, over 10 and 5 years. Variant 5 reproduces the audit's 10-year central medians: 3.34 / 4.58 / 5.36 % against 3.28 / 4.61 / 5.41 %, differences of +0.06 / −0.03 / −0.05 pt, so the ±0.15 check passes. Everything is in /tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/ (scripts 01_params.py to 04_anchor_se.py). Nothing under /home/user/snt-2b-adam-cieniewicz was changed; git status is clean.\n\n**Method.** The method is the same as the verified variant-5 run.\n- Engine: a copy of cv_avant_impot/mc_engine.py, `sim_diy` in 'ibkr' mode, called with the same settings as the verified run.\n- Simulation: stationary bootstrap with a mean block of 126 days, 4 seeds (101 / 202 / 303 / 404) × 10,000 paths. €STR is 2.4 %, inflation 2 %, fixed costs USD 400 a year.\n- Cash: margin earns nothing; IBKR pays €STR − 0.5 % on cash above USD 10k, pro rata below 100k NAV; the rest sits in a money-market fund at €STR − 0.12 %.\n- Shocks: each variant × tier's own daily series from series_variantes.pkl (1999-01-04 to 2026-07-10), standardised. Within a seed every key uses the same bootstrap indices, so differences between variants are not seed noise.\n- Vol: each series' realised vol since 2000 (×16): about 39 / 37 / 35 % for v1 and 19.5 to 22 % for v2–v5.\n- Margin: 17 % for variant 5, scaled for the other variants by published gross exposure: 10.2 / 10.8 / 13.1 / 15.1 / 17.0 %.\n- Cash kept at IBKR: margin plus 23 % × vol / vol(v5). This gives 40 % for v5; for the other variants it is my assumption.\n\n**Forward Sharpe rule.**\n- Anchor A = each variant's realistic retail Sharpe since 2010 at that tier (half-day lag, whole contracts, real IBKR costs, ×16):\n  - v1: 0.07 / −0.01 / 0.01\n  - v2: 0.25 / 0.29 / 0.26\n  - v3: 0.28 / 0.37 / 0.32\n  - v4: 0.39 / 0.39 / 0.37\n  - v5: 0.40 / 0.42 / 0.38\n- Haircut h(tier) = v5 central / A(v5) = 0.499 / 0.577 / 0.717 (100k / 250k / 1M).\n- Case 1 (common haircut): central Sharpe = h × A.\n- Case 2: v1 and v2 lose only the decay part, taken as 75 % of their own haircut in Sharpe units, so central = A × (0.25 + 0.75 h). v3 to v5 are unchanged.\n- Pessimistic and optimistic = central ∓ 0.20.\n\n**Which case is central.** I treat case 2 as central for v1 and v2, and case 1 as their conservative bound. The audit's haircut on variant 5 explicitly includes a cut for picking it after seeing the results (it was the best of 53 variants tested). That cut cannot apply to rules fixed before the results were known. The 75/25 split is if anything generous to the decay share, since the audit's own 25–35 % selection cut implies a larger selection share. In practice the choice only moves v2, by +0.4 to +0.7 pt.\n\n**10-year central results** (100k / 250k / 1M; CAGR net of all fees, in EUR)\n\n| Variant | Forward Sharpe | Median | 10th–90th percentile | Real median (2 % inflation) | P(loss) | P(below cash) | Max drawdown, median / worst decile | P(touch 60 %) |\n|---|---|---|---|---|---|---|---|---|\n| v1 | 0.04 / −0.01 / 0.01 | −5.2 / −6.1 / −4.0 % | −15.1…6.2 / −16.0…5.5 / −13.2…6.5 | −7.1 / −7.9 / −5.9 | 73 / 75 / 70 % | 80 / 83 / 79 % | −74 / −76 / −70 %, −88 / −89 / −85 % | 74 / 77 / 69 % |\n| v2 (case 2) | 0.16 / 0.20 / 0.21 | 2.5 / 3.6 / 3.9 % | −4.2…9.8 / −3.5…11.7 / −3.5…12.4 | 0.5 / 1.6 / 1.9 | 32 / 26 / 26 % | 48 / 41 / 39 % | −41 / −41 / −42 %, −58 / −57 / −58 % | 19 / 16 / 17 % |\n| v2 (case 1) | 0.13 / 0.17 / 0.19 | 1.8 / 3.0 / 3.5 % | | | | | | |\n| v3 | 0.14 / 0.21 / 0.23 | 1.9 / 3.9 / 4.4 % | −5.5…10.1 / −4.2…12.8 / −3.5…13.3 | −0.1 / 1.8 / 2.3 | 38 / 27 / 24 % | 52 / 40 / 37 % | −46 / −44 / −43 %, −64 / −62 / −60 % | 27 / 21 / 19 % |\n| v4 | 0.20 / 0.23 / 0.27 | 3.3 / 4.2 / 5.3 % | −4.6…11.4 / −4.5…13.7 / −3.1…14.4 | 1.3 / 2.2 / 3.3 | 30 / 27 / 21 % | 44 / 39 / 33 % | −44 / −46 / −44 %, −63 / −65 / −62 % | 23 / 25 / 20 % |\n| v5 | 0.20 / 0.24 / 0.27 | 3.3 / 4.6 / 5.4 % | −4.6…11.5 / −4.4…14.1 / −3.3…14.8 | 1.3 / 2.5 / 3.3 | 30 / 26 / 22 % | 43 / 37 / 33 % | −45 / −46 / −44 %, −63 / −66 / −62 % | 24 / 25 / 21 % |\n\n- v1 in case 1 gives −5.6 / −6.0 / −4.1 %.\n- Pessimistic / optimistic medians over 10 years:\n  - v1: −12.8 / 2.8, −13.0 / 1.4, −10.5 / 2.9 %\n  - v2: −1.8 / 6.9, −0.4 / 7.8, −0.3 / 8.3 %\n  - v3: −2.7 / 6.7, −0.4 / 8.3, 0.0 / 8.9 %\n  - v4: −1.1 / 7.9, −0.2 / 8.8, 0.9 / 10.0 %\n  - v5: −1.2 / 8.0, 0.1 / 9.2, 0.9 / 10.0 %\n- Each +0.1 of forward Sharpe adds about 2.0 to 2.3 pt a year to the median for v2–v5, and 3.4 to 3.9 pt for v1.\n\n**5-year central medians.**\n- v1: −5.3 / −6.3 / −4.2 %\n- v2: 2.3 / 3.4 / 3.8 %\n- v3: 1.8 / 3.8 / 4.3 %\n- v4: 3.3 / 4.3 / 5.3 %\n- v5: 3.3 / 4.6 / 5.3 %\n- P(loss) after 5 years: v1 64–69 %, v2 33–38 %, v3 32–42 %, v4 29–35 %, v5 29–36 %.\n\n**Past versus expected.** Past figures are the verified retail simulation, net of all fees, USD account (100k / 250k / 1M).\n\n| Variant | Past 2000–26 | Past 2010–26 | Expected, 10-year median |\n|---|---|---|---|\n| v1 | 0.5 / 3.0 / 4.4 % | −2.8 / −4.2 / −2.5 % | −5.2 / −6.1 / −4.0 % |\n| v2 | 7.7 / 10.6 / 11.1 % | 3.6 / 4.6 / 4.3 % | 2.5 / 3.6 / 3.9 % |\n| v3 | 9.0 / 12.7 / 13.1 % | 4.4 / 6.4 / 5.6 % | 1.9 / 3.9 / 4.4 % |\n| v4 | 10.6 / 13.6 / 13.3 % | 6.9 / 7.2 / 6.9 % | 3.3 / 4.2 / 5.3 % |\n| v5 | 11.2 / 14.7 / 15.1 % | 7.2 / 7.9 / 7.1 % | 3.3 / 4.6 / 5.4 % |\n\nFor comparison, from the verified audit run (10-year medians): euro money-market fund 2.3 %, trend ETF 4.7 % (10th percentile 0.1 %), 100 % Nasdaq-100 (QQQ-type) 5.9 % (10th percentile −5.1 %), 70 % Nasdaq-100 + 30 % trend ETF 6.4 %, 100 % S&P 500 6.0 %.\n\n**What this means.**\n- Variants 2 to 5 have a 10-year median of only 1.9 to 5.4 %, roughly the trend ETF's 4.7 %. The chance of doing worse than the money-market fund is 33 to 52 %, and the median worst drawdown is 41 to 46 %.\n- Variant 1 is expected to lose money: about −4 to −6 % a year at the median. Its 35–39 % volatility costs about 7 pt a year of compounding, and it falls to 60 % of the starting capital in about 3 paths out of 4.\n- The ranking of v2 to v5 is inherited from anchors that are not statistically distinct. Since 2010, v5 beats v2 by 0.11 to 0.15 of Sharpe, which is about 1 standard error (t = 1.0 to 1.2). It beats v4 by 0.004 to 0.024 (t = 0.1 to 0.3). Only v1 is clearly worse (t = 1.8 to 2.3). This is why v4 and v5 come out almost identical at 100k and 1M.\n\n**Robustness.**\n- The standard deviation of the median across seeds is 0.03 to 0.12 pt.\n- Using margin computed on actual contracts instead of the gross-exposure scaling changes medians by −0.19 to +0.11 pt.\n- Variant 5's tails are a little narrower than in the audit. At 100k / 250k / 1M the 10th percentile is −4.55 / −4.41 / −3.31 % against −5.05 / −4.48 / −3.96 %. P(loss) is 30.0 / 26.1 / 21.9 % against 31.1 / 26.0 / 23.3 %. The worst-decile drawdown is −62.8 / −65.5 / −62.5 % against −65.3 / −66.2 / −65.4 %. This is because the shocks now come from each portfolio's own retail series starting in 1999, while the audit's sub-portfolio series started in 1990.",
+   "tables": [
+    {
+     "name": "var_futur (long format)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/var_futur.csv",
+     "description": "3,360 rows: one per key (variant × tier) × case (commune | v1v2_sans_selection) × scenario (pess | central | opt) × horizon (5 | 10) × cash_model (expo_brute = headline; marge_contrats = sensitivity, central, case 1 only) × metric. Metrics: cagr_med, cagr_p10, cagr_p90, cagr_mean_wealth, real_med, real_p10, real_p90, P_nom_loss, P_real_loss, P_below_cash, cash_cagr, dd_med, dd_p10 (worst decile), ddr_med, ddr_p10 (real drawdowns), P_touch_60pct. Columns also carry A_sharpe_2010, h_tier, sharpe_forward, vol, margin share, cash at IBKR, n_markets, central_retenu (True on the retained central case), value as the mean of the 4 seeds, and seed_sd. In case v1v2_sans_selection, the v3–v5 rows are copies of case commune."
+    },
+    {
+     "name": "var_futur_tableau_10ans (compact report table, central, 10 years)",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/var_futur_tableau_10ans.csv",
+     "description": "One row per variant × tier in the retained central case (case 2 for v1 and v2). Columns: anchor and forward Sharpe (both cases), vol, median, 10th and 90th percentile, real median, P(loss), P(below cash), median and worst-decile max drawdown, P(touch 60 %), pessimistic and optimistic medians, case-1 median, 5-year median and P(loss), effect of the margin method, slope per +0.1 Sharpe, past CAGR net of all fees (USD) for 2000-26, 2010-26, 2015-26 and 2023-07 to 2026-07, and seed standard deviation. Below that, reference rows (cash, trend ETF, S&P 500, Nasdaq-100, 70/30 mixes) from the verified audit run. Values are fractions; multiply by 100 for %."
+    },
+    {
+     "name": "var_futur_wide",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/var_futur_wide.csv",
+     "description": "The same results as var_futur.csv, one row per key × case × scenario × horizon × cash_model, with every metric and its seed standard deviation as columns."
+    },
+    {
+     "name": "params",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/params.csv",
+     "description": "Per key: anchor A (Sharpe since 2010), haircut h(tier), central Sharpe in case 1 and case 2, vol since 2000, margin share and cash at IBKR (headline and contract-margin variants), Sharpe since 2000, number of markets."
+    },
+    {
+     "name": "checks",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/checks.csv",
+     "description": "Variant 5 against the audit (verif_avant_impot, 4 × 10k paths, USD 400): the median check (±0.15 pt, passes) plus 10th and 90th percentiles, P(loss), P(below cash) and drawdowns."
+    },
+    {
+     "name": "anchor_se",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/anchor_se.csv",
+     "description": "Precision of the anchors: Sharpe since 2010, its standard error, correlation with v5, v5 minus the variant, the standard error of that difference (Jobson-Korkie/Memmel, i.i.d.) and its t-statistic."
+    },
+    {
+     "name": "raw_runs",
+     "csv_path": "/tmp/claude-0/-home-user-snt-2b-adam-cieniewicz/4246b01c-1857-5934-aed2-b3eb85d88a07/scratchpad/audit/var_futur/raw_runs.csv",
+     "description": "Per-seed raw output: 624 rows (4 seeds × 78 simulations × 2 horizons)."
+    }
+   ],
+   "key_numbers": [
+    {
+     "name": "Variant 5 reproduction (central, 10-year median)",
+     "value": "3.34 / 4.58 / 5.36 % vs audit 3.28 / 4.61 / 5.41 %",
+     "note": "100k / 250k / 1M; differences +0.06 / −0.03 / −0.05 pt, within ±0.15: passes"
+    },
+    {
+     "name": "Haircut h(tier) = v5 central / A(v5)",
+     "value": "0.499 / 0.577 / 0.717",
+     "note": "A(v5) since 2010 = 0.401 / 0.416 / 0.377 (×16, half-day lag, retail)"
+    },
+    {
+     "name": "Central forward Sharpe (retained case)",
+     "value": "v1 0.04/−0.01/0.01; v2 0.16/0.20/0.21; v3 0.14/0.21/0.23; v4 0.20/0.23/0.27; v5 0.20/0.24/0.27",
+     "note": "v1 and v2 use case 2 (decay only); case 1 gives v1 0.03/−0.01/0.01 and v2 0.13/0.17/0.19; pessimistic / optimistic = ∓0.20"
+    },
+    {
+     "name": "10-year median CAGR net of all fees, central",
+     "value": "v1 −5.2/−6.1/−4.0; v2 2.5/3.6/3.9; v3 1.9/3.9/4.4; v4 3.3/4.2/5.3; v5 3.3/4.6/5.4 %",
+     "note": "100k / 250k / 1M; EUR, €STR 2.4 %"
+    },
+    {
+     "name": "10-year median, case 1 (common haircut) for v1 and v2",
+     "value": "v1 −5.6/−6.0/−4.1; v2 1.8/3.0/3.5 %"
+    },
+    {
+     "name": "10-year 10th–90th percentile, central",
+     "value": "v1 −15.1…6.2 / −16.0…5.5 / −13.2…6.5; v2 −4.2…9.8 / −3.5…11.7 / −3.5…12.4; v3 −5.5…10.1 / −4.2…12.8 / −3.5…13.3; v4 −4.6…11.4 / −4.5…13.7 / −3.1…14.4; v5 −4.6…11.5 / −4.4…14.1 / −3.3…14.8 %"
+    },
+    {
+     "name": "10-year real median (2 % inflation), central",
+     "value": "v1 −7.1/−7.9/−5.9; v2 0.5/1.6/1.9; v3 −0.1/1.8/2.3; v4 1.3/2.2/3.3; v5 1.3/2.5/3.3 %"
+    },
+    {
+     "name": "P(nominal loss after 10 years), central",
+     "value": "v1 73/75/70; v2 32/26/26; v3 38/27/24; v4 30/27/21; v5 30/26/22 %"
+    },
+    {
+     "name": "P(below the money-market fund after 10 years), central",
+     "value": "v1 80/83/79; v2 48/41/39; v3 52/40/37; v4 44/39/33; v5 43/37/33 %",
+     "note": "Money-market fund at €STR − 0.10 % = 2.30 %/yr"
+    },
+    {
+     "name": "Max drawdown, median / worst decile (10 years)",
+     "value": "v1 −74/−76/−70 & −88/−89/−85; v2 −41/−41/−42 & −58/−57/−58; v3 −46/−44/−43 & −64/−62/−60; v4 −44/−46/−44 & −63/−65/−62; v5 −45/−46/−44 & −63/−66/−62 %"
+    },
+    {
+     "name": "P(touching 60 % of starting capital within 10 years)",
+     "value": "v1 74/77/69; v2 19/16/17; v3 27/21/19; v4 23/25/20; v5 24/25/21 %"
+    },
+    {
+     "name": "Pessimistic / optimistic 10-year medians",
+     "value": "v1 −12.8/2.8, −13.0/1.4, −10.5/2.9; v2 −1.8/6.9, −0.4/7.8, −0.3/8.3; v3 −2.7/6.7, −0.4/8.3, 0.0/8.9; v4 −1.1/7.9, −0.2/8.8, 0.9/10.0; v5 −1.2/8.0, 0.1/9.2, 0.9/10.0 %"
+    },
+    {
+     "name": "5-year median, central",
+     "value": "v1 −5.3/−6.3/−4.2; v2 2.3/3.4/3.8; v3 1.8/3.8/4.3; v4 3.3/4.3/5.3; v5 3.3/4.6/5.3 %",
+     "note": "P(loss) at 5 years: v1 64–69, v2 33–38, v3 32–42, v4 29–35, v5 29–36 %"
+    },
+    {
+     "name": "Past CAGR net of all fees (USD account), 2000-26 | 2010-26",
+     "value": "v1 0.5/3.0/4.4 | −2.8/−4.2/−2.5; v2 7.7/10.6/11.1 | 3.6/4.6/4.3; v3 9.0/12.7/13.1 | 4.4/6.4/5.6; v4 10.6/13.6/13.3 | 6.9/7.2/6.9; v5 11.2/14.7/15.1 | 7.2/7.9/7.1 %",
+     "note": "From the verified var_passe_retail step"
+    },
+    {
+     "name": "Reference 10-year medians (verified audit run)",
+     "value": "Cash 2.3; trend ETF 4.7; 100 % S&P 500 6.0; 70/30 S&P + ETF 6.0; 100 % Nasdaq-100 5.9; 70/30 Nasdaq-100 + ETF 6.4 %"
+    },
+    {
+     "name": "Sensitivity of the median to +0.1 forward Sharpe",
+     "value": "+2.0 to +2.3 pt/yr (v2–v5); +3.4 to +3.9 pt/yr (v1)"
+    },
+    {
+     "name": "Anchor precision since 2010 (v5 minus variant, t-stat)",
+     "value": "v1 0.34–0.43 (t 1.8–2.3); v2 0.11–0.15 (t 1.0–1.2); v3 0.05–0.12 (t 0.5–1.6); v4 0.004–0.024 (t 0.1–0.3)",
+     "note": "Standard error of a single Sharpe over 16.5 years ≈ 0.25"
+    },
+    {
+     "name": "Margin method sensitivity (contract margin vs gross-exposure scaling)",
+     "value": "−0.19 to +0.11 pt on the 10-year median",
+     "note": "v1 −0.14 to −0.19 pt (its true margin is 17–18 %, not 10 %); v5 +0.05 to +0.11 pt"
+    },
+    {
+     "name": "Seed noise (standard deviation of the median across 4 seeds)",
+     "value": "0.03 to 0.12 pt"
+    }
+   ],
+   "caveats": [
+    "The forward Sharpe rule has two weak points. First, it calibrates the haircut only on variant 5 (0.20 / 0.24 / 0.27 from the audit) and applies the same ratio to every variant. Second, the anchors since 2010 have a standard error of about 0.25 each. The v2–v5 differences are about 1 standard error or less (v5 vs v4: t = 0.1 to 0.3), so the ranking of the forward medians among v2–v5 is weakly supported. Only v1's shortfall is fairly robust (t = 1.8 to 2.3).",
+    "The 75 % decay / 25 % selection split for case 2 is an assumption from the task. The audit's own description of the cut for picking the variant after the fact (25–35 % of the Sharpe) implies a larger selection share, so case 2 may still be conservative for v2. For a negative anchor (v1 at 250k, A = −0.014) the multiplicative rule is backwards: case 2 gives −0.0098 against −0.0083 in case 1. This is immaterial.",
+    "Pessimistic and optimistic are central ∓0.20 as specified. For variant 5 this gives 0.00 / 0.04 / 0.07 and 0.40 / 0.44 / 0.47, against the audit's 0.00 / 0.03 / 0.05 and 0.40 / 0.43 / 0.47, so v5's pessimistic medians at 250k and 1M are about 0.1–0.4 pt higher than in the audit.",
+    "As the task specifies, margin for v1–v4 is 17 % × gross exposure / v5's gross exposure (published 84-market figures, 1990+). The verified past step showed this understates v1's margin (10 % against 17–18 % computed on contracts). The contract-margin sensitivity is reported and moves medians by −0.19 to +0.11 pt. Cash kept at IBKR = margin + 23 % × vol / vol(v5) is my assumption, since only v5's 40 % / 17 % was given. Moving 10 pts of NAV between IBKR cash and the money-market fund changes returns by about 0.04 pt/yr.",
+    "Conventions: vol and Sharpe are ×16 (project convention) and are fed into an engine that annualises with 261 days. Simulated daily vol is therefore about 1 % below the series, and the drift about 2 % below the anchor. This is the same as the audit and is absorbed by the haircut calibrated on v5. CAGR is in calendar time.",
+    "Shocks are each portfolio's own retail daily series from 1999-01-04 to 2026-07-10 (7,180 days), standardised and resampled in blocks with a mean length of 126 days. They contain 2008 and the 2023–26 drawdown, not the 1990s. For variant 5 this gives slightly thinner tails than the audit's 1990+ sub-portfolio series: 10th percentile 0.1–0.6 pt higher, 90th percentile 0.2–0.9 pt lower, worst-decile drawdown 0.7–2.9 pts milder. The same probably applies to the other variants, which the audit did not run.",
+    "The simulation keeps trading after any loss: there is no stop rule, and P&L is proportional to NAV. Whole contracts make that only approximate. After a 40 % drawdown at 100k several markets would fall below one contract, and an investor in v1, which touches 60 % of capital in 69–77 % of paths, would very likely stop. v1's negative median comes mainly from volatility drag at 35–39 % vol (about 7 pt a year), not from its Sharpe.",
+    "Past figures are for a USD account with US T-bill cash. Forward figures are EUR returns at €STR 2.4 %, with IBKR's USD 10k and 100k thresholds applied in USD-equivalent wealth. The verified past step estimated, without computing it, that a EUR investor's past all-fee CAGR since 2010 would be about 0.5 pt a year lower, because IBKR's EUR cash rate was about zero from 2012 to 2022.",
+    "The reference rows (cash, trend ETF, S&P 500, Nasdaq-100, 70/30 mixes) are copied from the verified audit run (rendement_attendu_10ans_ib_gateway.csv, 4 × 10k paths, different shocks). They were not re-simulated here.",
+    "Market subsets, contract sizes and spreads are today's, as in the past step (look-ahead in which markets are chosen, not in performance). Fixed costs are USD 400 a year at every tier, and the investor's own time is not counted. The forward results inherit every approximation of the retail series: half-day lag as a 50/50 mix, micro contracts assumed available throughout, and spreads before 2010 probably understated."
+   ]
+  },
+  "futur_verification": null
+ }
+]

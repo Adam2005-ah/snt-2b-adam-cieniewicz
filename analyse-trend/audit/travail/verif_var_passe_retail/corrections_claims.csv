@@ -1,0 +1,10 @@
+item,previous_claim,verified
+"half-day-lag effect on Sharpe, v1",-0.02..+0.02 (path noise),all 4 windows +0.007..+0.025; long windows +0.007..+0.020
+"half-day-lag effect on Sharpe, v2",-0.02..+0.02,all 4 windows -0.003..+0.012; long windows -0.003..+0.007
+"half-day-lag effect on Sharpe, v3",-0.005..-0.018,all 4 windows -0.017..-0.004; long windows -0.017..-0.005
+"half-day-lag effect on Sharpe, v4",-0.02..+0.02,all 4 windows -0.041..+0.020; long windows -0.024..+0.020
+"half-day-lag effect on Sharpe, v5",-0.005..-0.019,all 4 windows -0.020..-0.005; long windows -0.020..-0.005
+CAGR net all fees v3_250k 2000-2026,12.6 %,12.65 % -> 12.7 %
+"Published-84 CAGR total (T-bill) since 2000, v4",18.6 %,18.65 % -> 18.7 %
+margin: computed flat-k on actual contracts vs 17 % x gross-exposure shortcut,agree within about 1 point,"v5 84 flat-k = 16.8 % (ok) but subsets 12.4/14.2/14.7 % (2000-26), i.e. 2-5 pts below 17 %; v1 shortcut 9.8 % vs computed 16.6-18.4 % (7-9 pts); v4 shortcut 14.8 % vs 11.8-14.1 %; cash-leg impact <= ~0.14 %/yr, computed margins are the better estimate"
+retail vs published comparison,published-84 same-close used as reference,"the gap published-84 -> retail is mostly CUA1/SCO1 removal + half-day lag: tradable-82 half-day-lag Sharpe since 2010 = v1 -0.02, v2 0.27, v3 0.32, v4 0.36, v5 0.375 vs retail 100k/250k/1M v5 0.40/0.42/0.38 (reference_84_vs_82lag.csv)"

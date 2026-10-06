@@ -1,0 +1,676 @@
+variant,step,period,metric,value
+1. Montant fixe,S0 L1 publié,1990,sharpe,0.504123
+1. Montant fixe,S0 L1 publié,1990,cagr_total,0.130287
+1. Montant fixe,S0 L1 publié,1990,cost_pa,0.012940
+1. Montant fixe,S0 L1 publié,2000,sharpe,0.329979
+1. Montant fixe,S0 L1 publié,2000,cagr_total,0.075110
+1. Montant fixe,S0 L1 publié,2000,cost_pa,0.012978
+1. Montant fixe,S0 L1 publié,2010,sharpe,0.073624
+1. Montant fixe,S0 L1 publié,2010,cagr_total,0.007549
+1. Montant fixe,S0 L1 publié,2010,cost_pa,0.012517
+1. Montant fixe,S0 L1 publié,2015,sharpe,-0.014309
+1. Montant fixe,S0 L1 publié,2015,cagr_total,-0.006419
+1. Montant fixe,S0 L1 publié,2015,cost_pa,0.012737
+1. Montant fixe,S0 L1 publié,2023-07,sharpe,-0.406413
+1. Montant fixe,S0 L1 publié,2023-07,cagr_total,-0.039544
+1. Montant fixe,S0 L1 publié,2023-07,cost_pa,0.012978
+1. Montant fixe,S1 univers 82,1990,sharpe,0.457101
+1. Montant fixe,S1 univers 82,1990,cagr_total,0.117813
+1. Montant fixe,S1 univers 82,1990,cost_pa,0.012832
+1. Montant fixe,S1 univers 82,2000,sharpe,0.274169
+1. Montant fixe,S1 univers 82,2000,cagr_total,0.058803
+1. Montant fixe,S1 univers 82,2000,cost_pa,0.012829
+1. Montant fixe,S1 univers 82,2010,sharpe,-0.024221
+1. Montant fixe,S1 univers 82,2010,cagr_total,-0.015049
+1. Montant fixe,S1 univers 82,2010,cost_pa,0.012298
+1. Montant fixe,S1 univers 82,2015,sharpe,-0.098988
+1. Montant fixe,S1 univers 82,2015,cagr_total,-0.027763
+1. Montant fixe,S1 univers 82,2015,cost_pa,0.012553
+1. Montant fixe,S1 univers 82,2023-07,sharpe,-0.298838
+1. Montant fixe,S1 univers 82,2023-07,cagr_total,-0.028150
+1. Montant fixe,S1 univers 82,2023-07,cost_pa,0.012853
+1. Montant fixe,"S2 + exécution 0,5 j",1990,sharpe,0.461767
+1. Montant fixe,"S2 + exécution 0,5 j",1990,cagr_total,0.119021
+1. Montant fixe,"S2 + exécution 0,5 j",1990,cost_pa,0.012831
+1. Montant fixe,"S2 + exécution 0,5 j",2000,sharpe,0.277245
+1. Montant fixe,"S2 + exécution 0,5 j",2000,cagr_total,0.059698
+1. Montant fixe,"S2 + exécution 0,5 j",2000,cost_pa,0.012827
+1. Montant fixe,"S2 + exécution 0,5 j",2010,sharpe,-0.022704
+1. Montant fixe,"S2 + exécution 0,5 j",2010,cagr_total,-0.014617
+1. Montant fixe,"S2 + exécution 0,5 j",2010,cost_pa,0.012296
+1. Montant fixe,"S2 + exécution 0,5 j",2015,sharpe,-0.099649
+1. Montant fixe,"S2 + exécution 0,5 j",2015,cagr_total,-0.027711
+1. Montant fixe,"S2 + exécution 0,5 j",2015,cost_pa,0.012550
+1. Montant fixe,"S2 + exécution 0,5 j",2023-07,sharpe,-0.289905
+1. Montant fixe,"S2 + exécution 0,5 j",2023-07,cagr_total,-0.026474
+1. Montant fixe,"S2 + exécution 0,5 j",2023-07,cost_pa,0.012850
+1. Montant fixe,S3 + coûts IBKR réels,1990,sharpe,0.466047
+1. Montant fixe,S3 + coûts IBKR réels,1990,cagr_total,0.120235
+1. Montant fixe,S3 + coûts IBKR réels,1990,cost_pa,0.011747
+1. Montant fixe,S3 + coûts IBKR réels,2000,sharpe,0.281549
+1. Montant fixe,S3 + coûts IBKR réels,2000,cagr_total,0.060963
+1. Montant fixe,S3 + coûts IBKR réels,2000,cost_pa,0.011635
+1. Montant fixe,S3 + coûts IBKR réels,2010,sharpe,-0.018192
+1. Montant fixe,S3 + coûts IBKR réels,2010,cagr_total,-0.013630
+1. Montant fixe,S3 + coûts IBKR réels,2010,cost_pa,0.011295
+1. Montant fixe,S3 + coûts IBKR réels,2015,sharpe,-0.095255
+1. Montant fixe,S3 + coûts IBKR réels,2015,cagr_total,-0.026732
+1. Montant fixe,S3 + coûts IBKR réels,2015,cost_pa,0.011544
+1. Montant fixe,S3 + coûts IBKR réels,2023-07,sharpe,-0.283955
+1. Montant fixe,S3 + coûts IBKR réels,2023-07,cagr_total,-0.025386
+1. Montant fixe,S3 + coûts IBKR réels,2023-07,cost_pa,0.011734
+1. Montant fixe,S4 + cash IBKR (= L2),1990,sharpe,0.441329
+1. Montant fixe,S4 + cash IBKR (= L2),1990,cagr_total,0.113238
+1. Montant fixe,S4 + cash IBKR (= L2),1990,cost_pa,0.011747
+1. Montant fixe,S4 + cash IBKR (= L2),2000,sharpe,0.262991
+1. Montant fixe,S4 + cash IBKR (= L2),2000,cagr_total,0.055521
+1. Montant fixe,S4 + cash IBKR (= L2),2000,cost_pa,0.011635
+1. Montant fixe,S4 + cash IBKR (= L2),2010,sharpe,-0.036640
+1. Montant fixe,S4 + cash IBKR (= L2),2010,cagr_total,-0.017657
+1. Montant fixe,S4 + cash IBKR (= L2),2010,cost_pa,0.011295
+1. Montant fixe,S4 + cash IBKR (= L2),2015,sharpe,-0.119487
+1. Montant fixe,S4 + cash IBKR (= L2),2015,cagr_total,-0.032118
+1. Montant fixe,S4 + cash IBKR (= L2),2015,cost_pa,0.011544
+1. Montant fixe,S4 + cash IBKR (= L2),2023-07,sharpe,-0.332874
+1. Montant fixe,S4 + cash IBKR (= L2),2023-07,cagr_total,-0.034275
+1. Montant fixe,S4 + cash IBKR (= L2),2023-07,cost_pa,0.011734
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",1990,sharpe,0.405455
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",1990,cagr_total,0.103160
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",1990,cost_pa,0.020844
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2000,sharpe,0.244198
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2000,cagr_total,0.050037
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2000,cost_pa,0.016844
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2010,sharpe,-0.045837
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2010,cagr_total,-0.019659
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2010,cost_pa,0.013334
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2015,sharpe,-0.128721
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2015,cagr_total,-0.034164
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2015,cost_pa,0.013659
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2023-07,sharpe,-0.337881
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2023-07,cagr_total,-0.035181
+1. Montant fixe,"X1 L2, coûts fixes en USD/contrat",2023-07,cost_pa,0.012672
+1. Montant fixe,"X2 L2, coûts réels x2",1990,sharpe,0.394977
+1. Montant fixe,"X2 L2, coûts réels x2",1990,cagr_total,0.100236
+1. Montant fixe,"X2 L2, coûts réels x2",1990,cost_pa,0.023494
+1. Montant fixe,"X2 L2, coûts réels x2",2000,sharpe,0.221001
+1. Montant fixe,"X2 L2, coûts réels x2",2000,cagr_total,0.043307
+1. Montant fixe,"X2 L2, coûts réels x2",2000,cost_pa,0.023270
+1. Montant fixe,"X2 L2, coûts réels x2",2010,sharpe,-0.087584
+1. Montant fixe,"X2 L2, coûts réels x2",2010,cagr_total,-0.028697
+1. Montant fixe,"X2 L2, coûts réels x2",2010,cost_pa,0.022591
+1. Montant fixe,"X2 L2, coûts réels x2",2015,sharpe,-0.169896
+1. Montant fixe,"X2 L2, coûts réels x2",2015,cagr_total,-0.043233
+1. Montant fixe,"X2 L2, coûts réels x2",2015,cost_pa,0.023088
+1. Montant fixe,"X2 L2, coûts réels x2",2023-07,sharpe,-0.395462
+1. Montant fixe,"X2 L2, coûts réels x2",2023-07,cagr_total,-0.045548
+1. Montant fixe,"X2 L2, coûts réels x2",2023-07,cost_pa,0.023467
+1. Montant fixe,"X3 L2, marge 23 %",1990,sharpe,0.438036
+1. Montant fixe,"X3 L2, marge 23 %",1990,cagr_total,0.112309
+1. Montant fixe,"X3 L2, marge 23 %",1990,cost_pa,0.011747
+1. Montant fixe,"X3 L2, marge 23 %",2000,sharpe,0.260884
+1. Montant fixe,"X3 L2, marge 23 %",2000,cagr_total,0.054905
+1. Montant fixe,"X3 L2, marge 23 %",2000,cost_pa,0.011635
+1. Montant fixe,"X3 L2, marge 23 %",2010,sharpe,-0.038648
+1. Montant fixe,"X3 L2, marge 23 %",2010,cagr_total,-0.018095
+1. Montant fixe,"X3 L2, marge 23 %",2010,cost_pa,0.011295
+1. Montant fixe,"X3 L2, marge 23 %",2015,sharpe,-0.122273
+1. Montant fixe,"X3 L2, marge 23 %",2015,cagr_total,-0.032736
+1. Montant fixe,"X3 L2, marge 23 %",2015,cost_pa,0.011544
+1. Montant fixe,"X3 L2, marge 23 %",2023-07,sharpe,-0.340709
+1. Montant fixe,"X3 L2, marge 23 %",2023-07,cagr_total,-0.035692
+1. Montant fixe,"X3 L2, marge 23 %",2023-07,cost_pa,0.011734
+1. Montant fixe,"X4 L2, exécution 1 jour",1990,sharpe,0.445681
+1. Montant fixe,"X4 L2, exécution 1 jour",1990,cagr_total,0.114393
+1. Montant fixe,"X4 L2, exécution 1 jour",1990,cost_pa,0.011749
+1. Montant fixe,"X4 L2, exécution 1 jour",2000,sharpe,0.265877
+1. Montant fixe,"X4 L2, exécution 1 jour",2000,cagr_total,0.056362
+1. Montant fixe,"X4 L2, exécution 1 jour",2000,cost_pa,0.011637
+1. Montant fixe,"X4 L2, exécution 1 jour",2010,sharpe,-0.035134
+1. Montant fixe,"X4 L2, exécution 1 jour",2010,cagr_total,-0.017274
+1. Montant fixe,"X4 L2, exécution 1 jour",2010,cost_pa,0.011297
+1. Montant fixe,"X4 L2, exécution 1 jour",2015,sharpe,-0.120131
+1. Montant fixe,"X4 L2, exécution 1 jour",2015,cagr_total,-0.032114
+1. Montant fixe,"X4 L2, exécution 1 jour",2015,cost_pa,0.011545
+1. Montant fixe,"X4 L2, exécution 1 jour",2023-07,sharpe,-0.323681
+1. Montant fixe,"X4 L2, exécution 1 jour",2023-07,cagr_total,-0.032652
+1. Montant fixe,"X4 L2, exécution 1 jour",2023-07,cost_pa,0.011735
+2. Système actuel,S0 L1 publié,1990,sharpe,0.920919
+2. Système actuel,S0 L1 publié,1990,cagr_total,0.193369
+2. Système actuel,S0 L1 publié,1990,cost_pa,0.014052
+2. Système actuel,S0 L1 publié,2000,sharpe,0.650141
+2. Système actuel,S0 L1 publié,2000,cagr_total,0.131323
+2. Système actuel,S0 L1 publié,2000,cost_pa,0.014064
+2. Système actuel,S0 L1 publié,2010,sharpe,0.416427
+2. Système actuel,S0 L1 publié,2010,cagr_total,0.072969
+2. Système actuel,S0 L1 publié,2010,cost_pa,0.014150
+2. Système actuel,S0 L1 publié,2015,sharpe,0.296422
+2. Système actuel,S0 L1 publié,2015,cagr_total,0.058000
+2. Système actuel,S0 L1 publié,2015,cost_pa,0.014491
+2. Système actuel,S0 L1 publié,2023-07,sharpe,-0.283943
+2. Système actuel,S0 L1 publié,2023-07,cagr_total,-0.002628
+2. Système actuel,S0 L1 publié,2023-07,cost_pa,0.012546
+2. Système actuel,S1 univers 82,1990,sharpe,0.851281
+2. Système actuel,S1 univers 82,1990,cagr_total,0.180605
+2. Système actuel,S1 univers 82,1990,cost_pa,0.013904
+2. Système actuel,S1 univers 82,2000,sharpe,0.563780
+2. Système actuel,S1 univers 82,2000,cagr_total,0.114692
+2. Système actuel,S1 univers 82,2000,cost_pa,0.013860
+2. Système actuel,S1 univers 82,2010,sharpe,0.281116
+2. Système actuel,S1 univers 82,2010,cagr_total,0.049631
+2. Système actuel,S1 univers 82,2010,cost_pa,0.013850
+2. Système actuel,S1 univers 82,2015,sharpe,0.166328
+2. Système actuel,S1 univers 82,2015,cagr_total,0.035228
+2. Système actuel,S1 univers 82,2015,cost_pa,0.014216
+2. Système actuel,S1 univers 82,2023-07,sharpe,-0.150898
+2. Système actuel,S1 univers 82,2023-07,cagr_total,0.012775
+2. Système actuel,S1 univers 82,2023-07,cost_pa,0.012263
+2. Système actuel,"S2 + exécution 0,5 j",1990,sharpe,0.839850
+2. Système actuel,"S2 + exécution 0,5 j",1990,cagr_total,0.178453
+2. Système actuel,"S2 + exécution 0,5 j",1990,cost_pa,0.013903
+2. Système actuel,"S2 + exécution 0,5 j",2000,sharpe,0.551072
+2. Système actuel,"S2 + exécution 0,5 j",2000,cagr_total,0.112171
+2. Système actuel,"S2 + exécution 0,5 j",2000,cost_pa,0.013858
+2. Système actuel,"S2 + exécution 0,5 j",2010,sharpe,0.268131
+2. Système actuel,"S2 + exécution 0,5 j",2010,cagr_total,0.047332
+2. Système actuel,"S2 + exécution 0,5 j",2010,cost_pa,0.013848
+2. Système actuel,"S2 + exécution 0,5 j",2015,sharpe,0.154131
+2. Système actuel,"S2 + exécution 0,5 j",2015,cagr_total,0.033004
+2. Système actuel,"S2 + exécution 0,5 j",2015,cost_pa,0.014215
+2. Système actuel,"S2 + exécution 0,5 j",2023-07,sharpe,-0.143759
+2. Système actuel,"S2 + exécution 0,5 j",2023-07,cagr_total,0.013667
+2. Système actuel,"S2 + exécution 0,5 j",2023-07,cost_pa,0.012261
+2. Système actuel,S3 + coûts IBKR réels,1990,sharpe,0.849184
+2. Système actuel,S3 + coûts IBKR réels,1990,cagr_total,0.180457
+2. Système actuel,S3 + coûts IBKR réels,1990,cost_pa,0.012204
+2. Système actuel,S3 + coûts IBKR réels,2000,sharpe,0.560952
+2. Système actuel,S3 + coûts IBKR réels,2000,cagr_total,0.114261
+2. Système actuel,S3 + coûts IBKR réels,2000,cost_pa,0.011981
+2. Système actuel,S3 + coûts IBKR réels,2010,sharpe,0.278558
+2. Système actuel,S3 + coûts IBKR réels,2010,cagr_total,0.049225
+2. Système actuel,S3 + coûts IBKR réels,2010,cost_pa,0.012043
+2. Système actuel,S3 + coûts IBKR réels,2015,sharpe,0.164562
+2. Système actuel,S3 + coûts IBKR réels,2015,cagr_total,0.034898
+2. Système actuel,S3 + coûts IBKR réels,2015,cost_pa,0.012384
+2. Système actuel,S3 + coûts IBKR réels,2023-07,sharpe,-0.134022
+2. Système actuel,S3 + coûts IBKR réels,2023-07,cagr_total,0.015104
+2. Système actuel,S3 + coûts IBKR réels,2023-07,cost_pa,0.010845
+2. Système actuel,S4 + cash IBKR (= L2),1990,sharpe,0.814944
+2. Système actuel,S4 + cash IBKR (= L2),1990,cagr_total,0.173097
+2. Système actuel,S4 + cash IBKR (= L2),1990,cost_pa,0.012204
+2. Système actuel,S4 + cash IBKR (= L2),2000,sharpe,0.533891
+2. Système actuel,S4 + cash IBKR (= L2),2000,cagr_total,0.108536
+2. Système actuel,S4 + cash IBKR (= L2),2000,cost_pa,0.011981
+2. Système actuel,S4 + cash IBKR (= L2),2010,sharpe,0.255372
+2. Système actuel,S4 + cash IBKR (= L2),2010,cagr_total,0.045020
+2. Système actuel,S4 + cash IBKR (= L2),2010,cost_pa,0.012043
+2. Système actuel,S4 + cash IBKR (= L2),2015,sharpe,0.133570
+2. Système actuel,S4 + cash IBKR (= L2),2015,cagr_total,0.029282
+2. Système actuel,S4 + cash IBKR (= L2),2015,cost_pa,0.012384
+2. Système actuel,S4 + cash IBKR (= L2),2023-07,sharpe,-0.193567
+2. Système actuel,S4 + cash IBKR (= L2),2023-07,cagr_total,0.006366
+2. Système actuel,S4 + cash IBKR (= L2),2023-07,cost_pa,0.010845
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",1990,sharpe,0.753089
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",1990,cagr_total,0.159923
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",1990,cost_pa,0.023504
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2000,sharpe,0.502849
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2000,cagr_total,0.102007
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2000,cost_pa,0.017889
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2010,sharpe,0.240540
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2010,cagr_total,0.042339
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2010,cost_pa,0.014612
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2015,sharpe,0.118915
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2015,cagr_total,0.026636
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2015,cost_pa,0.014957
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2023-07,sharpe,-0.200427
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2023-07,cagr_total,0.005363
+2. Système actuel,"X1 L2, coûts fixes en USD/contrat",2023-07,cost_pa,0.011842
+2. Système actuel,"X2 L2, coûts réels x2",1990,sharpe,0.748037
+2. Système actuel,"X2 L2, coûts réels x2",1990,cagr_total,0.158870
+2. Système actuel,"X2 L2, coûts réels x2",1990,cost_pa,0.024408
+2. Système actuel,"X2 L2, coûts réels x2",2000,sharpe,0.470912
+2. Système actuel,"X2 L2, coûts réels x2",2000,cagr_total,0.095333
+2. Système actuel,"X2 L2, coûts réels x2",2000,cost_pa,0.023962
+2. Système actuel,"X2 L2, coûts réels x2",2010,sharpe,0.185832
+2. Système actuel,"X2 L2, coûts réels x2",2010,cagr_total,0.032507
+2. Système actuel,"X2 L2, coûts réels x2",2010,cost_pa,0.024086
+2. Système actuel,"X2 L2, coûts réels x2",2015,sharpe,0.063040
+2. Système actuel,"X2 L2, coûts réels x2",2015,cagr_total,0.016610
+2. Système actuel,"X2 L2, coûts réels x2",2015,cost_pa,0.024768
+2. Système actuel,"X2 L2, coûts réels x2",2023-07,sharpe,-0.268183
+2. Système actuel,"X2 L2, coûts réels x2",2023-07,cagr_total,-0.004494
+2. Système actuel,"X2 L2, coûts réels x2",2023-07,cost_pa,0.021690
+2. Système actuel,"X3 L2, marge 23 %",1990,sharpe,0.810395
+2. Système actuel,"X3 L2, marge 23 %",1990,cagr_total,0.172122
+2. Système actuel,"X3 L2, marge 23 %",1990,cost_pa,0.012204
+2. Système actuel,"X3 L2, marge 23 %",2000,sharpe,0.530806
+2. Système actuel,"X3 L2, marge 23 %",2000,cagr_total,0.107886
+2. Système actuel,"X3 L2, marge 23 %",2000,cost_pa,0.011981
+2. Système actuel,"X3 L2, marge 23 %",2010,sharpe,0.252952
+2. Système actuel,"X3 L2, marge 23 %",2010,cagr_total,0.044582
+2. Système actuel,"X3 L2, marge 23 %",2010,cost_pa,0.012043
+2. Système actuel,"X3 L2, marge 23 %",2015,sharpe,0.130147
+2. Système actuel,"X3 L2, marge 23 %",2015,cagr_total,0.028664
+2. Système actuel,"X3 L2, marge 23 %",2015,cost_pa,0.012384
+2. Système actuel,"X3 L2, marge 23 %",2023-07,sharpe,-0.202424
+2. Système actuel,"X3 L2, marge 23 %",2023-07,cagr_total,0.005073
+2. Système actuel,"X3 L2, marge 23 %",2023-07,cost_pa,0.010845
+2. Système actuel,"X4 L2, exécution 1 jour",1990,sharpe,0.802625
+2. Système actuel,"X4 L2, exécution 1 jour",1990,cagr_total,0.170906
+2. Système actuel,"X4 L2, exécution 1 jour",1990,cost_pa,0.012206
+2. Système actuel,"X4 L2, exécution 1 jour",2000,sharpe,0.520659
+2. Système actuel,"X4 L2, exécution 1 jour",2000,cagr_total,0.105978
+2. Système actuel,"X4 L2, exécution 1 jour",2000,cost_pa,0.011983
+2. Système actuel,"X4 L2, exécution 1 jour",2010,sharpe,0.242117
+2. Système actuel,"X4 L2, exécution 1 jour",2010,cagr_total,0.042679
+2. Système actuel,"X4 L2, exécution 1 jour",2010,cost_pa,0.012045
+2. Système actuel,"X4 L2, exécution 1 jour",2015,sharpe,0.121319
+2. Système actuel,"X4 L2, exécution 1 jour",2015,cagr_total,0.027012
+2. Système actuel,"X4 L2, exécution 1 jour",2015,cost_pa,0.012386
+2. Système actuel,"X4 L2, exécution 1 jour",2023-07,sharpe,-0.185934
+2. Système actuel,"X4 L2, exécution 1 jour",2023-07,cagr_total,0.007196
+2. Système actuel,"X4 L2, exécution 1 jour",2023-07,cost_pa,0.010846
+3. + stratégie 13,S0 L1 publié,1990,sharpe,1.026184
+3. + stratégie 13,S0 L1 publié,1990,cagr_total,0.222801
+3. + stratégie 13,S0 L1 publié,1990,cost_pa,0.017017
+3. + stratégie 13,S0 L1 publié,2000,sharpe,0.735948
+3. + stratégie 13,S0 L1 publié,2000,cagr_total,0.153048
+3. + stratégie 13,S0 L1 publié,2000,cost_pa,0.017208
+3. + stratégie 13,S0 L1 publié,2010,sharpe,0.461930
+3. + stratégie 13,S0 L1 publié,2010,cagr_total,0.085689
+3. + stratégie 13,S0 L1 publié,2010,cost_pa,0.018022
+3. + stratégie 13,S0 L1 publié,2015,sharpe,0.356938
+3. + stratégie 13,S0 L1 publié,2015,cagr_total,0.070441
+3. + stratégie 13,S0 L1 publié,2015,cost_pa,0.018089
+3. + stratégie 13,S0 L1 publié,2023-07,sharpe,-0.376770
+3. + stratégie 13,S0 L1 publié,2023-07,cagr_total,-0.016413
+3. + stratégie 13,S0 L1 publié,2023-07,cost_pa,0.014176
+3. + stratégie 13,S1 univers 82,1990,sharpe,0.957874
+3. + stratégie 13,S1 univers 82,1990,cagr_total,0.209734
+3. + stratégie 13,S1 univers 82,1990,cost_pa,0.016839
+3. + stratégie 13,S1 univers 82,2000,sharpe,0.650821
+3. + stratégie 13,S1 univers 82,2000,cagr_total,0.136112
+3. + stratégie 13,S1 univers 82,2000,cost_pa,0.016963
+3. + stratégie 13,S1 univers 82,2010,sharpe,0.339226
+3. + stratégie 13,S1 univers 82,2010,cagr_total,0.062680
+3. + stratégie 13,S1 univers 82,2010,cost_pa,0.017660
+3. + stratégie 13,S1 univers 82,2015,sharpe,0.237829
+3. + stratégie 13,S1 univers 82,2015,cagr_total,0.048767
+3. + stratégie 13,S1 univers 82,2015,cost_pa,0.017709
+3. + stratégie 13,S1 univers 82,2023-07,sharpe,-0.235188
+3. + stratégie 13,S1 univers 82,2023-07,cagr_total,0.000392
+3. + stratégie 13,S1 univers 82,2023-07,cost_pa,0.013647
+3. + stratégie 13,"S2 + exécution 0,5 j",1990,sharpe,0.938806
+3. + stratégie 13,"S2 + exécution 0,5 j",1990,cagr_total,0.205951
+3. + stratégie 13,"S2 + exécution 0,5 j",1990,cost_pa,0.016838
+3. + stratégie 13,"S2 + exécution 0,5 j",2000,sharpe,0.629753
+3. + stratégie 13,"S2 + exécution 0,5 j",2000,cagr_total,0.131776
+3. + stratégie 13,"S2 + exécution 0,5 j",2000,cost_pa,0.016960
+3. + stratégie 13,"S2 + exécution 0,5 j",2010,sharpe,0.320159
+3. + stratégie 13,"S2 + exécution 0,5 j",2010,cagr_total,0.059009
+3. + stratégie 13,"S2 + exécution 0,5 j",2010,cost_pa,0.017656
+3. + stratégie 13,"S2 + exécution 0,5 j",2015,sharpe,0.220201
+3. + stratégie 13,"S2 + exécution 0,5 j",2015,cagr_total,0.045426
+3. + stratégie 13,"S2 + exécution 0,5 j",2015,cost_pa,0.017706
+3. + stratégie 13,"S2 + exécution 0,5 j",2023-07,sharpe,-0.233622
+3. + stratégie 13,"S2 + exécution 0,5 j",2023-07,cagr_total,0.000377
+3. + stratégie 13,"S2 + exécution 0,5 j",2023-07,cost_pa,0.013643
+3. + stratégie 13,S3 + coûts IBKR réels,1990,sharpe,0.949896
+3. + stratégie 13,S3 + coûts IBKR réels,1990,cagr_total,0.208477
+3. + stratégie 13,S3 + coûts IBKR réels,1990,cost_pa,0.014746
+3. + stratégie 13,S3 + coûts IBKR réels,2000,sharpe,0.641439
+3. + stratégie 13,S3 + coûts IBKR réels,2000,cagr_total,0.134367
+3. + stratégie 13,S3 + coûts IBKR réels,2000,cost_pa,0.014674
+3. + stratégie 13,S3 + coûts IBKR réels,2010,sharpe,0.332865
+3. + stratégie 13,S3 + coûts IBKR réels,2010,cagr_total,0.061539
+3. + stratégie 13,S3 + coûts IBKR réels,2010,cost_pa,0.015271
+3. + stratégie 13,S3 + coûts IBKR réels,2015,sharpe,0.233058
+3. + stratégie 13,S3 + coûts IBKR réels,2015,cagr_total,0.047899
+3. + stratégie 13,S3 + coûts IBKR réels,2015,cost_pa,0.015345
+3. + stratégie 13,S3 + coûts IBKR réels,2023-07,sharpe,-0.223757
+3. + stratégie 13,S3 + coûts IBKR réels,2023-07,cagr_total,0.001819
+3. + stratégie 13,S3 + coûts IBKR réels,2023-07,cost_pa,0.012203
+3. + stratégie 13,S4 + cash IBKR (= L2),1990,sharpe,0.914754
+3. + stratégie 13,S4 + cash IBKR (= L2),1990,cagr_total,0.200464
+3. + stratégie 13,S4 + cash IBKR (= L2),1990,cost_pa,0.014746
+3. + stratégie 13,S4 + cash IBKR (= L2),2000,sharpe,0.613610
+3. + stratégie 13,S4 + cash IBKR (= L2),2000,cagr_total,0.128196
+3. + stratégie 13,S4 + cash IBKR (= L2),2000,cost_pa,0.014674
+3. + stratégie 13,S4 + cash IBKR (= L2),2010,sharpe,0.310842
+3. + stratégie 13,S4 + cash IBKR (= L2),2010,cagr_total,0.057157
+3. + stratégie 13,S4 + cash IBKR (= L2),2010,cost_pa,0.015271
+3. + stratégie 13,S4 + cash IBKR (= L2),2015,sharpe,0.202504
+3. + stratégie 13,S4 + cash IBKR (= L2),2015,cagr_total,0.042032
+3. + stratégie 13,S4 + cash IBKR (= L2),2015,cost_pa,0.015345
+3. + stratégie 13,S4 + cash IBKR (= L2),2023-07,sharpe,-0.283973
+3. + stratégie 13,S4 + cash IBKR (= L2),2023-07,cagr_total,-0.006930
+3. + stratégie 13,S4 + cash IBKR (= L2),2023-07,cost_pa,0.012203
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",1990,sharpe,0.845175
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",1990,cagr_total,0.184760
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",1990,cost_pa,0.027924
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2000,sharpe,0.578927
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2000,cagr_total,0.120553
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2000,cost_pa,0.021473
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2010,sharpe,0.293588
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2010,cagr_total,0.053737
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2010,cost_pa,0.018511
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2015,sharpe,0.185354
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2015,cagr_total,0.038752
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2015,cost_pa,0.018496
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2023-07,sharpe,-0.292293
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2023-07,cagr_total,-0.008134
+3. + stratégie 13,"X1 L2, coûts fixes en USD/contrat",2023-07,cost_pa,0.013416
+3. + stratégie 13,"X2 L2, coûts réels x2",1990,sharpe,0.836739
+3. + stratégie 13,"X2 L2, coûts réels x2",1990,cagr_total,0.182897
+3. + stratégie 13,"X2 L2, coûts réels x2",1990,cost_pa,0.029492
+3. + stratégie 13,"X2 L2, coûts réels x2",2000,sharpe,0.538710
+3. + stratégie 13,"X2 L2, coûts réels x2",2000,cagr_total,0.111761
+3. + stratégie 13,"X2 L2, coûts réels x2",2000,cost_pa,0.029348
+3. + stratégie 13,"X2 L2, coûts réels x2",2010,sharpe,0.229529
+3. + stratégie 13,"X2 L2, coûts réels x2",2010,cagr_total,0.041132
+3. + stratégie 13,"X2 L2, coûts réels x2",2010,cost_pa,0.030543
+3. + stratégie 13,"X2 L2, coûts réels x2",2015,sharpe,0.119000
+3. + stratégie 13,"X2 L2, coûts réels x2",2015,cagr_total,0.026160
+3. + stratégie 13,"X2 L2, coûts réels x2",2015,cost_pa,0.030689
+3. + stratégie 13,"X2 L2, coûts réels x2",2023-07,sharpe,-0.367657
+3. + stratégie 13,"X2 L2, coûts réels x2",2023-07,cagr_total,-0.018981
+3. + stratégie 13,"X2 L2, coûts réels x2",2023-07,cost_pa,0.024407
+3. + stratégie 13,"X3 L2, marge 23 %",1990,sharpe,0.909623
+3. + stratégie 13,"X3 L2, marge 23 %",1990,cagr_total,0.199299
+3. + stratégie 13,"X3 L2, marge 23 %",1990,cost_pa,0.014746
+3. + stratégie 13,"X3 L2, marge 23 %",2000,sharpe,0.610066
+3. + stratégie 13,"X3 L2, marge 23 %",2000,cagr_total,0.127413
+3. + stratégie 13,"X3 L2, marge 23 %",2000,cost_pa,0.014674
+3. + stratégie 13,"X3 L2, marge 23 %",2010,sharpe,0.308384
+3. + stratégie 13,"X3 L2, marge 23 %",2010,cagr_total,0.056670
+3. + stratégie 13,"X3 L2, marge 23 %",2010,cost_pa,0.015271
+3. + stratégie 13,"X3 L2, marge 23 %",2015,sharpe,0.198902
+3. + stratégie 13,"X3 L2, marge 23 %",2015,cagr_total,0.041342
+3. + stratégie 13,"X3 L2, marge 23 %",2015,cost_pa,0.015345
+3. + stratégie 13,"X3 L2, marge 23 %",2023-07,sharpe,-0.293105
+3. + stratégie 13,"X3 L2, marge 23 %",2023-07,cagr_total,-0.008250
+3. + stratégie 13,"X3 L2, marge 23 %",2023-07,cost_pa,0.012203
+3. + stratégie 13,"X4 L2, exécution 1 jour",1990,sharpe,0.894665
+3. + stratégie 13,"X4 L2, exécution 1 jour",1990,cagr_total,0.196645
+3. + stratégie 13,"X4 L2, exécution 1 jour",1990,cost_pa,0.014749
+3. + stratégie 13,"X4 L2, exécution 1 jour",2000,sharpe,0.591954
+3. + stratégie 13,"X4 L2, exécution 1 jour",2000,cagr_total,0.123827
+3. + stratégie 13,"X4 L2, exécution 1 jour",2000,cost_pa,0.014677
+3. + stratégie 13,"X4 L2, exécution 1 jour",2010,sharpe,0.291499
+3. + stratégie 13,"X4 L2, exécution 1 jour",2010,cagr_total,0.053441
+3. + stratégie 13,"X4 L2, exécution 1 jour",2010,cost_pa,0.015274
+3. + stratégie 13,"X4 L2, exécution 1 jour",2015,sharpe,0.184789
+3. + stratégie 13,"X4 L2, exécution 1 jour",2015,cagr_total,0.038644
+3. + stratégie 13,"X4 L2, exécution 1 jour",2015,cost_pa,0.015347
+3. + stratégie 13,"X4 L2, exécution 1 jour",2023-07,sharpe,-0.281564
+3. + stratégie 13,"X4 L2, exécution 1 jour",2023-07,cagr_total,-0.007005
+3. + stratégie 13,"X4 L2, exécution 1 jour",2023-07,cost_pa,0.012203
+4. + pilotage du risque,S0 L1 publié,1990,sharpe,1.126977
+4. + pilotage du risque,S0 L1 publié,1990,cagr_total,0.280826
+4. + pilotage du risque,S0 L1 publié,1990,cost_pa,0.021465
+4. + pilotage du risque,S0 L1 publié,2000,sharpe,0.808050
+4. + pilotage du risque,S0 L1 publié,2000,cagr_total,0.186488
+4. + pilotage du risque,S0 L1 publié,2000,cost_pa,0.021274
+4. + pilotage du risque,S0 L1 publié,2010,sharpe,0.541223
+4. + pilotage du risque,S0 L1 publié,2010,cagr_total,0.113938
+4. + pilotage du risque,S0 L1 publié,2010,cost_pa,0.022509
+4. + pilotage du risque,S0 L1 publié,2015,sharpe,0.372006
+4. + pilotage du risque,S0 L1 publié,2015,cagr_total,0.081496
+4. + pilotage du risque,S0 L1 publié,2015,cost_pa,0.023192
+4. + pilotage du risque,S0 L1 publié,2023-07,sharpe,-0.361814
+4. + pilotage du risque,S0 L1 publié,2023-07,cagr_total,-0.051740
+4. + pilotage du risque,S0 L1 publié,2023-07,cost_pa,0.021786
+4. + pilotage du risque,S1 univers 82,1990,sharpe,1.053161
+4. + pilotage du risque,S1 univers 82,1990,cagr_total,0.261157
+4. + pilotage du risque,S1 univers 82,1990,cost_pa,0.021054
+4. + pilotage du risque,S1 univers 82,2000,sharpe,0.707895
+4. + pilotage du risque,S1 univers 82,2000,cagr_total,0.161467
+4. + pilotage du risque,S1 univers 82,2000,cost_pa,0.020708
+4. + pilotage du risque,S1 univers 82,2010,sharpe,0.388188
+4. + pilotage du risque,S1 univers 82,2010,cagr_total,0.078220
+4. + pilotage du risque,S1 univers 82,2010,cost_pa,0.021620
+4. + pilotage du risque,S1 univers 82,2015,sharpe,0.236583
+4. + pilotage du risque,S1 univers 82,2015,cagr_total,0.050009
+4. + pilotage du risque,S1 univers 82,2015,cost_pa,0.022156
+4. + pilotage du risque,S1 univers 82,2023-07,sharpe,-0.234860
+4. + pilotage du risque,S1 univers 82,2023-07,cagr_total,-0.027416
+4. + pilotage du risque,S1 univers 82,2023-07,cost_pa,0.020482
+4. + pilotage du risque,"S2 + exécution 0,5 j",1990,sharpe,1.029633
+4. + pilotage du risque,"S2 + exécution 0,5 j",1990,cagr_total,0.256424
+4. + pilotage du risque,"S2 + exécution 0,5 j",1990,cost_pa,0.021031
+4. + pilotage du risque,"S2 + exécution 0,5 j",2000,sharpe,0.684721
+4. + pilotage du risque,"S2 + exécution 0,5 j",2000,cagr_total,0.156777
+4. + pilotage du risque,"S2 + exécution 0,5 j",2000,cost_pa,0.020688
+4. + pilotage du risque,"S2 + exécution 0,5 j",2010,sharpe,0.363211
+4. + pilotage du risque,"S2 + exécution 0,5 j",2010,cagr_total,0.072878
+4. + pilotage du risque,"S2 + exécution 0,5 j",2010,cost_pa,0.021602
+4. + pilotage du risque,"S2 + exécution 0,5 j",2015,sharpe,0.214907
+4. + pilotage du risque,"S2 + exécution 0,5 j",2015,cagr_total,0.045015
+4. + pilotage du risque,"S2 + exécution 0,5 j",2015,cost_pa,0.022136
+4. + pilotage du risque,"S2 + exécution 0,5 j",2023-07,sharpe,-0.230237
+4. + pilotage du risque,"S2 + exécution 0,5 j",2023-07,cagr_total,-0.027072
+4. + pilotage du risque,"S2 + exécution 0,5 j",2023-07,cost_pa,0.020454
+4. + pilotage du risque,S3 + coûts IBKR réels,1990,sharpe,1.041428
+4. + pilotage du risque,S3 + coûts IBKR réels,1990,cagr_total,0.259654
+4. + pilotage du risque,S3 + coûts IBKR réels,1990,cost_pa,0.018477
+4. + pilotage du risque,S3 + coûts IBKR réels,2000,sharpe,0.697656
+4. + pilotage du risque,S3 + coûts IBKR réels,2000,cagr_total,0.160058
+4. + pilotage du risque,S3 + coûts IBKR réels,2000,cost_pa,0.017868
+4. + pilotage du risque,S3 + coûts IBKR réels,2010,sharpe,0.376282
+4. + pilotage du risque,S3 + coûts IBKR réels,2010,cagr_total,0.075936
+4. + pilotage du risque,S3 + coûts IBKR réels,2010,cost_pa,0.018769
+4. + pilotage du risque,S3 + coûts IBKR réels,2015,sharpe,0.227740
+4. + pilotage du risque,S3 + coûts IBKR réels,2015,cagr_total,0.048012
+4. + pilotage du risque,S3 + coûts IBKR réels,2015,cost_pa,0.019288
+4. + pilotage du risque,S3 + coûts IBKR réels,2023-07,sharpe,-0.219107
+4. + pilotage du risque,S3 + coûts IBKR réels,2023-07,cagr_total,-0.024737
+4. + pilotage du risque,S3 + coûts IBKR réels,2023-07,cost_pa,0.018063
+4. + pilotage du risque,S4 + cash IBKR (= L2),1990,sharpe,1.008168
+4. + pilotage du risque,S4 + cash IBKR (= L2),1990,cagr_total,0.250551
+4. + pilotage du risque,S4 + cash IBKR (= L2),1990,cost_pa,0.018477
+4. + pilotage du risque,S4 + cash IBKR (= L2),2000,sharpe,0.670782
+4. + pilotage du risque,S4 + cash IBKR (= L2),2000,cagr_total,0.153251
+4. + pilotage du risque,S4 + cash IBKR (= L2),2000,cost_pa,0.017868
+4. + pilotage du risque,S4 + cash IBKR (= L2),2010,sharpe,0.354877
+4. + pilotage du risque,S4 + cash IBKR (= L2),2010,cagr_total,0.070933
+4. + pilotage du risque,S4 + cash IBKR (= L2),2010,cost_pa,0.018769
+4. + pilotage du risque,S4 + cash IBKR (= L2),2015,sharpe,0.199210
+4. + pilotage du risque,S4 + cash IBKR (= L2),2015,cagr_total,0.041362
+4. + pilotage du risque,S4 + cash IBKR (= L2),2015,cost_pa,0.019288
+4. + pilotage du risque,S4 + cash IBKR (= L2),2023-07,sharpe,-0.268698
+4. + pilotage du risque,S4 + cash IBKR (= L2),2023-07,cagr_total,-0.035081
+4. + pilotage du risque,S4 + cash IBKR (= L2),2023-07,cost_pa,0.018063
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",1990,sharpe,0.929793
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",1990,cagr_total,0.229341
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",1990,cost_pa,0.035567
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2000,sharpe,0.632099
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2000,cagr_total,0.143516
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2000,cost_pa,0.026338
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2010,sharpe,0.336680
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2010,cagr_total,0.066697
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2010,cost_pa,0.022731
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2015,sharpe,0.181527
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2015,cagr_total,0.037261
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2015,cost_pa,0.023230
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2023-07,sharpe,-0.276614
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2023-07,cagr_total,-0.036723
+4. + pilotage du risque,"X1 L2, coûts fixes en USD/contrat",2023-07,cost_pa,0.019765
+4. + pilotage du risque,"X2 L2, coûts réels x2",1990,sharpe,0.923243
+4. + pilotage du risque,"X2 L2, coûts réels x2",1990,cagr_total,0.227623
+4. + pilotage du risque,"X2 L2, coûts réels x2",1990,cost_pa,0.036950
+4. + pilotage du risque,"X2 L2, coûts réels x2",2000,sharpe,0.589116
+4. + pilotage du risque,"X2 L2, coûts réels x2",2000,cagr_total,0.132805
+4. + pilotage du risque,"X2 L2, coûts réels x2",2000,cost_pa,0.035732
+4. + pilotage du risque,"X2 L2, coûts réels x2",2010,sharpe,0.268631
+4. + pilotage du risque,"X2 L2, coûts réels x2",2010,cagr_total,0.051003
+4. + pilotage du risque,"X2 L2, coûts réels x2",2010,cost_pa,0.037535
+4. + pilotage du risque,"X2 L2, coûts réels x2",2015,sharpe,0.112683
+4. + pilotage du risque,"X2 L2, coûts réels x2",2015,cagr_total,0.021445
+4. + pilotage du risque,"X2 L2, coûts réels x2",2015,cost_pa,0.038570
+4. + pilotage du risque,"X2 L2, coûts réels x2",2023-07,sharpe,-0.352677
+4. + pilotage du risque,"X2 L2, coûts réels x2",2023-07,cagr_total,-0.052361
+4. + pilotage du risque,"X2 L2, coûts réels x2",2023-07,cost_pa,0.036118
+4. + pilotage du risque,"X3 L2, marge 23 %",1990,sharpe,1.002743
+4. + pilotage du risque,"X3 L2, marge 23 %",1990,cagr_total,0.249072
+4. + pilotage du risque,"X3 L2, marge 23 %",1990,cost_pa,0.018477
+4. + pilotage du risque,"X3 L2, marge 23 %",2000,sharpe,0.666917
+4. + pilotage du risque,"X3 L2, marge 23 %",2000,cagr_total,0.152275
+4. + pilotage du risque,"X3 L2, marge 23 %",2000,cost_pa,0.017868
+4. + pilotage du risque,"X3 L2, marge 23 %",2010,sharpe,0.351907
+4. + pilotage du risque,"X3 L2, marge 23 %",2010,cagr_total,0.070241
+4. + pilotage du risque,"X3 L2, marge 23 %",2010,cost_pa,0.018769
+4. + pilotage du risque,"X3 L2, marge 23 %",2015,sharpe,0.195055
+4. + pilotage du risque,"X3 L2, marge 23 %",2015,cagr_total,0.040397
+4. + pilotage du risque,"X3 L2, marge 23 %",2015,cost_pa,0.019288
+4. + pilotage du risque,"X3 L2, marge 23 %",2023-07,sharpe,-0.277988
+4. + pilotage du risque,"X3 L2, marge 23 %",2023-07,cagr_total,-0.037008
+4. + pilotage du risque,"X3 L2, marge 23 %",2023-07,cost_pa,0.018063
+4. + pilotage du risque,"X4 L2, exécution 1 jour",1990,sharpe,0.981890
+4. + pilotage du risque,"X4 L2, exécution 1 jour",1990,cagr_total,0.245224
+4. + pilotage du risque,"X4 L2, exécution 1 jour",1990,cost_pa,0.018443
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2000,sharpe,0.645769
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2000,cagr_total,0.148131
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2000,cost_pa,0.017837
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2010,sharpe,0.328444
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2010,cagr_total,0.065153
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2010,cost_pa,0.018736
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2015,sharpe,0.175069
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2015,cagr_total,0.035574
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2015,cost_pa,0.019248
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2023-07,sharpe,-0.263804
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2023-07,cagr_total,-0.035004
+4. + pilotage du risque,"X4 L2, exécution 1 jour",2023-07,cost_pa,0.018020
+5. Les deux,S0 L1 publié,1990,sharpe,1.170744
+5. Les deux,S0 L1 publié,1990,cagr_total,0.296037
+5. Les deux,S0 L1 publié,1990,cost_pa,0.024642
+5. Les deux,S0 L1 publié,2000,sharpe,0.845092
+5. Les deux,S0 L1 publié,2000,cagr_total,0.197881
+5. Les deux,S0 L1 publié,2000,cost_pa,0.024668
+5. Les deux,S0 L1 publié,2010,sharpe,0.541086
+5. Les deux,S0 L1 publié,2010,cagr_total,0.115754
+5. Les deux,S0 L1 publié,2010,cost_pa,0.026743
+5. Les deux,S0 L1 publié,2015,sharpe,0.386025
+5. Les deux,S0 L1 publié,2015,cagr_total,0.085192
+5. Les deux,S0 L1 publié,2015,cost_pa,0.027045
+5. Les deux,S0 L1 publié,2023-07,sharpe,-0.398060
+5. Les deux,S0 L1 publié,2023-07,cagr_total,-0.059162
+5. Les deux,S0 L1 publié,2023-07,cost_pa,0.023917
+5. Les deux,S1 univers 82,1990,sharpe,1.104526
+5. Les deux,S1 univers 82,1990,cagr_total,0.277883
+5. Les deux,S1 univers 82,1990,cost_pa,0.024121
+5. Les deux,S1 univers 82,2000,sharpe,0.755036
+5. Les deux,S1 univers 82,2000,cagr_total,0.174835
+5. Les deux,S1 univers 82,2000,cost_pa,0.023951
+5. Les deux,S1 univers 82,2010,sharpe,0.407049
+5. Les deux,S1 univers 82,2010,cagr_total,0.083603
+5. Les deux,S1 univers 82,2010,cost_pa,0.025615
+5. Les deux,S1 univers 82,2015,sharpe,0.263863
+5. Les deux,S1 univers 82,2015,cagr_total,0.056387
+5. Les deux,S1 univers 82,2015,cost_pa,0.025663
+5. Les deux,S1 univers 82,2023-07,sharpe,-0.259931
+5. Les deux,S1 univers 82,2023-07,cagr_total,-0.032745
+5. Les deux,S1 univers 82,2023-07,cost_pa,0.022348
+5. Les deux,"S2 + exécution 0,5 j",1990,sharpe,1.074229
+5. Les deux,"S2 + exécution 0,5 j",1990,cagr_total,0.271000
+5. Les deux,"S2 + exécution 0,5 j",1990,cost_pa,0.024090
+5. Les deux,"S2 + exécution 0,5 j",2000,sharpe,0.723474
+5. Les deux,"S2 + exécution 0,5 j",2000,cagr_total,0.167800
+5. Les deux,"S2 + exécution 0,5 j",2000,cost_pa,0.023922
+5. Les deux,"S2 + exécution 0,5 j",2010,sharpe,0.375225
+5. Les deux,"S2 + exécution 0,5 j",2010,cagr_total,0.076414
+5. Les deux,"S2 + exécution 0,5 j",2010,cost_pa,0.025586
+5. Les deux,"S2 + exécution 0,5 j",2015,sharpe,0.232696
+5. Les deux,"S2 + exécution 0,5 j",2015,cagr_total,0.049147
+5. Les deux,"S2 + exécution 0,5 j",2015,cost_pa,0.025630
+5. Les deux,"S2 + exécution 0,5 j",2023-07,sharpe,-0.267727
+5. Les deux,"S2 + exécution 0,5 j",2023-07,cagr_total,-0.035074
+5. Les deux,"S2 + exécution 0,5 j",2023-07,cost_pa,0.022336
+5. Les deux,S3 + coûts IBKR réels,1990,sharpe,1.088012
+5. Les deux,S3 + coûts IBKR réels,1990,cagr_total,0.274857
+5. Les deux,S3 + coûts IBKR réels,1990,cost_pa,0.021075
+5. Les deux,S3 + coûts IBKR réels,2000,sharpe,0.738256
+5. Les deux,S3 + coûts IBKR réels,2000,cagr_total,0.171621
+5. Les deux,S3 + coûts IBKR réels,2000,cost_pa,0.020670
+5. Les deux,S3 + coûts IBKR réels,2010,sharpe,0.390843
+5. Les deux,S3 + coûts IBKR réels,2010,cagr_total,0.080155
+5. Les deux,S3 + coûts IBKR réels,2010,cost_pa,0.022132
+5. Les deux,S3 + coûts IBKR réels,2015,sharpe,0.247818
+5. Les deux,S3 + coûts IBKR réels,2015,cagr_total,0.052711
+5. Les deux,S3 + coûts IBKR réels,2015,cost_pa,0.022261
+5. Les deux,S3 + coûts IBKR réels,2023-07,sharpe,-0.256855
+5. Les deux,S3 + coûts IBKR réels,2023-07,cagr_total,-0.032808
+5. Les deux,S3 + coûts IBKR réels,2023-07,cost_pa,0.020007
+5. Les deux,S4 + cash IBKR (= L2),1990,sharpe,1.053773
+5. Les deux,S4 + cash IBKR (= L2),1990,cagr_total,0.265281
+5. Les deux,S4 + cash IBKR (= L2),1990,cost_pa,0.021075
+5. Les deux,S4 + cash IBKR (= L2),2000,sharpe,0.710568
+5. Les deux,S4 + cash IBKR (= L2),2000,cagr_total,0.164474
+5. Les deux,S4 + cash IBKR (= L2),2000,cost_pa,0.020670
+5. Les deux,S4 + cash IBKR (= L2),2010,sharpe,0.369566
+5. Les deux,S4 + cash IBKR (= L2),2010,cagr_total,0.075064
+5. Les deux,S4 + cash IBKR (= L2),2010,cost_pa,0.022132
+5. Les deux,S4 + cash IBKR (= L2),2015,sharpe,0.219012
+5. Les deux,S4 + cash IBKR (= L2),2015,cagr_total,0.045934
+5. Les deux,S4 + cash IBKR (= L2),2015,cost_pa,0.022261
+5. Les deux,S4 + cash IBKR (= L2),2023-07,sharpe,-0.306633
+5. Les deux,S4 + cash IBKR (= L2),2023-07,cagr_total,-0.043130
+5. Les deux,S4 + cash IBKR (= L2),2023-07,cost_pa,0.020007
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",1990,sharpe,0.967637
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",1990,cagr_total,0.241487
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",1990,cost_pa,0.040061
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2000,sharpe,0.668565
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2000,cagr_total,0.153708
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2000,cost_pa,0.029944
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2010,sharpe,0.349021
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2010,cagr_total,0.070168
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2010,cost_pa,0.026692
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2015,sharpe,0.199304
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2015,cagr_total,0.041321
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2015,cost_pa,0.026676
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2023-07,sharpe,-0.315988
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2023-07,cagr_total,-0.045059
+5. Les deux,"X1 L2, coûts fixes en USD/contrat",2023-07,cost_pa,0.022025
+5. Les deux,"X2 L2, coûts réels x2",1990,sharpe,0.957815
+5. Les deux,"X2 L2, coûts réels x2",1990,cagr_total,0.238853
+5. Les deux,"X2 L2, coûts réels x2",1990,cost_pa,0.042144
+5. Les deux,"X2 L2, coûts réels x2",2000,sharpe,0.616887
+5. Les deux,"X2 L2, coûts réels x2",2000,cagr_total,0.140613
+5. Les deux,"X2 L2, coûts réels x2",2000,cost_pa,0.041335
+5. Les deux,"X2 L2, coûts réels x2",2010,sharpe,0.269818
+5. Les deux,"X2 L2, coûts réels x2",2010,cagr_total,0.051502
+5. Les deux,"X2 L2, coûts réels x2",2010,cost_pa,0.044259
+5. Les deux,"X2 L2, coûts réels x2",2015,sharpe,0.119594
+5. Les deux,"X2 L2, coûts réels x2",2015,cagr_total,0.022870
+5. Les deux,"X2 L2, coûts réels x2",2015,cost_pa,0.044516
+5. Les deux,"X2 L2, coûts réels x2",2023-07,sharpe,-0.399460
+5. Les deux,"X2 L2, coûts réels x2",2023-07,cagr_total,-0.062095
+5. Les deux,"X2 L2, coûts réels x2",2023-07,cost_pa,0.040007
+5. Les deux,"X3 L2, marge 23 %",1990,sharpe,1.047941
+5. Les deux,"X3 L2, marge 23 %",1990,cagr_total,0.263657
+5. Les deux,"X3 L2, marge 23 %",1990,cost_pa,0.021075
+5. Les deux,"X3 L2, marge 23 %",2000,sharpe,0.706365
+5. Les deux,"X3 L2, marge 23 %",2000,cagr_total,0.163393
+5. Les deux,"X3 L2, marge 23 %",2000,cost_pa,0.020670
+5. Les deux,"X3 L2, marge 23 %",2010,sharpe,0.366552
+5. Les deux,"X3 L2, marge 23 %",2010,cagr_total,0.074345
+5. Les deux,"X3 L2, marge 23 %",2010,cost_pa,0.022132
+5. Les deux,"X3 L2, marge 23 %",2015,sharpe,0.214733
+5. Les deux,"X3 L2, marge 23 %",2015,cagr_total,0.044931
+5. Les deux,"X3 L2, marge 23 %",2015,cost_pa,0.022261
+5. Les deux,"X3 L2, marge 23 %",2023-07,sharpe,-0.316009
+5. Les deux,"X3 L2, marge 23 %",2023-07,cagr_total,-0.045062
+5. Les deux,"X3 L2, marge 23 %",2023-07,cost_pa,0.020007
+5. Les deux,"X4 L2, exécution 1 jour",1990,sharpe,1.020824
+5. Les deux,"X4 L2, exécution 1 jour",1990,cagr_total,0.257847
+5. Les deux,"X4 L2, exécution 1 jour",1990,cost_pa,0.021028
+5. Les deux,"X4 L2, exécution 1 jour",2000,sharpe,0.677379
+5. Les deux,"X4 L2, exécution 1 jour",2000,cagr_total,0.157079
+5. Les deux,"X4 L2, exécution 1 jour",2000,cost_pa,0.020630
+5. Les deux,"X4 L2, exécution 1 jour",2010,sharpe,0.336960
+5. Les deux,"X4 L2, exécution 1 jour",2010,cagr_total,0.067613
+5. Les deux,"X4 L2, exécution 1 jour",2010,cost_pa,0.022088
+5. Les deux,"X4 L2, exécution 1 jour",2015,sharpe,0.186918
+5. Les deux,"X4 L2, exécution 1 jour",2015,cagr_total,0.038291
+5. Les deux,"X4 L2, exécution 1 jour",2015,cost_pa,0.022211
+5. Les deux,"X4 L2, exécution 1 jour",2023-07,sharpe,-0.313290
+5. Les deux,"X4 L2, exécution 1 jour",2023-07,cagr_total,-0.045539
+5. Les deux,"X4 L2, exécution 1 jour",2023-07,cost_pa,0.019962

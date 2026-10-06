@@ -1,0 +1,1201 @@
+variant,level,period,metric,value
+1. Montant fixe,L0 brut,1990-2026,cagr_excess,0.114251
+1. Montant fixe,L0 brut,1990-2026,cagr_total,0.145011
+1. Montant fixe,L0 brut,1990-2026,vol,0.245895
+1. Montant fixe,L0 brut,1990-2026,sharpe,0.555818
+1. Montant fixe,L0 brut,1990-2026,maxdd_total,-0.618349
+1. Montant fixe,L0 brut,1990-2026,cost_pa,0.000000
+1. Montant fixe,L0 brut,1990-2026,trading_cost_pa,0.000000
+1. Montant fixe,L0 brut,1990-2026,roll_cost_pa,0.000000
+1. Montant fixe,L0 brut,1990-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L0 brut,1990-2026,tbill_pa,0.027250
+1. Montant fixe,L0 brut,1990-2026,cagr_futures_excess,0.114251
+1. Montant fixe,L0 brut,1990-2026,sharpe_futures_excess,0.555818
+1. Montant fixe,L0 brut,1990-2026,maxdd_excess,-0.640968
+1. Montant fixe,L0 brut,1990-2026,gross_exposure_mean,5.255553
+1. Montant fixe,L0 brut,1990-2026,margin_share_mean,0.000000
+1. Montant fixe,L0 brut,1990-2026,years,36.524023
+1. Montant fixe,L0 brut,2000-2026,cagr_excess,0.068415
+1. Montant fixe,L0 brut,2000-2026,cagr_total,0.089161
+1. Montant fixe,L0 brut,2000-2026,vol,0.268249
+1. Montant fixe,L0 brut,2000-2026,sharpe,0.377478
+1. Montant fixe,L0 brut,2000-2026,maxdd_total,-0.618349
+1. Montant fixe,L0 brut,2000-2026,cost_pa,0.000000
+1. Montant fixe,L0 brut,2000-2026,trading_cost_pa,0.000000
+1. Montant fixe,L0 brut,2000-2026,roll_cost_pa,0.000000
+1. Montant fixe,L0 brut,2000-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L0 brut,2000-2026,tbill_pa,0.019236
+1. Montant fixe,L0 brut,2000-2026,cagr_futures_excess,0.068415
+1. Montant fixe,L0 brut,2000-2026,sharpe_futures_excess,0.377478
+1. Montant fixe,L0 brut,2000-2026,maxdd_excess,-0.640968
+1. Montant fixe,L0 brut,2000-2026,gross_exposure_mean,5.323834
+1. Montant fixe,L0 brut,2000-2026,margin_share_mean,0.000000
+1. Montant fixe,L0 brut,2000-2026,years,26.519916
+1. Montant fixe,L0 brut,2010-2026,cagr_excess,0.005493
+1. Montant fixe,L0 brut,2010-2026,cagr_total,0.020248
+1. Montant fixe,L0 brut,2010-2026,vol,0.211477
+1. Montant fixe,L0 brut,2010-2026,sharpe,0.131709
+1. Montant fixe,L0 brut,2010-2026,maxdd_total,-0.527603
+1. Montant fixe,L0 brut,2010-2026,cost_pa,0.000000
+1. Montant fixe,L0 brut,2010-2026,trading_cost_pa,0.000000
+1. Montant fixe,L0 brut,2010-2026,roll_cost_pa,0.000000
+1. Montant fixe,L0 brut,2010-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L0 brut,2010-2026,tbill_pa,0.014564
+1. Montant fixe,L0 brut,2010-2026,cagr_futures_excess,0.005493
+1. Montant fixe,L0 brut,2010-2026,sharpe_futures_excess,0.131709
+1. Montant fixe,L0 brut,2010-2026,maxdd_excess,-0.553038
+1. Montant fixe,L0 brut,2010-2026,gross_exposure_mean,5.150693
+1. Montant fixe,L0 brut,2010-2026,margin_share_mean,0.000000
+1. Montant fixe,L0 brut,2010-2026,years,16.524023
+1. Montant fixe,L0 brut,2015-2026,cagr_excess,-0.014166
+1. Montant fixe,L0 brut,2015-2026,cagr_total,0.006326
+1. Montant fixe,L0 brut,2015-2026,vol,0.215863
+1. Montant fixe,L0 brut,2015-2026,sharpe,0.043574
+1. Montant fixe,L0 brut,2015-2026,maxdd_total,-0.527603
+1. Montant fixe,L0 brut,2015-2026,cost_pa,0.000000
+1. Montant fixe,L0 brut,2015-2026,trading_cost_pa,0.000000
+1. Montant fixe,L0 brut,2015-2026,roll_cost_pa,0.000000
+1. Montant fixe,L0 brut,2015-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L0 brut,2015-2026,tbill_pa,0.020566
+1. Montant fixe,L0 brut,2015-2026,cagr_futures_excess,-0.014166
+1. Montant fixe,L0 brut,2015-2026,sharpe_futures_excess,0.043574
+1. Montant fixe,L0 brut,2015-2026,maxdd_excess,-0.553038
+1. Montant fixe,L0 brut,2015-2026,gross_exposure_mean,5.346959
+1. Montant fixe,L0 brut,2015-2026,margin_share_mean,0.000000
+1. Montant fixe,L0 brut,2015-2026,years,11.524708
+1. Montant fixe,L0 brut,2023-07->2026-07,cagr_excess,-0.069659
+1. Montant fixe,L0 brut,2023-07->2026-07,cagr_total,-0.026988
+1. Montant fixe,L0 brut,2023-07->2026-07,vol,0.169684
+1. Montant fixe,L0 brut,2023-07->2026-07,sharpe,-0.331546
+1. Montant fixe,L0 brut,2023-07->2026-07,maxdd_total,-0.285568
+1. Montant fixe,L0 brut,2023-07->2026-07,cost_pa,0.000000
+1. Montant fixe,L0 brut,2023-07->2026-07,trading_cost_pa,0.000000
+1. Montant fixe,L0 brut,2023-07->2026-07,roll_cost_pa,0.000000
+1. Montant fixe,L0 brut,2023-07->2026-07,cash_shortfall_pa,0.000000
+1. Montant fixe,L0 brut,2023-07->2026-07,tbill_pa,0.044841
+1. Montant fixe,L0 brut,2023-07->2026-07,cagr_futures_excess,-0.069659
+1. Montant fixe,L0 brut,2023-07->2026-07,sharpe_futures_excess,-0.331546
+1. Montant fixe,L0 brut,2023-07->2026-07,maxdd_excess,-0.332878
+1. Montant fixe,L0 brut,2023-07->2026-07,gross_exposure_mean,5.319021
+1. Montant fixe,L0 brut,2023-07->2026-07,margin_share_mean,0.000000
+1. Montant fixe,L0 brut,2023-07->2026-07,years,3.001778
+1. Montant fixe,L1 backtest,1990-2026,cagr_excess,0.099921
+1. Montant fixe,L1 backtest,1990-2026,cagr_total,0.130287
+1. Montant fixe,L1 backtest,1990-2026,vol,0.245923
+1. Montant fixe,L1 backtest,1990-2026,sharpe,0.504123
+1. Montant fixe,L1 backtest,1990-2026,maxdd_total,-0.668521
+1. Montant fixe,L1 backtest,1990-2026,cost_pa,0.012940
+1. Montant fixe,L1 backtest,1990-2026,trading_cost_pa,0.006357
+1. Montant fixe,L1 backtest,1990-2026,roll_cost_pa,0.006583
+1. Montant fixe,L1 backtest,1990-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L1 backtest,1990-2026,tbill_pa,0.027250
+1. Montant fixe,L1 backtest,1990-2026,cagr_futures_excess,0.099921
+1. Montant fixe,L1 backtest,1990-2026,sharpe_futures_excess,0.504123
+1. Montant fixe,L1 backtest,1990-2026,maxdd_excess,-0.688167
+1. Montant fixe,L1 backtest,1990-2026,gross_exposure_mean,5.255553
+1. Montant fixe,L1 backtest,1990-2026,margin_share_mean,0.000000
+1. Montant fixe,L1 backtest,1990-2026,years,36.524023
+1. Montant fixe,L1 backtest,2000-2026,cagr_excess,0.054631
+1. Montant fixe,L1 backtest,2000-2026,cagr_total,0.075110
+1. Montant fixe,L1 backtest,2000-2026,vol,0.268277
+1. Montant fixe,L1 backtest,2000-2026,sharpe,0.329979
+1. Montant fixe,L1 backtest,2000-2026,maxdd_total,-0.668521
+1. Montant fixe,L1 backtest,2000-2026,cost_pa,0.012978
+1. Montant fixe,L1 backtest,2000-2026,trading_cost_pa,0.006486
+1. Montant fixe,L1 backtest,2000-2026,roll_cost_pa,0.006492
+1. Montant fixe,L1 backtest,2000-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L1 backtest,2000-2026,tbill_pa,0.019236
+1. Montant fixe,L1 backtest,2000-2026,cagr_futures_excess,0.054631
+1. Montant fixe,L1 backtest,2000-2026,sharpe_futures_excess,0.329979
+1. Montant fixe,L1 backtest,2000-2026,maxdd_excess,-0.688167
+1. Montant fixe,L1 backtest,2000-2026,gross_exposure_mean,5.323834
+1. Montant fixe,L1 backtest,2000-2026,margin_share_mean,0.000000
+1. Montant fixe,L1 backtest,2000-2026,years,26.519916
+1. Montant fixe,L1 backtest,2010-2026,cagr_excess,-0.007024
+1. Montant fixe,L1 backtest,2010-2026,cagr_total,0.007549
+1. Montant fixe,L1 backtest,2010-2026,vol,0.211510
+1. Montant fixe,L1 backtest,2010-2026,sharpe,0.073624
+1. Montant fixe,L1 backtest,2010-2026,maxdd_total,-0.551747
+1. Montant fixe,L1 backtest,2010-2026,cost_pa,0.012517
+1. Montant fixe,L1 backtest,2010-2026,trading_cost_pa,0.006310
+1. Montant fixe,L1 backtest,2010-2026,roll_cost_pa,0.006207
+1. Montant fixe,L1 backtest,2010-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L1 backtest,2010-2026,tbill_pa,0.014564
+1. Montant fixe,L1 backtest,2010-2026,cagr_futures_excess,-0.007024
+1. Montant fixe,L1 backtest,2010-2026,sharpe_futures_excess,0.073624
+1. Montant fixe,L1 backtest,2010-2026,maxdd_excess,-0.575883
+1. Montant fixe,L1 backtest,2010-2026,gross_exposure_mean,5.150693
+1. Montant fixe,L1 backtest,2010-2026,margin_share_mean,0.000000
+1. Montant fixe,L1 backtest,2010-2026,years,16.524023
+1. Montant fixe,L1 backtest,2015-2026,cagr_excess,-0.026652
+1. Montant fixe,L1 backtest,2015-2026,cagr_total,-0.006419
+1. Montant fixe,L1 backtest,2015-2026,vol,0.215896
+1. Montant fixe,L1 backtest,2015-2026,sharpe,-0.014309
+1. Montant fixe,L1 backtest,2015-2026,maxdd_total,-0.551747
+1. Montant fixe,L1 backtest,2015-2026,cost_pa,0.012737
+1. Montant fixe,L1 backtest,2015-2026,trading_cost_pa,0.006467
+1. Montant fixe,L1 backtest,2015-2026,roll_cost_pa,0.006270
+1. Montant fixe,L1 backtest,2015-2026,cash_shortfall_pa,0.000000
+1. Montant fixe,L1 backtest,2015-2026,tbill_pa,0.020566
+1. Montant fixe,L1 backtest,2015-2026,cagr_futures_excess,-0.026652
+1. Montant fixe,L1 backtest,2015-2026,sharpe_futures_excess,-0.014309
+1. Montant fixe,L1 backtest,2015-2026,maxdd_excess,-0.575883
+1. Montant fixe,L1 backtest,2015-2026,gross_exposure_mean,5.346959
+1. Montant fixe,L1 backtest,2015-2026,margin_share_mean,0.000000
+1. Montant fixe,L1 backtest,2015-2026,years,11.524708
+1. Montant fixe,L1 backtest,2023-07->2026-07,cagr_excess,-0.081666
+1. Montant fixe,L1 backtest,2023-07->2026-07,cagr_total,-0.039544
+1. Montant fixe,L1 backtest,2023-07->2026-07,vol,0.169732
+1. Montant fixe,L1 backtest,2023-07->2026-07,sharpe,-0.406413
+1. Montant fixe,L1 backtest,2023-07->2026-07,maxdd_total,-0.295868
+1. Montant fixe,L1 backtest,2023-07->2026-07,cost_pa,0.012978
+1. Montant fixe,L1 backtest,2023-07->2026-07,trading_cost_pa,0.006885
+1. Montant fixe,L1 backtest,2023-07->2026-07,roll_cost_pa,0.006092
+1. Montant fixe,L1 backtest,2023-07->2026-07,cash_shortfall_pa,0.000000
+1. Montant fixe,L1 backtest,2023-07->2026-07,tbill_pa,0.044841
+1. Montant fixe,L1 backtest,2023-07->2026-07,cagr_futures_excess,-0.081666
+1. Montant fixe,L1 backtest,2023-07->2026-07,sharpe_futures_excess,-0.406413
+1. Montant fixe,L1 backtest,2023-07->2026-07,maxdd_excess,-0.347361
+1. Montant fixe,L1 backtest,2023-07->2026-07,gross_exposure_mean,5.319021
+1. Montant fixe,L1 backtest,2023-07->2026-07,margin_share_mean,0.000000
+1. Montant fixe,L1 backtest,2023-07->2026-07,years,3.001778
+1. Montant fixe,L2 réaliste,1990-2026,cagr_excess,0.083329
+1. Montant fixe,L2 réaliste,1990-2026,cagr_total,0.113238
+1. Montant fixe,L2 réaliste,1990-2026,vol,0.248803
+1. Montant fixe,L2 réaliste,1990-2026,sharpe,0.441329
+1. Montant fixe,L2 réaliste,1990-2026,maxdd_total,-0.740857
+1. Montant fixe,L2 réaliste,1990-2026,cost_pa,0.011747
+1. Montant fixe,L2 réaliste,1990-2026,trading_cost_pa,0.005754
+1. Montant fixe,L2 réaliste,1990-2026,roll_cost_pa,0.005993
+1. Montant fixe,L2 réaliste,1990-2026,cash_shortfall_pa,0.006269
+1. Montant fixe,L2 réaliste,1990-2026,tbill_pa,0.027250
+1. Montant fixe,L2 réaliste,1990-2026,cagr_futures_excess,0.090139
+1. Montant fixe,L2 réaliste,1990-2026,sharpe_futures_excess,0.466047
+1. Montant fixe,L2 réaliste,1990-2026,maxdd_excess,-0.756293
+1. Montant fixe,L2 réaliste,1990-2026,gross_exposure_mean,5.234585
+1. Montant fixe,L2 réaliste,1990-2026,margin_share_mean,0.101310
+1. Montant fixe,L2 réaliste,1990-2026,years,36.524023
+1. Montant fixe,L2 réaliste,2000-2026,cagr_excess,0.035415
+1. Montant fixe,L2 réaliste,2000-2026,cagr_total,0.055521
+1. Montant fixe,L2 réaliste,2000-2026,vol,0.271926
+1. Montant fixe,L2 réaliste,2000-2026,sharpe,0.262991
+1. Montant fixe,L2 réaliste,2000-2026,maxdd_total,-0.740857
+1. Montant fixe,L2 réaliste,2000-2026,cost_pa,0.011635
+1. Montant fixe,L2 réaliste,2000-2026,trading_cost_pa,0.005838
+1. Montant fixe,L2 réaliste,2000-2026,roll_cost_pa,0.005797
+1. Montant fixe,L2 réaliste,2000-2026,cash_shortfall_pa,0.005144
+1. Montant fixe,L2 réaliste,2000-2026,tbill_pa,0.019236
+1. Montant fixe,L2 réaliste,2000-2026,cagr_futures_excess,0.040754
+1. Montant fixe,L2 réaliste,2000-2026,sharpe_futures_excess,0.281549
+1. Montant fixe,L2 réaliste,2000-2026,maxdd_excess,-0.756293
+1. Montant fixe,L2 réaliste,2000-2026,gross_exposure_mean,5.295459
+1. Montant fixe,L2 réaliste,2000-2026,margin_share_mean,0.102488
+1. Montant fixe,L2 réaliste,2000-2026,years,26.519916
+1. Montant fixe,L2 réaliste,2010-2026,cagr_excess,-0.031866
+1. Montant fixe,L2 réaliste,2010-2026,cagr_total,-0.017657
+1. Montant fixe,L2 réaliste,2010-2026,vol,0.217521
+1. Montant fixe,L2 réaliste,2010-2026,sharpe,-0.036640
+1. Montant fixe,L2 réaliste,2010-2026,maxdd_total,-0.612074
+1. Montant fixe,L2 réaliste,2010-2026,cost_pa,0.011295
+1. Montant fixe,L2 réaliste,2010-2026,trading_cost_pa,0.005750
+1. Montant fixe,L2 réaliste,2010-2026,roll_cost_pa,0.005546
+1. Montant fixe,L2 réaliste,2010-2026,cash_shortfall_pa,0.004090
+1. Montant fixe,L2 réaliste,2010-2026,tbill_pa,0.014564
+1. Montant fixe,L2 réaliste,2010-2026,cagr_futures_excess,-0.027897
+1. Montant fixe,L2 réaliste,2010-2026,sharpe_futures_excess,-0.018192
+1. Montant fixe,L2 réaliste,2010-2026,maxdd_excess,-0.633078
+1. Montant fixe,L2 réaliste,2010-2026,gross_exposure_mean,5.109196
+1. Montant fixe,L2 réaliste,2010-2026,margin_share_mean,0.098884
+1. Montant fixe,L2 réaliste,2010-2026,years,16.524023
+1. Montant fixe,L2 réaliste,2015-2026,cagr_excess,-0.051827
+1. Montant fixe,L2 réaliste,2015-2026,cagr_total,-0.032118
+1. Montant fixe,L2 réaliste,2015-2026,vol,0.224619
+1. Montant fixe,L2 réaliste,2015-2026,sharpe,-0.119487
+1. Montant fixe,L2 réaliste,2015-2026,maxdd_total,-0.612074
+1. Montant fixe,L2 réaliste,2015-2026,cost_pa,0.011544
+1. Montant fixe,L2 réaliste,2015-2026,trading_cost_pa,0.005863
+1. Montant fixe,L2 réaliste,2015-2026,roll_cost_pa,0.005680
+1. Montant fixe,L2 réaliste,2015-2026,cash_shortfall_pa,0.005548
+1. Montant fixe,L2 réaliste,2015-2026,tbill_pa,0.020566
+1. Montant fixe,L2 réaliste,2015-2026,cagr_futures_excess,-0.046550
+1. Montant fixe,L2 réaliste,2015-2026,sharpe_futures_excess,-0.095255
+1. Montant fixe,L2 réaliste,2015-2026,maxdd_excess,-0.633078
+1. Montant fixe,L2 réaliste,2015-2026,gross_exposure_mean,5.309634
+1. Montant fixe,L2 réaliste,2015-2026,margin_share_mean,0.102763
+1. Montant fixe,L2 réaliste,2015-2026,years,11.524708
+1. Montant fixe,L2 réaliste,2023-07->2026-07,cagr_excess,-0.076627
+1. Montant fixe,L2 réaliste,2023-07->2026-07,cagr_total,-0.034275
+1. Montant fixe,L2 réaliste,2023-07->2026-07,vol,0.183602
+1. Montant fixe,L2 réaliste,2023-07->2026-07,sharpe,-0.332874
+1. Montant fixe,L2 réaliste,2023-07->2026-07,maxdd_total,-0.304809
+1. Montant fixe,L2 réaliste,2023-07->2026-07,cost_pa,0.011734
+1. Montant fixe,L2 réaliste,2023-07->2026-07,trading_cost_pa,0.006112
+1. Montant fixe,L2 réaliste,2023-07->2026-07,roll_cost_pa,0.005622
+1. Montant fixe,L2 réaliste,2023-07->2026-07,cash_shortfall_pa,0.009161
+1. Montant fixe,L2 réaliste,2023-07->2026-07,tbill_pa,0.044841
+1. Montant fixe,L2 réaliste,2023-07->2026-07,cagr_futures_excess,-0.068126
+1. Montant fixe,L2 réaliste,2023-07->2026-07,sharpe_futures_excess,-0.283955
+1. Montant fixe,L2 réaliste,2023-07->2026-07,maxdd_excess,-0.357199
+1. Montant fixe,L2 réaliste,2023-07->2026-07,gross_exposure_mean,5.310385
+1. Montant fixe,L2 réaliste,2023-07->2026-07,margin_share_mean,0.102777
+1. Montant fixe,L2 réaliste,2023-07->2026-07,years,3.001778
+2. Système actuel,L0 brut,1990-2026,cagr_excess,0.177751
+2. Système actuel,L0 brut,1990-2026,cagr_total,0.210257
+2. Système actuel,L0 brut,1990-2026,vol,0.176276
+2. Système actuel,L0 brut,1990-2026,sharpe,0.999408
+2. Système actuel,L0 brut,1990-2026,maxdd_total,-0.378213
+2. Système actuel,L0 brut,1990-2026,cost_pa,0.000000
+2. Système actuel,L0 brut,1990-2026,trading_cost_pa,0.000000
+2. Système actuel,L0 brut,1990-2026,roll_cost_pa,0.000000
+2. Système actuel,L0 brut,1990-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L0 brut,1990-2026,tbill_pa,0.027250
+2. Système actuel,L0 brut,1990-2026,cagr_futures_excess,0.177751
+2. Système actuel,L0 brut,1990-2026,sharpe_futures_excess,0.999408
+2. Système actuel,L0 brut,1990-2026,maxdd_excess,-0.405828
+2. Système actuel,L0 brut,1990-2026,gross_exposure_mean,5.595663
+2. Système actuel,L0 brut,1990-2026,margin_share_mean,0.000000
+2. Système actuel,L0 brut,1990-2026,years,36.524023
+2. Système actuel,L0 brut,2000-2026,cagr_excess,0.125501
+2. Système actuel,L0 brut,2000-2026,cagr_total,0.147351
+2. Système actuel,L0 brut,2000-2026,vol,0.182983
+2. Système actuel,L0 brut,2000-2026,sharpe,0.725731
+2. Système actuel,L0 brut,2000-2026,maxdd_total,-0.378213
+2. Système actuel,L0 brut,2000-2026,cost_pa,0.000000
+2. Système actuel,L0 brut,2000-2026,trading_cost_pa,0.000000
+2. Système actuel,L0 brut,2000-2026,roll_cost_pa,0.000000
+2. Système actuel,L0 brut,2000-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L0 brut,2000-2026,tbill_pa,0.019236
+2. Système actuel,L0 brut,2000-2026,cagr_futures_excess,0.125501
+2. Système actuel,L0 brut,2000-2026,sharpe_futures_excess,0.725731
+2. Système actuel,L0 brut,2000-2026,maxdd_excess,-0.405828
+2. Système actuel,L0 brut,2000-2026,gross_exposure_mean,5.813159
+2. Système actuel,L0 brut,2000-2026,margin_share_mean,0.000000
+2. Système actuel,L0 brut,2000-2026,years,26.519916
+2. Système actuel,L0 brut,2010-2026,cagr_excess,0.072529
+2. Système actuel,L0 brut,2010-2026,cagr_total,0.088265
+2. Système actuel,L0 brut,2010-2026,vol,0.163960
+2. Système actuel,L0 brut,2010-2026,sharpe,0.501217
+2. Système actuel,L0 brut,2010-2026,maxdd_total,-0.378213
+2. Système actuel,L0 brut,2010-2026,cost_pa,0.000000
+2. Système actuel,L0 brut,2010-2026,trading_cost_pa,0.000000
+2. Système actuel,L0 brut,2010-2026,roll_cost_pa,0.000000
+2. Système actuel,L0 brut,2010-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L0 brut,2010-2026,tbill_pa,0.014564
+2. Système actuel,L0 brut,2010-2026,cagr_futures_excess,0.072529
+2. Système actuel,L0 brut,2010-2026,sharpe_futures_excess,0.501217
+2. Système actuel,L0 brut,2010-2026,maxdd_excess,-0.405828
+2. Système actuel,L0 brut,2010-2026,gross_exposure_mean,6.043951
+2. Système actuel,L0 brut,2010-2026,margin_share_mean,0.000000
+2. Système actuel,L0 brut,2010-2026,years,16.524023
+2. Système actuel,L0 brut,2015-2026,cagr_excess,0.051597
+2. Système actuel,L0 brut,2015-2026,cagr_total,0.073450
+2. Système actuel,L0 brut,2015-2026,vol,0.163880
+2. Système actuel,L0 brut,2015-2026,sharpe,0.383255
+2. Système actuel,L0 brut,2015-2026,maxdd_total,-0.378213
+2. Système actuel,L0 brut,2015-2026,cost_pa,0.000000
+2. Système actuel,L0 brut,2015-2026,trading_cost_pa,0.000000
+2. Système actuel,L0 brut,2015-2026,roll_cost_pa,0.000000
+2. Système actuel,L0 brut,2015-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L0 brut,2015-2026,tbill_pa,0.020566
+2. Système actuel,L0 brut,2015-2026,cagr_futures_excess,0.051597
+2. Système actuel,L0 brut,2015-2026,sharpe_futures_excess,0.383255
+2. Système actuel,L0 brut,2015-2026,maxdd_excess,-0.405828
+2. Système actuel,L0 brut,2015-2026,gross_exposure_mean,6.307402
+2. Système actuel,L0 brut,2015-2026,margin_share_mean,0.000000
+2. Système actuel,L0 brut,2015-2026,years,11.524708
+2. Système actuel,L0 brut,2023-07->2026-07,cagr_excess,-0.034312
+2. Système actuel,L0 brut,2023-07->2026-07,cagr_total,0.009974
+2. Système actuel,L0 brut,2023-07->2026-07,vol,0.132688
+2. Système actuel,L0 brut,2023-07->2026-07,sharpe,-0.191385
+2. Système actuel,L0 brut,2023-07->2026-07,maxdd_total,-0.248162
+2. Système actuel,L0 brut,2023-07->2026-07,cost_pa,0.000000
+2. Système actuel,L0 brut,2023-07->2026-07,trading_cost_pa,0.000000
+2. Système actuel,L0 brut,2023-07->2026-07,roll_cost_pa,0.000000
+2. Système actuel,L0 brut,2023-07->2026-07,cash_shortfall_pa,0.000000
+2. Système actuel,L0 brut,2023-07->2026-07,tbill_pa,0.044841
+2. Système actuel,L0 brut,2023-07->2026-07,cagr_futures_excess,-0.034312
+2. Système actuel,L0 brut,2023-07->2026-07,sharpe_futures_excess,-0.191385
+2. Système actuel,L0 brut,2023-07->2026-07,maxdd_excess,-0.285031
+2. Système actuel,L0 brut,2023-07->2026-07,gross_exposure_mean,4.731440
+2. Système actuel,L0 brut,2023-07->2026-07,margin_share_mean,0.000000
+2. Système actuel,L0 brut,2023-07->2026-07,years,3.001778
+2. Système actuel,L1 backtest,1990-2026,cagr_excess,0.161315
+2. Système actuel,L1 backtest,1990-2026,cagr_total,0.193369
+2. Système actuel,L1 backtest,1990-2026,vol,0.176325
+2. Système actuel,L1 backtest,1990-2026,sharpe,0.920919
+2. Système actuel,L1 backtest,1990-2026,maxdd_total,-0.402317
+2. Système actuel,L1 backtest,1990-2026,cost_pa,0.014052
+2. Système actuel,L1 backtest,1990-2026,trading_cost_pa,0.007300
+2. Système actuel,L1 backtest,1990-2026,roll_cost_pa,0.006753
+2. Système actuel,L1 backtest,1990-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L1 backtest,1990-2026,tbill_pa,0.027250
+2. Système actuel,L1 backtest,1990-2026,cagr_futures_excess,0.161315
+2. Système actuel,L1 backtest,1990-2026,sharpe_futures_excess,0.920919
+2. Système actuel,L1 backtest,1990-2026,maxdd_excess,-0.425420
+2. Système actuel,L1 backtest,1990-2026,gross_exposure_mean,5.595663
+2. Système actuel,L1 backtest,1990-2026,margin_share_mean,0.000000
+2. Système actuel,L1 backtest,1990-2026,years,36.524023
+2. Système actuel,L1 backtest,2000-2026,cagr_excess,0.109777
+2. Système actuel,L1 backtest,2000-2026,cagr_total,0.131323
+2. Système actuel,L1 backtest,2000-2026,vol,0.183035
+2. Système actuel,L1 backtest,2000-2026,sharpe,0.650141
+2. Système actuel,L1 backtest,2000-2026,maxdd_total,-0.402317
+2. Système actuel,L1 backtest,2000-2026,cost_pa,0.014064
+2. Système actuel,L1 backtest,2000-2026,trading_cost_pa,0.007437
+2. Système actuel,L1 backtest,2000-2026,roll_cost_pa,0.006628
+2. Système actuel,L1 backtest,2000-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L1 backtest,2000-2026,tbill_pa,0.019236
+2. Système actuel,L1 backtest,2000-2026,cagr_futures_excess,0.109777
+2. Système actuel,L1 backtest,2000-2026,sharpe_futures_excess,0.650141
+2. Système actuel,L1 backtest,2000-2026,maxdd_excess,-0.425420
+2. Système actuel,L1 backtest,2000-2026,gross_exposure_mean,5.813159
+2. Système actuel,L1 backtest,2000-2026,margin_share_mean,0.000000
+2. Système actuel,L1 backtest,2000-2026,years,26.519916
+2. Système actuel,L1 backtest,2010-2026,cagr_excess,0.057454
+2. Système actuel,L1 backtest,2010-2026,cagr_total,0.072969
+2. Système actuel,L1 backtest,2010-2026,vol,0.164008
+2. Système actuel,L1 backtest,2010-2026,sharpe,0.416427
+2. Système actuel,L1 backtest,2010-2026,maxdd_total,-0.402317
+2. Système actuel,L1 backtest,2010-2026,cost_pa,0.014150
+2. Système actuel,L1 backtest,2010-2026,trading_cost_pa,0.007474
+2. Système actuel,L1 backtest,2010-2026,roll_cost_pa,0.006676
+2. Système actuel,L1 backtest,2010-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L1 backtest,2010-2026,tbill_pa,0.014564
+2. Système actuel,L1 backtest,2010-2026,cagr_futures_excess,0.057454
+2. Système actuel,L1 backtest,2010-2026,sharpe_futures_excess,0.416427
+2. Système actuel,L1 backtest,2010-2026,maxdd_excess,-0.425420
+2. Système actuel,L1 backtest,2010-2026,gross_exposure_mean,6.043951
+2. Système actuel,L1 backtest,2010-2026,margin_share_mean,0.000000
+2. Système actuel,L1 backtest,2010-2026,years,16.524023
+2. Système actuel,L1 backtest,2015-2026,cagr_excess,0.036461
+2. Système actuel,L1 backtest,2015-2026,cagr_total,0.058000
+2. Système actuel,L1 backtest,2015-2026,vol,0.163932
+2. Système actuel,L1 backtest,2015-2026,sharpe,0.296422
+2. Système actuel,L1 backtest,2015-2026,maxdd_total,-0.402317
+2. Système actuel,L1 backtest,2015-2026,cost_pa,0.014491
+2. Système actuel,L1 backtest,2015-2026,trading_cost_pa,0.007757
+2. Système actuel,L1 backtest,2015-2026,roll_cost_pa,0.006734
+2. Système actuel,L1 backtest,2015-2026,cash_shortfall_pa,0.000000
+2. Système actuel,L1 backtest,2015-2026,tbill_pa,0.020566
+2. Système actuel,L1 backtest,2015-2026,cagr_futures_excess,0.036461
+2. Système actuel,L1 backtest,2015-2026,sharpe_futures_excess,0.296422
+2. Système actuel,L1 backtest,2015-2026,maxdd_excess,-0.425420
+2. Système actuel,L1 backtest,2015-2026,gross_exposure_mean,6.307402
+2. Système actuel,L1 backtest,2015-2026,margin_share_mean,0.000000
+2. Système actuel,L1 backtest,2015-2026,years,11.524708
+2. Système actuel,L1 backtest,2023-07->2026-07,cagr_excess,-0.046363
+2. Système actuel,L1 backtest,2023-07->2026-07,cagr_total,-0.002628
+2. Système actuel,L1 backtest,2023-07->2026-07,vol,0.132756
+2. Système actuel,L1 backtest,2023-07->2026-07,sharpe,-0.283943
+2. Système actuel,L1 backtest,2023-07->2026-07,maxdd_total,-0.258487
+2. Système actuel,L1 backtest,2023-07->2026-07,cost_pa,0.012546
+2. Système actuel,L1 backtest,2023-07->2026-07,trading_cost_pa,0.006958
+2. Système actuel,L1 backtest,2023-07->2026-07,roll_cost_pa,0.005588
+2. Système actuel,L1 backtest,2023-07->2026-07,cash_shortfall_pa,0.000000
+2. Système actuel,L1 backtest,2023-07->2026-07,tbill_pa,0.044841
+2. Système actuel,L1 backtest,2023-07->2026-07,cagr_futures_excess,-0.046363
+2. Système actuel,L1 backtest,2023-07->2026-07,sharpe_futures_excess,-0.283943
+2. Système actuel,L1 backtest,2023-07->2026-07,maxdd_excess,-0.296220
+2. Système actuel,L1 backtest,2023-07->2026-07,gross_exposure_mean,4.731440
+2. Système actuel,L1 backtest,2023-07->2026-07,margin_share_mean,0.000000
+2. Système actuel,L1 backtest,2023-07->2026-07,years,3.001778
+2. Système actuel,L2 réaliste,1990-2026,cagr_excess,0.141586
+2. Système actuel,L2 réaliste,1990-2026,cagr_total,0.173097
+2. Système actuel,L2 réaliste,1990-2026,vol,0.179264
+2. Système actuel,L2 réaliste,1990-2026,sharpe,0.814944
+2. Système actuel,L2 réaliste,1990-2026,maxdd_total,-0.419873
+2. Système actuel,L2 réaliste,1990-2026,cost_pa,0.012204
+2. Système actuel,L2 réaliste,1990-2026,trading_cost_pa,0.006354
+2. Système actuel,L2 réaliste,1990-2026,roll_cost_pa,0.005850
+2. Système actuel,L2 réaliste,1990-2026,cash_shortfall_pa,0.006260
+2. Système actuel,L2 réaliste,1990-2026,tbill_pa,0.027250
+2. Système actuel,L2 réaliste,1990-2026,cagr_futures_excess,0.148750
+2. Système actuel,L2 réaliste,1990-2026,sharpe_futures_excess,0.849184
+2. Système actuel,L2 réaliste,1990-2026,maxdd_excess,-0.444381
+2. Système actuel,L2 réaliste,1990-2026,gross_exposure_mean,5.570252
+2. Système actuel,L2 réaliste,1990-2026,margin_share_mean,0.107807
+2. Système actuel,L2 réaliste,1990-2026,years,36.524023
+2. Système actuel,L2 réaliste,2000-2026,cagr_excess,0.087424
+2. Système actuel,L2 réaliste,2000-2026,cagr_total,0.108536
+2. Système actuel,L2 réaliste,2000-2026,vol,0.186823
+2. Système actuel,L2 réaliste,2000-2026,sharpe,0.533891
+2. Système actuel,L2 réaliste,2000-2026,maxdd_total,-0.419873
+2. Système actuel,L2 réaliste,2000-2026,cost_pa,0.011981
+2. Système actuel,L2 réaliste,2000-2026,trading_cost_pa,0.006386
+2. Système actuel,L2 réaliste,2000-2026,roll_cost_pa,0.005595
+2. Système actuel,L2 réaliste,2000-2026,cash_shortfall_pa,0.005154
+2. Système actuel,L2 réaliste,2000-2026,tbill_pa,0.019236
+2. Système actuel,L2 réaliste,2000-2026,cagr_futures_excess,0.093040
+2. Système actuel,L2 réaliste,2000-2026,sharpe_futures_excess,0.560952
+2. Système actuel,L2 réaliste,2000-2026,maxdd_excess,-0.444381
+2. Système actuel,L2 réaliste,2000-2026,gross_exposure_mean,5.778646
+2. Système actuel,L2 réaliste,2000-2026,margin_share_mean,0.111840
+2. Système actuel,L2 réaliste,2000-2026,years,26.519916
+2. Système actuel,L2 réaliste,2010-2026,cagr_excess,0.029909
+2. Système actuel,L2 réaliste,2010-2026,cagr_total,0.045020
+2. Système actuel,L2 réaliste,2010-2026,vol,0.169978
+2. Système actuel,L2 réaliste,2010-2026,sharpe,0.255372
+2. Système actuel,L2 réaliste,2010-2026,maxdd_total,-0.419873
+2. Système actuel,L2 réaliste,2010-2026,cost_pa,0.012043
+2. Système actuel,L2 réaliste,2010-2026,trading_cost_pa,0.006435
+2. Système actuel,L2 réaliste,2010-2026,roll_cost_pa,0.005608
+2. Système actuel,L2 réaliste,2010-2026,cash_shortfall_pa,0.004016
+2. Système actuel,L2 réaliste,2010-2026,tbill_pa,0.014564
+2. Système actuel,L2 réaliste,2010-2026,cagr_futures_excess,0.034053
+2. Système actuel,L2 réaliste,2010-2026,sharpe_futures_excess,0.278558
+2. Système actuel,L2 réaliste,2010-2026,maxdd_excess,-0.444381
+2. Système actuel,L2 réaliste,2010-2026,gross_exposure_mean,5.993676
+2. Système actuel,L2 réaliste,2010-2026,margin_share_mean,0.116002
+2. Système actuel,L2 réaliste,2010-2026,years,16.524023
+2. Système actuel,L2 réaliste,2015-2026,cagr_excess,0.008327
+2. Système actuel,L2 réaliste,2015-2026,cagr_total,0.029282
+2. Système actuel,L2 réaliste,2015-2026,vol,0.172280
+2. Système actuel,L2 réaliste,2015-2026,sharpe,0.133570
+2. Système actuel,L2 réaliste,2015-2026,maxdd_total,-0.419873
+2. Système actuel,L2 réaliste,2015-2026,cost_pa,0.012384
+2. Système actuel,L2 réaliste,2015-2026,trading_cost_pa,0.006647
+2. Système actuel,L2 réaliste,2015-2026,roll_cost_pa,0.005737
+2. Système actuel,L2 réaliste,2015-2026,cash_shortfall_pa,0.005442
+2. Système actuel,L2 réaliste,2015-2026,tbill_pa,0.020566
+2. Système actuel,L2 réaliste,2015-2026,cagr_futures_excess,0.013830
+2. Système actuel,L2 réaliste,2015-2026,sharpe_futures_excess,0.164562
+2. Système actuel,L2 réaliste,2015-2026,maxdd_excess,-0.444381
+2. Système actuel,L2 réaliste,2015-2026,gross_exposure_mean,6.258703
+2. Système actuel,L2 réaliste,2015-2026,margin_share_mean,0.121131
+2. Système actuel,L2 réaliste,2015-2026,years,11.524708
+2. Système actuel,L2 réaliste,2023-07->2026-07,cagr_excess,-0.037762
+2. Système actuel,L2 réaliste,2023-07->2026-07,cagr_total,0.006366
+2. Système actuel,L2 réaliste,2023-07->2026-07,vol,0.142371
+2. Système actuel,L2 réaliste,2023-07->2026-07,sharpe,-0.193567
+2. Système actuel,L2 réaliste,2023-07->2026-07,maxdd_total,-0.267642
+2. Système actuel,L2 réaliste,2023-07->2026-07,cost_pa,0.010845
+2. Système actuel,L2 réaliste,2023-07->2026-07,trading_cost_pa,0.005961
+2. Système actuel,L2 réaliste,2023-07->2026-07,roll_cost_pa,0.004884
+2. Système actuel,L2 réaliste,2023-07->2026-07,cash_shortfall_pa,0.008646
+2. Système actuel,L2 réaliste,2023-07->2026-07,tbill_pa,0.044841
+2. Système actuel,L2 réaliste,2023-07->2026-07,cagr_futures_excess,-0.029405
+2. Système actuel,L2 réaliste,2023-07->2026-07,sharpe_futures_excess,-0.134022
+2. Système actuel,L2 réaliste,2023-07->2026-07,maxdd_excess,-0.307456
+2. Système actuel,L2 réaliste,2023-07->2026-07,gross_exposure_mean,4.696787
+2. Système actuel,L2 réaliste,2023-07->2026-07,margin_share_mean,0.090902
+2. Système actuel,L2 réaliste,2023-07->2026-07,years,3.001778
+3. + stratégie 13,L0 brut,1990-2026,cagr_excess,0.210382
+3. + stratégie 13,L0 brut,1990-2026,cagr_total,0.243785
+3. + stratégie 13,L0 brut,1990-2026,vol,0.182611
+3. + stratégie 13,L0 brut,1990-2026,sharpe,1.117937
+3. + stratégie 13,L0 brut,1990-2026,maxdd_total,-0.379421
+3. + stratégie 13,L0 brut,1990-2026,cost_pa,0.000000
+3. + stratégie 13,L0 brut,1990-2026,trading_cost_pa,0.000000
+3. + stratégie 13,L0 brut,1990-2026,roll_cost_pa,0.000000
+3. + stratégie 13,L0 brut,1990-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L0 brut,1990-2026,tbill_pa,0.027250
+3. + stratégie 13,L0 brut,1990-2026,cagr_futures_excess,0.210382
+3. + stratégie 13,L0 brut,1990-2026,sharpe_futures_excess,1.117937
+3. + stratégie 13,L0 brut,1990-2026,maxdd_excess,-0.396443
+3. + stratégie 13,L0 brut,1990-2026,gross_exposure_mean,6.773480
+3. + stratégie 13,L0 brut,1990-2026,margin_share_mean,0.000000
+3. + stratégie 13,L0 brut,1990-2026,years,36.524023
+3. + stratégie 13,L0 brut,2000-2026,cagr_excess,0.150725
+3. + stratégie 13,L0 brut,2000-2026,cagr_total,0.173064
+3. + stratégie 13,L0 brut,2000-2026,vol,0.188375
+3. + stratégie 13,L0 brut,2000-2026,sharpe,0.825788
+3. + stratégie 13,L0 brut,2000-2026,maxdd_total,-0.379421
+3. + stratégie 13,L0 brut,2000-2026,cost_pa,0.000000
+3. + stratégie 13,L0 brut,2000-2026,trading_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2000-2026,roll_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2000-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L0 brut,2000-2026,tbill_pa,0.019236
+3. + stratégie 13,L0 brut,2000-2026,cagr_futures_excess,0.150725
+3. + stratégie 13,L0 brut,2000-2026,sharpe_futures_excess,0.825788
+3. + stratégie 13,L0 brut,2000-2026,maxdd_excess,-0.396443
+3. + stratégie 13,L0 brut,2000-2026,gross_exposure_mean,7.148995
+3. + stratégie 13,L0 brut,2000-2026,margin_share_mean,0.000000
+3. + stratégie 13,L0 brut,2000-2026,years,26.519916
+3. + stratégie 13,L0 brut,2010-2026,cagr_excess,0.089454
+3. + stratégie 13,L0 brut,2010-2026,cagr_total,0.105438
+3. + stratégie 13,L0 brut,2010-2026,vol,0.178103
+3. + stratégie 13,L0 brut,2010-2026,sharpe,0.561334
+3. + stratégie 13,L0 brut,2010-2026,maxdd_total,-0.379421
+3. + stratégie 13,L0 brut,2010-2026,cost_pa,0.000000
+3. + stratégie 13,L0 brut,2010-2026,trading_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2010-2026,roll_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2010-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L0 brut,2010-2026,tbill_pa,0.014564
+3. + stratégie 13,L0 brut,2010-2026,cagr_futures_excess,0.089454
+3. + stratégie 13,L0 brut,2010-2026,sharpe_futures_excess,0.561334
+3. + stratégie 13,L0 brut,2010-2026,maxdd_excess,-0.396443
+3. + stratégie 13,L0 brut,2010-2026,gross_exposure_mean,7.648072
+3. + stratégie 13,L0 brut,2010-2026,margin_share_mean,0.000000
+3. + stratégie 13,L0 brut,2010-2026,years,16.524023
+3. + stratégie 13,L0 brut,2015-2026,cagr_excess,0.067797
+3. + stratégie 13,L0 brut,2015-2026,cagr_total,0.089987
+3. + stratégie 13,L0 brut,2015-2026,vol,0.172103
+3. + stratégie 13,L0 brut,2015-2026,sharpe,0.460148
+3. + stratégie 13,L0 brut,2015-2026,maxdd_total,-0.379421
+3. + stratégie 13,L0 brut,2015-2026,cost_pa,0.000000
+3. + stratégie 13,L0 brut,2015-2026,trading_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2015-2026,roll_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2015-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L0 brut,2015-2026,tbill_pa,0.020566
+3. + stratégie 13,L0 brut,2015-2026,cagr_futures_excess,0.067797
+3. + stratégie 13,L0 brut,2015-2026,sharpe_futures_excess,0.460148
+3. + stratégie 13,L0 brut,2015-2026,maxdd_excess,-0.396443
+3. + stratégie 13,L0 brut,2015-2026,gross_exposure_mean,7.872458
+3. + stratégie 13,L0 brut,2015-2026,margin_share_mean,0.000000
+3. + stratégie 13,L0 brut,2015-2026,years,11.524708
+3. + stratégie 13,L0 brut,2023-07->2026-07,cagr_excess,-0.046110
+3. + stratégie 13,L0 brut,2023-07->2026-07,cagr_total,-0.002360
+3. + stratégie 13,L0 brut,2023-07->2026-07,vol,0.135295
+3. + stratégie 13,L0 brut,2023-07->2026-07,sharpe,-0.274235
+3. + stratégie 13,L0 brut,2023-07->2026-07,maxdd_total,-0.267108
+3. + stratégie 13,L0 brut,2023-07->2026-07,cost_pa,0.000000
+3. + stratégie 13,L0 brut,2023-07->2026-07,trading_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2023-07->2026-07,roll_cost_pa,0.000000
+3. + stratégie 13,L0 brut,2023-07->2026-07,cash_shortfall_pa,0.000000
+3. + stratégie 13,L0 brut,2023-07->2026-07,tbill_pa,0.044841
+3. + stratégie 13,L0 brut,2023-07->2026-07,cagr_futures_excess,-0.046110
+3. + stratégie 13,L0 brut,2023-07->2026-07,sharpe_futures_excess,-0.274235
+3. + stratégie 13,L0 brut,2023-07->2026-07,maxdd_excess,-0.303053
+3. + stratégie 13,L0 brut,2023-07->2026-07,gross_exposure_mean,4.991760
+3. + stratégie 13,L0 brut,2023-07->2026-07,margin_share_mean,0.000000
+3. + stratégie 13,L0 brut,2023-07->2026-07,years,3.001778
+3. + stratégie 13,L1 backtest,1990-2026,cagr_excess,0.189960
+3. + stratégie 13,L1 backtest,1990-2026,cagr_total,0.222801
+3. + stratégie 13,L1 backtest,1990-2026,vol,0.182666
+3. + stratégie 13,L1 backtest,1990-2026,sharpe,1.026184
+3. + stratégie 13,L1 backtest,1990-2026,maxdd_total,-0.413781
+3. + stratégie 13,L1 backtest,1990-2026,cost_pa,0.017017
+3. + stratégie 13,L1 backtest,1990-2026,trading_cost_pa,0.009043
+3. + stratégie 13,L1 backtest,1990-2026,roll_cost_pa,0.007974
+3. + stratégie 13,L1 backtest,1990-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L1 backtest,1990-2026,tbill_pa,0.027250
+3. + stratégie 13,L1 backtest,1990-2026,cagr_futures_excess,0.189960
+3. + stratégie 13,L1 backtest,1990-2026,sharpe_futures_excess,1.026184
+3. + stratégie 13,L1 backtest,1990-2026,maxdd_excess,-0.429862
+3. + stratégie 13,L1 backtest,1990-2026,gross_exposure_mean,6.773480
+3. + stratégie 13,L1 backtest,1990-2026,margin_share_mean,0.000000
+3. + stratégie 13,L1 backtest,1990-2026,years,36.524023
+3. + stratégie 13,L1 backtest,2000-2026,cagr_excess,0.131089
+3. + stratégie 13,L1 backtest,2000-2026,cagr_total,0.153048
+3. + stratégie 13,L1 backtest,2000-2026,vol,0.188433
+3. + stratégie 13,L1 backtest,2000-2026,sharpe,0.735948
+3. + stratégie 13,L1 backtest,2000-2026,maxdd_total,-0.413781
+3. + stratégie 13,L1 backtest,2000-2026,cost_pa,0.017208
+3. + stratégie 13,L1 backtest,2000-2026,trading_cost_pa,0.009308
+3. + stratégie 13,L1 backtest,2000-2026,roll_cost_pa,0.007899
+3. + stratégie 13,L1 backtest,2000-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L1 backtest,2000-2026,tbill_pa,0.019236
+3. + stratégie 13,L1 backtest,2000-2026,cagr_futures_excess,0.131089
+3. + stratégie 13,L1 backtest,2000-2026,sharpe_futures_excess,0.735948
+3. + stratégie 13,L1 backtest,2000-2026,maxdd_excess,-0.429862
+3. + stratégie 13,L1 backtest,2000-2026,gross_exposure_mean,7.148995
+3. + stratégie 13,L1 backtest,2000-2026,margin_share_mean,0.000000
+3. + stratégie 13,L1 backtest,2000-2026,years,26.519916
+3. + stratégie 13,L1 backtest,2010-2026,cagr_excess,0.069990
+3. + stratégie 13,L1 backtest,2010-2026,cagr_total,0.085689
+3. + stratégie 13,L1 backtest,2010-2026,vol,0.178154
+3. + stratégie 13,L1 backtest,2010-2026,sharpe,0.461930
+3. + stratégie 13,L1 backtest,2010-2026,maxdd_total,-0.413781
+3. + stratégie 13,L1 backtest,2010-2026,cost_pa,0.018022
+3. + stratégie 13,L1 backtest,2010-2026,trading_cost_pa,0.009757
+3. + stratégie 13,L1 backtest,2010-2026,roll_cost_pa,0.008266
+3. + stratégie 13,L1 backtest,2010-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L1 backtest,2010-2026,tbill_pa,0.014564
+3. + stratégie 13,L1 backtest,2010-2026,cagr_futures_excess,0.069990
+3. + stratégie 13,L1 backtest,2010-2026,sharpe_futures_excess,0.461930
+3. + stratégie 13,L1 backtest,2010-2026,maxdd_excess,-0.429862
+3. + stratégie 13,L1 backtest,2010-2026,gross_exposure_mean,7.648072
+3. + stratégie 13,L1 backtest,2010-2026,margin_share_mean,0.000000
+3. + stratégie 13,L1 backtest,2010-2026,years,16.524023
+3. + stratégie 13,L1 backtest,2015-2026,cagr_excess,0.048648
+3. + stratégie 13,L1 backtest,2015-2026,cagr_total,0.070441
+3. + stratégie 13,L1 backtest,2015-2026,vol,0.172156
+3. + stratégie 13,L1 backtest,2015-2026,sharpe,0.356938
+3. + stratégie 13,L1 backtest,2015-2026,maxdd_total,-0.413781
+3. + stratégie 13,L1 backtest,2015-2026,cost_pa,0.018089
+3. + stratégie 13,L1 backtest,2015-2026,trading_cost_pa,0.009943
+3. + stratégie 13,L1 backtest,2015-2026,roll_cost_pa,0.008147
+3. + stratégie 13,L1 backtest,2015-2026,cash_shortfall_pa,0.000000
+3. + stratégie 13,L1 backtest,2015-2026,tbill_pa,0.020566
+3. + stratégie 13,L1 backtest,2015-2026,cagr_futures_excess,0.048648
+3. + stratégie 13,L1 backtest,2015-2026,sharpe_futures_excess,0.356938
+3. + stratégie 13,L1 backtest,2015-2026,maxdd_excess,-0.429862
+3. + stratégie 13,L1 backtest,2015-2026,gross_exposure_mean,7.872458
+3. + stratégie 13,L1 backtest,2015-2026,margin_share_mean,0.000000
+3. + stratégie 13,L1 backtest,2015-2026,years,11.524708
+3. + stratégie 13,L1 backtest,2023-07->2026-07,cagr_excess,-0.059549
+3. + stratégie 13,L1 backtest,2023-07->2026-07,cagr_total,-0.016413
+3. + stratégie 13,L1 backtest,2023-07->2026-07,vol,0.135361
+3. + stratégie 13,L1 backtest,2023-07->2026-07,sharpe,-0.376770
+3. + stratégie 13,L1 backtest,2023-07->2026-07,maxdd_total,-0.278165
+3. + stratégie 13,L1 backtest,2023-07->2026-07,cost_pa,0.014176
+3. + stratégie 13,L1 backtest,2023-07->2026-07,trading_cost_pa,0.008013
+3. + stratégie 13,L1 backtest,2023-07->2026-07,roll_cost_pa,0.006163
+3. + stratégie 13,L1 backtest,2023-07->2026-07,cash_shortfall_pa,0.000000
+3. + stratégie 13,L1 backtest,2023-07->2026-07,tbill_pa,0.044841
+3. + stratégie 13,L1 backtest,2023-07->2026-07,cagr_futures_excess,-0.059549
+3. + stratégie 13,L1 backtest,2023-07->2026-07,sharpe_futures_excess,-0.376770
+3. + stratégie 13,L1 backtest,2023-07->2026-07,maxdd_excess,-0.313570
+3. + stratégie 13,L1 backtest,2023-07->2026-07,gross_exposure_mean,4.991760
+3. + stratégie 13,L1 backtest,2023-07->2026-07,margin_share_mean,0.000000
+3. + stratégie 13,L1 backtest,2023-07->2026-07,years,3.001778
+3. + stratégie 13,L2 réaliste,1990-2026,cagr_excess,0.168221
+3. + stratégie 13,L2 réaliste,1990-2026,cagr_total,0.200464
+3. + stratégie 13,L2 réaliste,1990-2026,vol,0.185761
+3. + stratégie 13,L2 réaliste,1990-2026,sharpe,0.914754
+3. + stratégie 13,L2 réaliste,1990-2026,maxdd_total,-0.433087
+3. + stratégie 13,L2 réaliste,1990-2026,cost_pa,0.014746
+3. + stratégie 13,L2 réaliste,1990-2026,trading_cost_pa,0.007861
+3. + stratégie 13,L2 réaliste,1990-2026,roll_cost_pa,0.006885
+3. + stratégie 13,L2 réaliste,1990-2026,cash_shortfall_pa,0.006659
+3. + stratégie 13,L2 réaliste,1990-2026,tbill_pa,0.027250
+3. + stratégie 13,L2 réaliste,1990-2026,cagr_futures_excess,0.176020
+3. + stratégie 13,L2 réaliste,1990-2026,sharpe_futures_excess,0.949896
+3. + stratégie 13,L2 réaliste,1990-2026,maxdd_excess,-0.448640
+3. + stratégie 13,L2 réaliste,1990-2026,gross_exposure_mean,6.744317
+3. + stratégie 13,L2 réaliste,1990-2026,margin_share_mean,0.130530
+3. + stratégie 13,L2 réaliste,1990-2026,years,36.524023
+3. + stratégie 13,L2 réaliste,2000-2026,cagr_excess,0.106709
+3. + stratégie 13,L2 réaliste,2000-2026,cagr_total,0.128196
+3. + stratégie 13,L2 réaliste,2000-2026,vol,0.192408
+3. + stratégie 13,L2 réaliste,2000-2026,sharpe,0.613610
+3. + stratégie 13,L2 réaliste,2000-2026,maxdd_total,-0.433087
+3. + stratégie 13,L2 réaliste,2000-2026,cost_pa,0.014674
+3. + stratégie 13,L2 réaliste,2000-2026,trading_cost_pa,0.007994
+3. + stratégie 13,L2 réaliste,2000-2026,roll_cost_pa,0.006680
+3. + stratégie 13,L2 réaliste,2000-2026,cash_shortfall_pa,0.005458
+3. + stratégie 13,L2 réaliste,2000-2026,tbill_pa,0.019236
+3. + stratégie 13,L2 réaliste,2000-2026,cagr_futures_excess,0.112764
+3. + stratégie 13,L2 réaliste,2000-2026,sharpe_futures_excess,0.641439
+3. + stratégie 13,L2 réaliste,2000-2026,maxdd_excess,-0.448640
+3. + stratégie 13,L2 réaliste,2000-2026,gross_exposure_mean,7.109518
+3. + stratégie 13,L2 réaliste,2000-2026,margin_share_mean,0.137598
+3. + stratégie 13,L2 réaliste,2000-2026,years,26.519916
+3. + stratégie 13,L2 réaliste,2010-2026,cagr_excess,0.041870
+3. + stratégie 13,L2 réaliste,2010-2026,cagr_total,0.057157
+3. + stratégie 13,L2 réaliste,2010-2026,vol,0.184331
+3. + stratégie 13,L2 réaliste,2010-2026,sharpe,0.310842
+3. + stratégie 13,L2 réaliste,2010-2026,maxdd_total,-0.433087
+3. + stratégie 13,L2 réaliste,2010-2026,cost_pa,0.015271
+3. + stratégie 13,L2 réaliste,2010-2026,trading_cost_pa,0.008344
+3. + stratégie 13,L2 réaliste,2010-2026,roll_cost_pa,0.006927
+3. + stratégie 13,L2 réaliste,2010-2026,cash_shortfall_pa,0.004136
+3. + stratégie 13,L2 réaliste,2010-2026,tbill_pa,0.014564
+3. + stratégie 13,L2 réaliste,2010-2026,cagr_futures_excess,0.046189
+3. + stratégie 13,L2 réaliste,2010-2026,sharpe_futures_excess,0.332865
+3. + stratégie 13,L2 réaliste,2010-2026,maxdd_excess,-0.448640
+3. + stratégie 13,L2 réaliste,2010-2026,gross_exposure_mean,7.590381
+3. + stratégie 13,L2 réaliste,2010-2026,margin_share_mean,0.146904
+3. + stratégie 13,L2 réaliste,2010-2026,years,16.524023
+3. + stratégie 13,L2 réaliste,2015-2026,cagr_excess,0.020816
+3. + stratégie 13,L2 réaliste,2015-2026,cagr_total,0.042032
+3. + stratégie 13,L2 réaliste,2015-2026,vol,0.180303
+3. + stratégie 13,L2 réaliste,2015-2026,sharpe,0.202504
+3. + stratégie 13,L2 réaliste,2015-2026,maxdd_total,-0.433087
+3. + stratégie 13,L2 réaliste,2015-2026,cost_pa,0.015345
+3. + stratégie 13,L2 réaliste,2015-2026,trading_cost_pa,0.008447
+3. + stratégie 13,L2 réaliste,2015-2026,roll_cost_pa,0.006897
+3. + stratégie 13,L2 réaliste,2015-2026,cash_shortfall_pa,0.005615
+3. + stratégie 13,L2 réaliste,2015-2026,tbill_pa,0.020566
+3. + stratégie 13,L2 réaliste,2015-2026,cagr_futures_excess,0.026565
+3. + stratégie 13,L2 réaliste,2015-2026,sharpe_futures_excess,0.233058
+3. + stratégie 13,L2 réaliste,2015-2026,maxdd_excess,-0.448640
+3. + stratégie 13,L2 réaliste,2015-2026,gross_exposure_mean,7.811554
+3. + stratégie 13,L2 réaliste,2015-2026,margin_share_mean,0.151185
+3. + stratégie 13,L2 réaliste,2015-2026,years,11.524708
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,cagr_excess,-0.050480
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,cagr_total,-0.006930
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,vol,0.142803
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,sharpe,-0.283973
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,maxdd_total,-0.284964
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,cost_pa,0.012203
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,trading_cost_pa,0.006856
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,roll_cost_pa,0.005347
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,cash_shortfall_pa,0.008771
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,tbill_pa,0.044841
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,cagr_futures_excess,-0.042113
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,sharpe_futures_excess,-0.223757
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,maxdd_excess,-0.320038
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,gross_exposure_mean,4.920918
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,margin_share_mean,0.095240
+3. + stratégie 13,L2 réaliste,2023-07->2026-07,years,3.001778
+4. + pilotage du risque,L0 brut,1990-2026,cagr_excess,0.273474
+4. + pilotage du risque,L0 brut,1990-2026,cagr_total,0.308609
+4. + pilotage du risque,L0 brut,1990-2026,vol,0.211769
+4. + pilotage du risque,L0 brut,1990-2026,sharpe,1.226744
+4. + pilotage du risque,L0 brut,1990-2026,maxdd_total,-0.453140
+4. + pilotage du risque,L0 brut,1990-2026,cost_pa,0.000000
+4. + pilotage du risque,L0 brut,1990-2026,trading_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,1990-2026,roll_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,1990-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L0 brut,1990-2026,tbill_pa,0.027250
+4. + pilotage du risque,L0 brut,1990-2026,cagr_futures_excess,0.273474
+4. + pilotage du risque,L0 brut,1990-2026,sharpe_futures_excess,1.226744
+4. + pilotage du risque,L0 brut,1990-2026,maxdd_excess,-0.518149
+4. + pilotage du risque,L0 brut,1990-2026,gross_exposure_mean,7.778439
+4. + pilotage du risque,L0 brut,1990-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L0 brut,1990-2026,years,36.524023
+4. + pilotage du risque,L0 brut,2000-2026,cagr_excess,0.188923
+4. + pilotage du risque,L0 brut,2000-2026,cagr_total,0.212002
+4. + pilotage du risque,L0 brut,2000-2026,vol,0.212164
+4. + pilotage du risque,L0 brut,2000-2026,sharpe,0.906639
+4. + pilotage du risque,L0 brut,2000-2026,maxdd_total,-0.453140
+4. + pilotage du risque,L0 brut,2000-2026,cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2000-2026,trading_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2000-2026,roll_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2000-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L0 brut,2000-2026,tbill_pa,0.019236
+4. + pilotage du risque,L0 brut,2000-2026,cagr_futures_excess,0.188923
+4. + pilotage du risque,L0 brut,2000-2026,sharpe_futures_excess,0.906639
+4. + pilotage du risque,L0 brut,2000-2026,maxdd_excess,-0.518149
+4. + pilotage du risque,L0 brut,2000-2026,gross_exposure_mean,8.011954
+4. + pilotage du risque,L0 brut,2000-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L0 brut,2000-2026,years,26.519916
+4. + pilotage du risque,L0 brut,2010-2026,cagr_excess,0.122828
+4. + pilotage du risque,L0 brut,2010-2026,cagr_total,0.139304
+4. + pilotage du risque,L0 brut,2010-2026,vol,0.209971
+4. + pilotage du risque,L0 brut,2010-2026,sharpe,0.646543
+4. + pilotage du risque,L0 brut,2010-2026,maxdd_total,-0.453140
+4. + pilotage du risque,L0 brut,2010-2026,cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2010-2026,trading_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2010-2026,roll_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2010-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L0 brut,2010-2026,tbill_pa,0.014564
+4. + pilotage du risque,L0 brut,2010-2026,cagr_futures_excess,0.122828
+4. + pilotage du risque,L0 brut,2010-2026,sharpe_futures_excess,0.646543
+4. + pilotage du risque,L0 brut,2010-2026,maxdd_excess,-0.518149
+4. + pilotage du risque,L0 brut,2010-2026,gross_exposure_mean,8.775444
+4. + pilotage du risque,L0 brut,2010-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L0 brut,2010-2026,years,16.524023
+4. + pilotage du risque,L0 brut,2015-2026,cagr_excess,0.084349
+4. + pilotage du risque,L0 brut,2015-2026,cagr_total,0.106885
+4. + pilotage du risque,L0 brut,2015-2026,vol,0.213987
+4. + pilotage du risque,L0 brut,2015-2026,sharpe,0.478441
+4. + pilotage du risque,L0 brut,2015-2026,maxdd_total,-0.453140
+4. + pilotage du risque,L0 brut,2015-2026,cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2015-2026,trading_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2015-2026,roll_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2015-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L0 brut,2015-2026,tbill_pa,0.020566
+4. + pilotage du risque,L0 brut,2015-2026,cagr_futures_excess,0.084349
+4. + pilotage du risque,L0 brut,2015-2026,sharpe_futures_excess,0.478441
+4. + pilotage du risque,L0 brut,2015-2026,maxdd_excess,-0.518149
+4. + pilotage du risque,L0 brut,2015-2026,gross_exposure_mean,9.117782
+4. + pilotage du risque,L0 brut,2015-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L0 brut,2015-2026,years,11.524708
+4. + pilotage du risque,L0 brut,2023-07->2026-07,cagr_excess,-0.073328
+4. + pilotage du risque,L0 brut,2023-07->2026-07,cagr_total,-0.030825
+4. + pilotage du risque,L0 brut,2023-07->2026-07,vol,0.206200
+4. + pilotage du risque,L0 brut,2023-07->2026-07,sharpe,-0.258447
+4. + pilotage du risque,L0 brut,2023-07->2026-07,maxdd_total,-0.432633
+4. + pilotage du risque,L0 brut,2023-07->2026-07,cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2023-07->2026-07,trading_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2023-07->2026-07,roll_cost_pa,0.000000
+4. + pilotage du risque,L0 brut,2023-07->2026-07,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L0 brut,2023-07->2026-07,tbill_pa,0.044841
+4. + pilotage du risque,L0 brut,2023-07->2026-07,cagr_futures_excess,-0.073328
+4. + pilotage du risque,L0 brut,2023-07->2026-07,sharpe_futures_excess,-0.258447
+4. + pilotage du risque,L0 brut,2023-07->2026-07,maxdd_excess,-0.460489
+4. + pilotage du risque,L0 brut,2023-07->2026-07,gross_exposure_mean,7.628083
+4. + pilotage du risque,L0 brut,2023-07->2026-07,margin_share_mean,0.000000
+4. + pilotage du risque,L0 brut,2023-07->2026-07,years,3.001778
+4. + pilotage du risque,L1 backtest,1990-2026,cagr_excess,0.246434
+4. + pilotage du risque,L1 backtest,1990-2026,cagr_total,0.280826
+4. + pilotage du risque,L1 backtest,1990-2026,vol,0.211825
+4. + pilotage du risque,L1 backtest,1990-2026,sharpe,1.126977
+4. + pilotage du risque,L1 backtest,1990-2026,maxdd_total,-0.484263
+4. + pilotage du risque,L1 backtest,1990-2026,cost_pa,0.021465
+4. + pilotage du risque,L1 backtest,1990-2026,trading_cost_pa,0.012049
+4. + pilotage du risque,L1 backtest,1990-2026,roll_cost_pa,0.009416
+4. + pilotage du risque,L1 backtest,1990-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L1 backtest,1990-2026,tbill_pa,0.027250
+4. + pilotage du risque,L1 backtest,1990-2026,cagr_futures_excess,0.246434
+4. + pilotage du risque,L1 backtest,1990-2026,sharpe_futures_excess,1.126977
+4. + pilotage du risque,L1 backtest,1990-2026,maxdd_excess,-0.545578
+4. + pilotage du risque,L1 backtest,1990-2026,gross_exposure_mean,7.778439
+4. + pilotage du risque,L1 backtest,1990-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L1 backtest,1990-2026,years,36.524023
+4. + pilotage du risque,L1 backtest,2000-2026,cagr_excess,0.163893
+4. + pilotage du risque,L1 backtest,2000-2026,cagr_total,0.186488
+4. + pilotage du risque,L1 backtest,2000-2026,vol,0.212221
+4. + pilotage du risque,L1 backtest,2000-2026,sharpe,0.808050
+4. + pilotage du risque,L1 backtest,2000-2026,maxdd_total,-0.484263
+4. + pilotage du risque,L1 backtest,2000-2026,cost_pa,0.021274
+4. + pilotage du risque,L1 backtest,2000-2026,trading_cost_pa,0.012121
+4. + pilotage du risque,L1 backtest,2000-2026,roll_cost_pa,0.009153
+4. + pilotage du risque,L1 backtest,2000-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L1 backtest,2000-2026,tbill_pa,0.019236
+4. + pilotage du risque,L1 backtest,2000-2026,cagr_futures_excess,0.163893
+4. + pilotage du risque,L1 backtest,2000-2026,sharpe_futures_excess,0.808050
+4. + pilotage du risque,L1 backtest,2000-2026,maxdd_excess,-0.545578
+4. + pilotage du risque,L1 backtest,2000-2026,gross_exposure_mean,8.011954
+4. + pilotage du risque,L1 backtest,2000-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L1 backtest,2000-2026,years,26.519916
+4. + pilotage du risque,L1 backtest,2010-2026,cagr_excess,0.097828
+4. + pilotage du risque,L1 backtest,2010-2026,cagr_total,0.113938
+4. + pilotage du risque,L1 backtest,2010-2026,vol,0.210028
+4. + pilotage du risque,L1 backtest,2010-2026,sharpe,0.541223
+4. + pilotage du risque,L1 backtest,2010-2026,maxdd_total,-0.484263
+4. + pilotage du risque,L1 backtest,2010-2026,cost_pa,0.022509
+4. + pilotage du risque,L1 backtest,2010-2026,trading_cost_pa,0.012755
+4. + pilotage du risque,L1 backtest,2010-2026,roll_cost_pa,0.009755
+4. + pilotage du risque,L1 backtest,2010-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L1 backtest,2010-2026,tbill_pa,0.014564
+4. + pilotage du risque,L1 backtest,2010-2026,cagr_futures_excess,0.097828
+4. + pilotage du risque,L1 backtest,2010-2026,sharpe_futures_excess,0.541223
+4. + pilotage du risque,L1 backtest,2010-2026,maxdd_excess,-0.545578
+4. + pilotage du risque,L1 backtest,2010-2026,gross_exposure_mean,8.775444
+4. + pilotage du risque,L1 backtest,2010-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L1 backtest,2010-2026,years,16.524023
+4. + pilotage du risque,L1 backtest,2015-2026,cagr_excess,0.059475
+4. + pilotage du risque,L1 backtest,2015-2026,cagr_total,0.081496
+4. + pilotage du risque,L1 backtest,2015-2026,vol,0.214054
+4. + pilotage du risque,L1 backtest,2015-2026,sharpe,0.372006
+4. + pilotage du risque,L1 backtest,2015-2026,maxdd_total,-0.484263
+4. + pilotage du risque,L1 backtest,2015-2026,cost_pa,0.023192
+4. + pilotage du risque,L1 backtest,2015-2026,trading_cost_pa,0.013345
+4. + pilotage du risque,L1 backtest,2015-2026,roll_cost_pa,0.009847
+4. + pilotage du risque,L1 backtest,2015-2026,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L1 backtest,2015-2026,tbill_pa,0.020566
+4. + pilotage du risque,L1 backtest,2015-2026,cagr_futures_excess,0.059475
+4. + pilotage du risque,L1 backtest,2015-2026,sharpe_futures_excess,0.372006
+4. + pilotage du risque,L1 backtest,2015-2026,maxdd_excess,-0.545578
+4. + pilotage du risque,L1 backtest,2015-2026,gross_exposure_mean,9.117782
+4. + pilotage du risque,L1 backtest,2015-2026,margin_share_mean,0.000000
+4. + pilotage du risque,L1 backtest,2015-2026,years,11.524708
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,cagr_excess,-0.093330
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,cagr_total,-0.051740
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,vol,0.206320
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,sharpe,-0.361814
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,maxdd_total,-0.447211
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,cost_pa,0.021786
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,trading_cost_pa,0.012708
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,roll_cost_pa,0.009077
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,cash_shortfall_pa,0.000000
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,tbill_pa,0.044841
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,cagr_futures_excess,-0.093330
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,sharpe_futures_excess,-0.361814
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,maxdd_excess,-0.474355
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,gross_exposure_mean,7.628083
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,margin_share_mean,0.000000
+4. + pilotage du risque,L1 backtest,2023-07->2026-07,years,3.001778
+4. + pilotage du risque,L2 réaliste,1990-2026,cagr_excess,0.216969
+4. + pilotage du risque,L2 réaliste,1990-2026,cagr_total,0.250551
+4. + pilotage du risque,L2 réaliste,1990-2026,vol,0.213949
+4. + pilotage du risque,L2 réaliste,1990-2026,sharpe,1.008168
+4. + pilotage du risque,L2 réaliste,1990-2026,maxdd_total,-0.498806
+4. + pilotage du risque,L2 réaliste,1990-2026,cost_pa,0.018477
+4. + pilotage du risque,L2 réaliste,1990-2026,trading_cost_pa,0.010388
+4. + pilotage du risque,L2 réaliste,1990-2026,roll_cost_pa,0.008089
+4. + pilotage du risque,L2 réaliste,1990-2026,cash_shortfall_pa,0.007262
+4. + pilotage du risque,L2 réaliste,1990-2026,tbill_pa,0.027250
+4. + pilotage du risque,L2 réaliste,1990-2026,cagr_futures_excess,0.225830
+4. + pilotage du risque,L2 réaliste,1990-2026,sharpe_futures_excess,1.041428
+4. + pilotage du risque,L2 réaliste,1990-2026,maxdd_excess,-0.558394
+4. + pilotage du risque,L2 réaliste,1990-2026,gross_exposure_mean,7.648897
+4. + pilotage du risque,L2 réaliste,1990-2026,margin_share_mean,0.148037
+4. + pilotage du risque,L2 réaliste,1990-2026,years,36.524023
+4. + pilotage du risque,L2 réaliste,2000-2026,cagr_excess,0.131288
+4. + pilotage du risque,L2 réaliste,2000-2026,cagr_total,0.153251
+4. + pilotage du risque,L2 réaliste,2000-2026,vol,0.214979
+4. + pilotage du risque,L2 réaliste,2000-2026,sharpe,0.670782
+4. + pilotage du risque,L2 réaliste,2000-2026,maxdd_total,-0.498806
+4. + pilotage du risque,L2 réaliste,2000-2026,cost_pa,0.017868
+4. + pilotage du risque,L2 réaliste,2000-2026,trading_cost_pa,0.010250
+4. + pilotage du risque,L2 réaliste,2000-2026,roll_cost_pa,0.007618
+4. + pilotage du risque,L2 réaliste,2000-2026,cash_shortfall_pa,0.005888
+4. + pilotage du risque,L2 réaliste,2000-2026,tbill_pa,0.019236
+4. + pilotage du risque,L2 réaliste,2000-2026,cagr_futures_excess,0.137967
+4. + pilotage du risque,L2 réaliste,2000-2026,sharpe_futures_excess,0.697656
+4. + pilotage du risque,L2 réaliste,2000-2026,maxdd_excess,-0.558394
+4. + pilotage du risque,L2 réaliste,2000-2026,gross_exposure_mean,7.840014
+4. + pilotage du risque,L2 réaliste,2000-2026,margin_share_mean,0.151736
+4. + pilotage du risque,L2 réaliste,2000-2026,years,26.519916
+4. + pilotage du risque,L2 réaliste,2010-2026,cagr_excess,0.055445
+4. + pilotage du risque,L2 réaliste,2010-2026,cagr_total,0.070933
+4. + pilotage du risque,L2 réaliste,2010-2026,vol,0.213707
+4. + pilotage du risque,L2 réaliste,2010-2026,sharpe,0.354877
+4. + pilotage du risque,L2 réaliste,2010-2026,maxdd_total,-0.498806
+4. + pilotage du risque,L2 réaliste,2010-2026,cost_pa,0.018769
+4. + pilotage du risque,L2 réaliste,2010-2026,trading_cost_pa,0.010754
+4. + pilotage du risque,L2 réaliste,2010-2026,roll_cost_pa,0.008016
+4. + pilotage du risque,L2 réaliste,2010-2026,cash_shortfall_pa,0.004660
+4. + pilotage du risque,L2 réaliste,2010-2026,tbill_pa,0.014564
+4. + pilotage du risque,L2 réaliste,2010-2026,cagr_futures_excess,0.060375
+4. + pilotage du risque,L2 réaliste,2010-2026,sharpe_futures_excess,0.376282
+4. + pilotage du risque,L2 réaliste,2010-2026,maxdd_excess,-0.558394
+4. + pilotage du risque,L2 réaliste,2010-2026,gross_exposure_mean,8.510556
+4. + pilotage du risque,L2 réaliste,2010-2026,margin_share_mean,0.164714
+4. + pilotage du risque,L2 réaliste,2010-2026,years,16.524023
+4. + pilotage du risque,L2 réaliste,2015-2026,cagr_excess,0.020158
+4. + pilotage du risque,L2 réaliste,2015-2026,cagr_total,0.041362
+4. + pilotage du risque,L2 réaliste,2015-2026,vol,0.218918
+4. + pilotage du risque,L2 réaliste,2015-2026,sharpe,0.199210
+4. + pilotage du risque,L2 réaliste,2015-2026,maxdd_total,-0.498806
+4. + pilotage du risque,L2 réaliste,2015-2026,cost_pa,0.019288
+4. + pilotage du risque,L2 réaliste,2015-2026,trading_cost_pa,0.011151
+4. + pilotage du risque,L2 réaliste,2015-2026,roll_cost_pa,0.008137
+4. + pilotage du risque,L2 réaliste,2015-2026,cash_shortfall_pa,0.006365
+4. + pilotage du risque,L2 réaliste,2015-2026,tbill_pa,0.020566
+4. + pilotage du risque,L2 réaliste,2015-2026,cagr_futures_excess,0.026673
+4. + pilotage du risque,L2 réaliste,2015-2026,sharpe_futures_excess,0.227740
+4. + pilotage du risque,L2 réaliste,2015-2026,maxdd_excess,-0.558394
+4. + pilotage du risque,L2 réaliste,2015-2026,gross_exposure_mean,8.780309
+4. + pilotage du risque,L2 réaliste,2015-2026,margin_share_mean,0.169934
+4. + pilotage du risque,L2 réaliste,2015-2026,years,11.524708
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,cagr_excess,-0.077399
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,cagr_total,-0.035081
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,vol,0.210777
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,sharpe,-0.268698
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,maxdd_total,-0.454039
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,cost_pa,0.018063
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,trading_cost_pa,0.010541
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,roll_cost_pa,0.007521
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,cash_shortfall_pa,0.010662
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,tbill_pa,0.044841
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,cagr_futures_excess,-0.067506
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,sharpe_futures_excess,-0.219107
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,maxdd_excess,-0.480851
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,gross_exposure_mean,7.216882
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,margin_share_mean,0.139676
+4. + pilotage du risque,L2 réaliste,2023-07->2026-07,years,3.001778
+5. Les deux,L0 brut,1990-2026,cagr_excess,0.292695
+5. Les deux,L0 brut,1990-2026,cagr_total,0.328359
+5. Les deux,L0 brut,1990-2026,vol,0.214191
+5. Les deux,L0 brut,1990-2026,sharpe,1.283975
+5. Les deux,L0 brut,1990-2026,maxdd_total,-0.445205
+5. Les deux,L0 brut,1990-2026,cost_pa,0.000000
+5. Les deux,L0 brut,1990-2026,trading_cost_pa,0.000000
+5. Les deux,L0 brut,1990-2026,roll_cost_pa,0.000000
+5. Les deux,L0 brut,1990-2026,cash_shortfall_pa,0.000000
+5. Les deux,L0 brut,1990-2026,tbill_pa,0.027250
+5. Les deux,L0 brut,1990-2026,cagr_futures_excess,0.292695
+5. Les deux,L0 brut,1990-2026,sharpe_futures_excess,1.283975
+5. Les deux,L0 brut,1990-2026,maxdd_excess,-0.511159
+5. Les deux,L0 brut,1990-2026,gross_exposure_mean,8.783228
+5. Les deux,L0 brut,1990-2026,margin_share_mean,0.000000
+5. Les deux,L0 brut,1990-2026,years,36.524023
+5. Les deux,L0 brut,2000-2026,cagr_excess,0.204420
+5. Les deux,L0 brut,2000-2026,cagr_total,0.227798
+5. Les deux,L0 brut,2000-2026,vol,0.214575
+5. Les deux,L0 brut,2000-2026,sharpe,0.958127
+5. Les deux,L0 brut,2000-2026,maxdd_total,-0.445205
+5. Les deux,L0 brut,2000-2026,cost_pa,0.000000
+5. Les deux,L0 brut,2000-2026,trading_cost_pa,0.000000
+5. Les deux,L0 brut,2000-2026,roll_cost_pa,0.000000
+5. Les deux,L0 brut,2000-2026,cash_shortfall_pa,0.000000
+5. Les deux,L0 brut,2000-2026,tbill_pa,0.019236
+5. Les deux,L0 brut,2000-2026,cagr_futures_excess,0.204420
+5. Les deux,L0 brut,2000-2026,sharpe_futures_excess,0.958127
+5. Les deux,L0 brut,2000-2026,maxdd_excess,-0.511159
+5. Les deux,L0 brut,2000-2026,gross_exposure_mean,9.218879
+5. Les deux,L0 brut,2000-2026,margin_share_mean,0.000000
+5. Les deux,L0 brut,2000-2026,years,26.519916
+5. Les deux,L0 brut,2010-2026,cagr_excess,0.129431
+5. Les deux,L0 brut,2010-2026,cagr_total,0.146003
+5. Les deux,L0 brut,2010-2026,vol,0.214957
+5. Les deux,L0 brut,2010-2026,sharpe,0.663311
+5. Les deux,L0 brut,2010-2026,maxdd_total,-0.445205
+5. Les deux,L0 brut,2010-2026,cost_pa,0.000000
+5. Les deux,L0 brut,2010-2026,trading_cost_pa,0.000000
+5. Les deux,L0 brut,2010-2026,roll_cost_pa,0.000000
+5. Les deux,L0 brut,2010-2026,cash_shortfall_pa,0.000000
+5. Les deux,L0 brut,2010-2026,tbill_pa,0.014564
+5. Les deux,L0 brut,2010-2026,cagr_futures_excess,0.129431
+5. Les deux,L0 brut,2010-2026,sharpe_futures_excess,0.663311
+5. Les deux,L0 brut,2010-2026,maxdd_excess,-0.511159
+5. Les deux,L0 brut,2010-2026,gross_exposure_mean,10.232571
+5. Les deux,L0 brut,2010-2026,margin_share_mean,0.000000
+5. Les deux,L0 brut,2010-2026,years,16.524023
+5. Les deux,L0 brut,2015-2026,cagr_excess,0.092257
+5. Les deux,L0 brut,2015-2026,cagr_total,0.114957
+5. Les deux,L0 brut,2015-2026,vol,0.216167
+5. Les deux,L0 brut,2015-2026,sharpe,0.508902
+5. Les deux,L0 brut,2015-2026,maxdd_total,-0.445205
+5. Les deux,L0 brut,2015-2026,cost_pa,0.000000
+5. Les deux,L0 brut,2015-2026,trading_cost_pa,0.000000
+5. Les deux,L0 brut,2015-2026,roll_cost_pa,0.000000
+5. Les deux,L0 brut,2015-2026,cash_shortfall_pa,0.000000
+5. Les deux,L0 brut,2015-2026,tbill_pa,0.020566
+5. Les deux,L0 brut,2015-2026,cagr_futures_excess,0.092257
+5. Les deux,L0 brut,2015-2026,sharpe_futures_excess,0.508902
+5. Les deux,L0 brut,2015-2026,maxdd_excess,-0.511159
+5. Les deux,L0 brut,2015-2026,gross_exposure_mean,10.482005
+5. Les deux,L0 brut,2015-2026,margin_share_mean,0.000000
+5. Les deux,L0 brut,2015-2026,years,11.524708
+5. Les deux,L0 brut,2023-07->2026-07,cagr_excess,-0.078624
+5. Les deux,L0 brut,2023-07->2026-07,cagr_total,-0.036361
+5. Les deux,L0 brut,2023-07->2026-07,vol,0.206650
+5. Les deux,L0 brut,2023-07->2026-07,sharpe,-0.284795
+5. Les deux,L0 brut,2023-07->2026-07,maxdd_total,-0.442900
+5. Les deux,L0 brut,2023-07->2026-07,cost_pa,0.000000
+5. Les deux,L0 brut,2023-07->2026-07,trading_cost_pa,0.000000
+5. Les deux,L0 brut,2023-07->2026-07,roll_cost_pa,0.000000
+5. Les deux,L0 brut,2023-07->2026-07,cash_shortfall_pa,0.000000
+5. Les deux,L0 brut,2023-07->2026-07,tbill_pa,0.044841
+5. Les deux,L0 brut,2023-07->2026-07,cagr_futures_excess,-0.078624
+5. Les deux,L0 brut,2023-07->2026-07,sharpe_futures_excess,-0.284795
+5. Les deux,L0 brut,2023-07->2026-07,maxdd_excess,-0.470255
+5. Les deux,L0 brut,2023-07->2026-07,gross_exposure_mean,7.840847
+5. Les deux,L0 brut,2023-07->2026-07,margin_share_mean,0.000000
+5. Les deux,L0 brut,2023-07->2026-07,years,3.001778
+5. Les deux,L1 backtest,1990-2026,cagr_excess,0.261237
+5. Les deux,L1 backtest,1990-2026,cagr_total,0.296037
+5. Les deux,L1 backtest,1990-2026,vol,0.214252
+5. Les deux,L1 backtest,1990-2026,sharpe,1.170744
+5. Les deux,L1 backtest,1990-2026,maxdd_total,-0.477889
+5. Les deux,L1 backtest,1990-2026,cost_pa,0.024642
+5. Les deux,L1 backtest,1990-2026,trading_cost_pa,0.014251
+5. Les deux,L1 backtest,1990-2026,roll_cost_pa,0.010391
+5. Les deux,L1 backtest,1990-2026,cash_shortfall_pa,0.000000
+5. Les deux,L1 backtest,1990-2026,tbill_pa,0.027250
+5. Les deux,L1 backtest,1990-2026,cagr_futures_excess,0.261237
+5. Les deux,L1 backtest,1990-2026,sharpe_futures_excess,1.170744
+5. Les deux,L1 backtest,1990-2026,maxdd_excess,-0.539963
+5. Les deux,L1 backtest,1990-2026,gross_exposure_mean,8.783228
+5. Les deux,L1 backtest,1990-2026,margin_share_mean,0.000000
+5. Les deux,L1 backtest,1990-2026,years,36.524023
+5. Les deux,L1 backtest,2000-2026,cagr_excess,0.175071
+5. Les deux,L1 backtest,2000-2026,cagr_total,0.197881
+5. Les deux,L1 backtest,2000-2026,vol,0.214638
+5. Les deux,L1 backtest,2000-2026,sharpe,0.845092
+5. Les deux,L1 backtest,2000-2026,maxdd_total,-0.477889
+5. Les deux,L1 backtest,2000-2026,cost_pa,0.024668
+5. Les deux,L1 backtest,2000-2026,trading_cost_pa,0.014456
+5. Les deux,L1 backtest,2000-2026,roll_cost_pa,0.010212
+5. Les deux,L1 backtest,2000-2026,cash_shortfall_pa,0.000000
+5. Les deux,L1 backtest,2000-2026,tbill_pa,0.019236
+5. Les deux,L1 backtest,2000-2026,cagr_futures_excess,0.175071
+5. Les deux,L1 backtest,2000-2026,sharpe_futures_excess,0.845092
+5. Les deux,L1 backtest,2000-2026,maxdd_excess,-0.539963
+5. Les deux,L1 backtest,2000-2026,gross_exposure_mean,9.218879
+5. Les deux,L1 backtest,2000-2026,margin_share_mean,0.000000
+5. Les deux,L1 backtest,2000-2026,years,26.519916
+5. Les deux,L1 backtest,2010-2026,cagr_excess,0.099617
+5. Les deux,L1 backtest,2010-2026,cagr_total,0.115754
+5. Les deux,L1 backtest,2010-2026,vol,0.215024
+5. Les deux,L1 backtest,2010-2026,sharpe,0.541086
+5. Les deux,L1 backtest,2010-2026,maxdd_total,-0.477889
+5. Les deux,L1 backtest,2010-2026,cost_pa,0.026743
+5. Les deux,L1 backtest,2010-2026,trading_cost_pa,0.015621
+5. Les deux,L1 backtest,2010-2026,roll_cost_pa,0.011122
+5. Les deux,L1 backtest,2010-2026,cash_shortfall_pa,0.000000
+5. Les deux,L1 backtest,2010-2026,tbill_pa,0.014564
+5. Les deux,L1 backtest,2010-2026,cagr_futures_excess,0.099617
+5. Les deux,L1 backtest,2010-2026,sharpe_futures_excess,0.541086
+5. Les deux,L1 backtest,2010-2026,maxdd_excess,-0.539963
+5. Les deux,L1 backtest,2010-2026,gross_exposure_mean,10.232571
+5. Les deux,L1 backtest,2010-2026,margin_share_mean,0.000000
+5. Les deux,L1 backtest,2010-2026,years,16.524023
+5. Les deux,L1 backtest,2015-2026,cagr_excess,0.063095
+5. Les deux,L1 backtest,2015-2026,cagr_total,0.085192
+5. Les deux,L1 backtest,2015-2026,vol,0.216249
+5. Les deux,L1 backtest,2015-2026,sharpe,0.386025
+5. Les deux,L1 backtest,2015-2026,maxdd_total,-0.477889
+5. Les deux,L1 backtest,2015-2026,cost_pa,0.027045
+5. Les deux,L1 backtest,2015-2026,trading_cost_pa,0.016035
+5. Les deux,L1 backtest,2015-2026,roll_cost_pa,0.011010
+5. Les deux,L1 backtest,2015-2026,cash_shortfall_pa,0.000000
+5. Les deux,L1 backtest,2015-2026,tbill_pa,0.020566
+5. Les deux,L1 backtest,2015-2026,cagr_futures_excess,0.063095
+5. Les deux,L1 backtest,2015-2026,sharpe_futures_excess,0.386025
+5. Les deux,L1 backtest,2015-2026,maxdd_excess,-0.539963
+5. Les deux,L1 backtest,2015-2026,gross_exposure_mean,10.482005
+5. Les deux,L1 backtest,2015-2026,margin_share_mean,0.000000
+5. Les deux,L1 backtest,2015-2026,years,11.524708
+5. Les deux,L1 backtest,2023-07->2026-07,cagr_excess,-0.100429
+5. Les deux,L1 backtest,2023-07->2026-07,cagr_total,-0.059162
+5. Les deux,L1 backtest,2023-07->2026-07,vol,0.206750
+5. Les deux,L1 backtest,2023-07->2026-07,sharpe,-0.398060
+5. Les deux,L1 backtest,2023-07->2026-07,maxdd_total,-0.457769
+5. Les deux,L1 backtest,2023-07->2026-07,cost_pa,0.023917
+5. Les deux,L1 backtest,2023-07->2026-07,trading_cost_pa,0.014158
+5. Les deux,L1 backtest,2023-07->2026-07,roll_cost_pa,0.009759
+5. Les deux,L1 backtest,2023-07->2026-07,cash_shortfall_pa,0.000000
+5. Les deux,L1 backtest,2023-07->2026-07,tbill_pa,0.044841
+5. Les deux,L1 backtest,2023-07->2026-07,cagr_futures_excess,-0.100429
+5. Les deux,L1 backtest,2023-07->2026-07,sharpe_futures_excess,-0.398060
+5. Les deux,L1 backtest,2023-07->2026-07,maxdd_excess,-0.484397
+5. Les deux,L1 backtest,2023-07->2026-07,gross_exposure_mean,7.840847
+5. Les deux,L1 backtest,2023-07->2026-07,margin_share_mean,0.000000
+5. Les deux,L1 backtest,2023-07->2026-07,years,3.001778
+5. Les deux,L2 réaliste,1990-2026,cagr_excess,0.231305
+5. Les deux,L2 réaliste,1990-2026,cagr_total,0.265281
+5. Les deux,L2 réaliste,1990-2026,vol,0.216029
+5. Les deux,L2 réaliste,1990-2026,sharpe,1.053773
+5. Les deux,L2 réaliste,1990-2026,maxdd_total,-0.504099
+5. Les deux,L2 réaliste,1990-2026,cost_pa,0.021075
+5. Les deux,L2 réaliste,1990-2026,trading_cost_pa,0.012201
+5. Les deux,L2 réaliste,1990-2026,roll_cost_pa,0.008874
+5. Les deux,L2 réaliste,1990-2026,cash_shortfall_pa,0.007549
+5. Les deux,L2 réaliste,1990-2026,tbill_pa,0.027250
+5. Les deux,L2 réaliste,1990-2026,cagr_futures_excess,0.240626
+5. Les deux,L2 réaliste,1990-2026,sharpe_futures_excess,1.088012
+5. Les deux,L2 réaliste,1990-2026,maxdd_excess,-0.563980
+5. Les deux,L2 réaliste,1990-2026,gross_exposure_mean,8.616228
+5. Les deux,L2 réaliste,1990-2026,margin_share_mean,0.166759
+5. Les deux,L2 réaliste,1990-2026,years,36.524023
+5. Les deux,L2 réaliste,2000-2026,cagr_excess,0.142298
+5. Les deux,L2 réaliste,2000-2026,cagr_total,0.164474
+5. Les deux,L2 réaliste,2000-2026,vol,0.216922
+5. Les deux,L2 réaliste,2000-2026,sharpe,0.710568
+5. Les deux,L2 réaliste,2000-2026,maxdd_total,-0.504099
+5. Les deux,L2 réaliste,2000-2026,cost_pa,0.020670
+5. Les deux,L2 réaliste,2000-2026,trading_cost_pa,0.012171
+5. Les deux,L2 réaliste,2000-2026,roll_cost_pa,0.008499
+5. Les deux,L2 réaliste,2000-2026,cash_shortfall_pa,0.006122
+5. Les deux,L2 réaliste,2000-2026,tbill_pa,0.019236
+5. Les deux,L2 réaliste,2000-2026,cagr_futures_excess,0.149310
+5. Les deux,L2 réaliste,2000-2026,sharpe_futures_excess,0.738256
+5. Les deux,L2 réaliste,2000-2026,maxdd_excess,-0.563980
+5. Les deux,L2 réaliste,2000-2026,gross_exposure_mean,8.996962
+5. Les deux,L2 réaliste,2000-2026,margin_share_mean,0.174127
+5. Les deux,L2 réaliste,2000-2026,years,26.519916
+5. Les deux,L2 réaliste,2010-2026,cagr_excess,0.059515
+5. Les deux,L2 réaliste,2010-2026,cagr_total,0.075064
+5. Les deux,L2 réaliste,2010-2026,vol,0.217977
+5. Les deux,L2 réaliste,2010-2026,sharpe,0.369566
+5. Les deux,L2 réaliste,2010-2026,maxdd_total,-0.504099
+5. Les deux,L2 réaliste,2010-2026,cost_pa,0.022132
+5. Les deux,L2 réaliste,2010-2026,trading_cost_pa,0.013035
+5. Les deux,L2 réaliste,2010-2026,roll_cost_pa,0.009097
+5. Les deux,L2 réaliste,2010-2026,cash_shortfall_pa,0.004724
+5. Les deux,L2 réaliste,2010-2026,tbill_pa,0.014564
+5. Les deux,L2 réaliste,2010-2026,cagr_futures_excess,0.064533
+5. Les deux,L2 réaliste,2010-2026,sharpe_futures_excess,0.390843
+5. Les deux,L2 réaliste,2010-2026,maxdd_excess,-0.563980
+5. Les deux,L2 réaliste,2010-2026,gross_exposure_mean,9.887856
+5. Les deux,L2 réaliste,2010-2026,margin_share_mean,0.191370
+5. Les deux,L2 réaliste,2010-2026,years,16.524023
+5. Les deux,L2 réaliste,2015-2026,cagr_excess,0.024636
+5. Les deux,L2 réaliste,2015-2026,cagr_total,0.045934
+5. Les deux,L2 réaliste,2015-2026,vol,0.219985
+5. Les deux,L2 réaliste,2015-2026,sharpe,0.219012
+5. Les deux,L2 réaliste,2015-2026,maxdd_total,-0.504099
+5. Les deux,L2 réaliste,2015-2026,cost_pa,0.022261
+5. Les deux,L2 réaliste,2015-2026,trading_cost_pa,0.013262
+5. Les deux,L2 réaliste,2015-2026,roll_cost_pa,0.008999
+5. Les deux,L2 réaliste,2015-2026,cash_shortfall_pa,0.006458
+5. Les deux,L2 réaliste,2015-2026,tbill_pa,0.020566
+5. Les deux,L2 réaliste,2015-2026,cagr_futures_excess,0.031276
+5. Les deux,L2 réaliste,2015-2026,sharpe_futures_excess,0.247818
+5. Les deux,L2 réaliste,2015-2026,maxdd_excess,-0.563980
+5. Les deux,L2 réaliste,2015-2026,gross_exposure_mean,10.036713
+5. Les deux,L2 réaliste,2015-2026,margin_share_mean,0.194251
+5. Les deux,L2 réaliste,2015-2026,years,11.524708
+5. Les deux,L2 réaliste,2023-07->2026-07,cagr_excess,-0.085099
+5. Les deux,L2 réaliste,2023-07->2026-07,cagr_total,-0.043130
+5. Les deux,L2 réaliste,2023-07->2026-07,vol,0.211257
+5. Les deux,L2 réaliste,2023-07->2026-07,sharpe,-0.306633
+5. Les deux,L2 réaliste,2023-07->2026-07,maxdd_total,-0.461671
+5. Les deux,L2 réaliste,2023-07->2026-07,cost_pa,0.020007
+5. Les deux,L2 réaliste,2023-07->2026-07,trading_cost_pa,0.011921
+5. Les deux,L2 réaliste,2023-07->2026-07,roll_cost_pa,0.008086
+5. Les deux,L2 réaliste,2023-07->2026-07,cash_shortfall_pa,0.010727
+5. Les deux,L2 réaliste,2023-07->2026-07,tbill_pa,0.044841
+5. Les deux,L2 réaliste,2023-07->2026-07,cagr_futures_excess,-0.075228
+5. Les deux,L2 réaliste,2023-07->2026-07,sharpe_futures_excess,-0.256855
+5. Les deux,L2 réaliste,2023-07->2026-07,maxdd_excess,-0.488111
+5. Les deux,L2 réaliste,2023-07->2026-07,gross_exposure_mean,7.419447
+5. Les deux,L2 réaliste,2023-07->2026-07,margin_share_mean,0.143596
+5. Les deux,L2 réaliste,2023-07->2026-07,years,3.001778
